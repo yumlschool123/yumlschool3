@@ -1,0 +1,30 @@
+warn: Microsoft.AspNetCore.Server.Kestrel[0]
+      Overriding address(es) 'http://*:8080'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://[::]:80
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: /app
+warn: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]
+      Failed to determine the https port for redirect.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (20ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [g].[ID_Group], [g].[Name_Group]
+      FROM [Group] AS [g]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [u].[ID_User], [u].[Email], [u].[FirstName], [u].[ID_Group], [u].[ID_Role], [u].[Login], [u].[MiddleName], [u].[Password], [u].[SecondName]
+      FROM [User] AS [u]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [u].[ID_User], [u].[Email], [u].[FirstName], [u].[ID_Group], [u].[ID_Role], [u].[Login], [u].[MiddleName], [u].[Password], [u].[SecondName]
+      FROM [User] AS [u]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [u].[ID_User], [u].[Email], [u].[FirstName], [u].[ID_Group], [u].[ID_Role], [u].[Login], [u].[MiddleName], [u].[Password], [u].[SecondName]
+      FROM [User] AS [u]
+info: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...

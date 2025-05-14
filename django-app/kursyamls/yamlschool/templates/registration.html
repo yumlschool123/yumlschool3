@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация | YumlSchool</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/logreg.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        .error-feedback {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .input-error {
+            border: 1px solid #e74c3c !important;
+            background-color: rgba(231, 76, 60, 0.05) !important;
+        }
+        
+        .input-valid {
+            border: 1px solid #2ecc71 !important;
+            background-color: rgba(46, 204, 113, 0.05) !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                YumlSchool
+            </div>
+            <p class="subtitle">Создайте свой аккаунт</p>
+        </div>
+
+        {% if error %}
+        <div class="error-message">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <form method="POST" action="{% url 'register' %}" id="registrationForm" novalidate>
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="firstName">Фамилия</label>
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="firstName" name="firstName" placeholder="Введите фамилию" required value="{{ first_name|default:'' }}">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="secondName">Имя</label>
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="secondName" name="secondName" placeholder="Введите имя" required value="{{ second_name|default:'' }}">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="middleName">Отчество</label>
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="middleName" name="middleName" placeholder="Введите отчество" value="{{ middle_name|default:'' }}">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="email" name="email" placeholder="Введите email" required value="{{ email|default:'' }}">
+                </div>
+                <div id="emailError" class="error-feedback">Email должен соответствовать формату example@domain.com</div>
+            </div>
+
+            <div class="form-group">
+                <label for="login">Логин</label>
+                <div class="input-group">
+                    <i class="fas fa-user-circle"></i>
+                    <input type="text" id="login" name="login" placeholder="Придумайте логин" required value="{{ login|default:'' }}">
+                </div>
+                <div id="loginError" class="error-feedback">Логин должен содержать не менее 8 символов</div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" name="password" placeholder="Придумайте пароль" required>
+                </div>
+                <div id="passwordError" class="error-feedback">Пароль должен содержать не менее 8 символов, 1 специальный знак и 1 цифру</div>
+            </div>
+
+            <button type="submit" id="submitBtn">
+                <i class="fas fa-user-plus"></i>
+                Зарегистрироваться
+            </button>
+        </form>
+
+        <div class="divider">или</div>
+
+        <div class="auth-links">
+            Уже есть аккаунт? <a href="{% url 'login' %}">Войдите</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const emailInput = document.getElementById('email');
+            const loginInput = document.getElementById('login');
+            const passwordInput = document.getElementById('password');
+            const emailError = document.getElementById('emailError');
+            const loginError = document.getElementById('loginError');
+            const passwordError = document.getElementById('passwordError');
+            const form = document.getElementById('registrationForm');
+            
+            // Функция проверки email
+            function validateEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+
+            // Функция проверки логина
+            function validateLogin(login) {
+                return login.length >= 8;
+            }
+
+            // Функция проверки пароля
+            function validatePassword(password) {
+                const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
+                return passwordRegex.test(password);
+            }
+
+            // Проверка при вводе email
+            emailInput.addEventListener('input', function() {
+                const email = emailInput.value.trim();
+                
+                if (email === '') {
+                    emailInput.classList.remove('input-error', 'input-valid');
+                    emailError.style.display = 'none';
+                } else if (validateEmail(email)) {
+                    emailInput.classList.remove('input-error');
+                    emailInput.classList.add('input-valid');
+                    emailError.style.display = 'none';
+                } else {
+                    emailInput.classList.remove('input-valid');
+                    emailInput.classList.add('input-error');
+                    emailError.style.display = 'block';
+                }
+            });
+
+            // Проверка при вводе логина
+            loginInput.addEventListener('input', function() {
+                const login = loginInput.value.trim();
+                
+                if (login === '') {
+                    loginInput.classList.remove('input-error', 'input-valid');
+                    loginError.style.display = 'none';
+                } else if (validateLogin(login)) {
+                    loginInput.classList.remove('input-error');
+                    loginInput.classList.add('input-valid');
+                    loginError.style.display = 'none';
+                } else {
+                    loginInput.classList.remove('input-valid');
+                    loginInput.classList.add('input-error');
+                    loginError.style.display = 'block';
+                }
+            });
+
+            // Проверка при вводе пароля
+            passwordInput.addEventListener('input', function() {
+                const password = passwordInput.value.trim();
+                
+                if (password === '') {
+                    passwordInput.classList.remove('input-error', 'input-valid');
+                    passwordError.style.display = 'none';
+                } else if (validatePassword(password)) {
+                    passwordInput.classList.remove('input-error');
+                    passwordInput.classList.add('input-valid');
+                    passwordError.style.display = 'none';
+                } else {
+                    passwordInput.classList.remove('input-valid');
+                    passwordInput.classList.add('input-error');
+                    passwordError.style.display = 'block';
+                }
+            });
+
+            // Проверка формы при отправке
+            form.addEventListener('submit', function(event) {
+                const email = emailInput.value.trim();
+                const login = loginInput.value.trim();
+                const password = passwordInput.value.trim();
+                
+                let valid = true;
+
+                if (!validateEmail(email)) {
+                    valid = false;
+                    emailInput.classList.add('input-error');
+                    emailError.style.display = 'block';
+                }
+
+                if (!validateLogin(login)) {
+                    valid = false;
+                    loginInput.classList.add('input-error');
+                    loginError.style.display = 'block';
+                }
+
+                if (!validatePassword(password)) {
+                    valid = false;
+                    passwordInput.classList.add('input-error');
+                    passwordError.style.display = 'block';
+                }
+
+                if (!valid) {
+                    event.preventDefault(); // Предотвращаем отправку формы
+                }
+            });
+        });
+    </script>
+</body>
+</html>

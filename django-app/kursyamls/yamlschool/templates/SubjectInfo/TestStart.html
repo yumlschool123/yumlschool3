@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    {% load custom_filters %}
+    <title>{{ test.nameTest }} - Начало тестирования</title>
+    <link rel="stylesheet" href="{% static 'css/TestProcess.css' %}">
+</head>
+<body>
+    {% include 'header.html' %}
+
+    <div class="container">
+        <div class="test-header">
+            <h1>{{ test.nameTest }}</h1>
+            <p class="test-description">{{ test.descriptionTest }}</p>
+        </div>
+
+        <div class="test-start-info card">
+            <h2>Информация о тесте</h2>
+            <div class="info-item">
+                <i class="fas fa-clock"></i>
+                <span>Время на выполнение: <strong>{{ time_limit }} минут</strong></span>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-question-circle"></i>
+                <span>Количество вопросов: <strong>{{ questions|length }}</strong></span>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-trophy"></i>
+                <span>Проходной балл: <strong>{{ test.passingScore }}</strong></span>
+            </div>
+            
+            <div class="instructions">
+                <h3>Инструкции:</h3>
+                <ul>
+                    <li>После начала теста запустится таймер.</li>
+                    <li>При истечении времени тест будет автоматически завершен.</li>
+                    <li>Для вопросов с одним ответом выберите один вариант.</li>
+                    <li>Для вопросов с несколькими ответами отметьте все правильные варианты.</li>
+                    <li>В вопросах на сопоставление соедините соответствующие элементы.</li>
+                    <li>В вопросах на установление порядка перетащите элементы в правильном порядке.</li>
+                </ul>
+            </div>
+            
+            <div class="warning">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>Внимание! Не закрывайте страницу до завершения теста. После начала тест должен быть завершен в рамках отведенного времени.</p>
+            </div>
+            
+            <form method="GET" action="{% url 'test_process' test.idTest %}">
+                <input type="hidden" name="attempt_id" value="{{ attempt_id }}">
+                <div class="actions">
+                    <a href="{% url 'test_material' test.idTest %}" class="button secondary">
+                        <i class="fas fa-arrow-left"></i> Вернуться назад
+                    </a>
+                    <button type="submit" class="button primary">
+                        <i class="fas fa-play"></i> Начать тестирование
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html> 

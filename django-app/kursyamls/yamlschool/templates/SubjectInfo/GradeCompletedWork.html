@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оценивание работы</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/PracticalWork.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        .work-details {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid #9D4EDD;
+            overflow: hidden;
+        }
+        
+        .work-details h3 {
+            margin-top: 0;
+            color: white;
+            font-size: 20px;
+            word-break: break-word;
+        }
+        
+        .work-details p {
+            word-break: break-word;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .work-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .work-info-item {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 10px 15px;
+            flex: 1;
+            min-width: 200px;
+            overflow: hidden;
+        }
+        
+        .work-info-item.file-item {
+            flex: 2;
+            min-width: 300px;
+        }
+        
+        .work-info-item strong {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .work-info-item span {
+            font-size: 16px;
+            color: white;
+            word-break: break-word;
+        }
+        
+        .file-link {
+            display: inline-flex;
+            align-items: flex-start;
+            background: rgba(157, 78, 221, 0.2);
+            border-radius: 6px;
+            padding: 8px 12px;
+            text-decoration: none;
+            color: white;
+            margin-top: 5px;
+            transition: all 0.3s ease;
+            max-width: 100%;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            flex-wrap: wrap;
+        }
+        
+        .file-link-text {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: normal;
+            word-break: break-word;
+            line-height: 1.4;
+        }
+        
+        .file-link:hover {
+            background: rgba(157, 78, 221, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .file-icon {
+            margin-right: 8px;
+            font-size: 18px;
+            flex-shrink: 0;
+            padding-top: 2px;
+        }
+        
+        .grade-form {
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .grade-form h3 {
+            margin-top: 0;
+            font-size: 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-group select, 
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 16px;
+        }
+        
+        .form-group select:focus, 
+        .form-group textarea:focus {
+            border-color: #9D4EDD;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(157, 78, 221, 0.3);
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #9D4EDD, #7B2CBF);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .current-grade {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+        
+        .grade-pending {
+            background: rgba(255, 193, 7, 0.2);
+            color: #FFC107;
+        }
+        
+        .grade-2 {
+            background: rgba(244, 67, 54, 0.2);
+            color: #F44336;
+        }
+        
+        .grade-3-5 {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+        }
+        
+        .previous-grade {
+            border-left: 3px solid rgba(255, 255, 255, 0.2);
+            padding-left: 15px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        @media (max-width: 768px) {
+            .work-info {
+                gap: 10px;
+            }
+            
+            .work-info-item {
+                min-width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    
+    <div class="container">
+        <h1>Оценивание работы студента</h1>
+        
+        <div class="work-details">
+            <h3>{{ practical_work.namePracticalWork }}</h3>
+            <p>{{ practical_work.descriptionPracticalWork }}</p>
+            
+            <div class="work-info">
+                <div class="work-info-item">
+                    <strong>Студент:</strong>
+                    <span>{{ completed_work.student_name|default:"Имя не указано" }}</span>
+                </div>
+                
+                <div class="work-info-item">
+                    <strong>Попытка:</strong>
+                    <span>{{ completed_work.attemptCount }} из 3</span>
+                </div>
+                
+                <div class="work-info-item">
+                    <strong>Дата загрузки:</strong>
+                    <span>{{ completed_work.dateUploadCompletedWork }} {{ completed_work.timeUploadCompletedWork }}</span>
+                </div>
+                
+                <div class="work-info-item file-item">
+                    <strong>Файл работы:</strong>
+                    <div>
+                        <a href="{{ completed_work.urlFileCompletedWork }}" target="_blank" class="file-link">
+                            <span class="file-icon"><i class="fas fa-file-alt"></i></span>
+                            <span class="file-link-text">{{ completed_work.nameFileCompletedWork }}</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="work-info-item">
+                    <strong>Текущая оценка:</strong>
+                    <div>
+                        {% if completed_work.grade == "На проверке" %}
+                            <span class="current-grade grade-pending">Требуется проверка</span>
+                        {% elif '2' in completed_work.grade %}
+                            <span class="current-grade grade-2">Не зачтено ({{ completed_work.grade }})</span>
+                        {% elif completed_work.grade == '3' or completed_work.grade == '4' or completed_work.grade == '5' %}
+                            <span class="current-grade grade-3-5">Зачтено ({{ completed_work.grade }})</span>
+                        {% else %}
+                            <span class="current-grade">{{ completed_work.grade }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="grade-form">
+            <h3>{% if completed_work.grade == "На проверке" %}Оценить работу{% else %}Изменить оценку{% endif %}</h3>
+            
+            {% if completed_work.grade != "На проверке" %}
+                <div class="previous-grade">
+                    <p><strong>Внимание:</strong> Вы изменяете существующую оценку. Текущая оценка: {{ completed_work.grade }}</p>
+                </div>
+            {% endif %}
+            
+            <form action="{% url 'grade_completed_work' practical_work.idPracticalWork completed_work.userId %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="completed_work_id" value="{{ completed_work.idCompletedWork }}">
+                
+                <div class="form-group">
+                    <label for="grade">Оценка:</label>
+                    <select name="grade" id="grade" required>
+                        <option value="" disabled {% if completed_work.grade == "На проверке" %}selected{% endif %}>Выберите оценку</option>
+                        <option value="2" {% if completed_work.grade == "2" %}selected{% endif %}>2 (Не зачтено)</option>
+                        <option value="3" {% if completed_work.grade == "3" %}selected{% endif %}>3 (Удовлетворительно)</option>
+                        <option value="4" {% if completed_work.grade == "4" %}selected{% endif %}>4 (Хорошо)</option>
+                        <option value="5" {% if completed_work.grade == "5" %}selected{% endif %}>5 (Отлично)</option>
+                    </select>
+                </div>
+                
+
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        {% if completed_work.grade == "На проверке" %}
+                            Сохранить оценку
+                        {% else %}
+                            Обновить оценку
+                        {% endif %}
+                    </button>
+                    
+                    <a href="{% url 'PracticalWorkMaterial' id=practical_work.idPracticalWork %}" class="btn btn-secondary">Отмена</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html> 

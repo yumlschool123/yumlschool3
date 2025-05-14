@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    {% load custom_filters %}
+    <title>Создание теста</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/SubjectPage.css' %}">
+    <link rel="stylesheet" href="{% static 'css/PracticalWork.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/CreateTest.css' %}">
+    <link rel="stylesheet" href="{% static 'css/TestEditor.css' %}">
+    <script src="{% static 'js/scoreCounter.js' %}"></script>
+</head>
+<body>
+    {% include 'header.html' %}
+
+    <div class="container">
+        
+
+
+        <h1>Создание теста</h1>
+        
+        <form id="testForm" method="POST" action="{% url 'create_test' subject_id %}" class="test-form">
+            {% csrf_token %}
+            <input type="hidden" name="subject_id" value="{{ subject_id }}">
+            <input type="hidden" id="gradingCriteriaFinal" name="gradingCriteria">
+            
+            <!-- Основная информация о тесте -->
+            <div class="test-info-section">
+                <div class="form-group">
+                    <label for="nameTest">Название теста:</label>
+                    <input type="text" id="nameTest" name="nameTest" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="descriptionTest">Описание теста:</label>
+                    <textarea id="descriptionTest" name="descriptionTest" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="timeLimit">Ограничение по времени (в минутах):</label>
+                    <input type="number" id="timeLimit" name="timeLimit" required min="1">
+                </div>
+            </div>
+
+
+
+            <div id="questions-container">
+                <!-- Здесь будут добавляться вопросы -->
+            </div>
+
+            <button type="button" class="add-question-btn" onclick="addQuestion()">Добавить вопрос</button>
+
+
+
+
+        <div class="container">
+
+        <!-- Критерии оценивания -->
+            <div class="grading-section">
+                <h3 class="section-title">Критерии оценивания</h3>
+                <div id="gradingCriteria" class="grading-criteria-container">
+                    <div class="grading-row">
+                        <div class="grade-label">Оценка 5:</div>
+                        <div class="points-range">
+                            <div class="range-input">
+                                <span class="range-separator">мин. балл</span>
+                                <input type="number" id="grade5Min" name="grade5Min" placeholder="От" min="0" required>
+                                <span class="range-separator">-</span>
+                                <span class="range-separator">макс. балл</span>
+                                <input type="number" id="grade5Max" name="grade5Max" placeholder="До" min="0" required>
+                            </div>
+                            <span class="range-separator">баллов</span>
+                        </div>
+                    </div>
+
+                    <div class="grading-row">
+                        <div class="grade-label">Оценка 4:</div>
+                        <div class="points-range">
+                            <div class="range-input">
+                                <span class="range-separator">мин. балл</span>
+                                <input type="number" id="grade4Min" name="grade4Min" placeholder="От" min="0" required>
+                                <span class="range-separator">-</span>
+                                <span class="range-separator">макс. балл</span>
+                                <input type="number" id="grade4Max" name="grade4Max" placeholder="До" min="0" required>
+                            </div>
+                            <span class="range-separator">баллов</span>
+
+                        </div>
+                    </div>
+
+                    <div class="grading-row">
+                        <div class="grade-label">Оценка 3:</div>
+                        <div class="points-range">
+                            <div class="range-input">
+                                <span class="range-separator">мин. балл</span>
+                                <input type="number" id="grade3Min" name="grade3Min" placeholder="От" min="0" required>
+                                <span class="range-separator">-</span>                                
+                                <span class="range-separator">макс. балл</span>
+                                <input type="number" id="grade3Max" name="grade3Max" placeholder="До" min="0" required>
+                            </div>
+                            <span class="range-separator">баллов</span>
+
+                        </div>
+                    </div>
+                </div>
+                <div id="gradingError" class="error-message"></div>
+            </div>
+
+
+
+
+            <button type="submit" class="submit-btn" onclick="return confirm('Вы уверены, что хотите создать тест?')">Создать тест</button>
+        </form>
+    </div>
+
+    <template id="question-template">
+        <div class="question-block">
+            <div class="question-header">
+                <h3>Вопрос #<span class="question-number"></span></h3>
+                <button type="button" onclick="removeQuestion(this)" class="remove-btn">Удалить вопрос</button>
+            </div>
+            <div class="form-group">
+                <label>Текст вопроса:</label>
+                <input type="text" name="questions[][text]" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Тип вопроса:</label>
+                <select name="questions[][type]" onchange="handleQuestionTypeChange(this)" required>
+                    <option value="1">Один правильный ответ</option>
+                    <option value="2">Несколько правильных ответов</option>
+                    <option value="3">Сопоставление</option>
+                    <option value="4">Ввод ответа</option>
+                    <option value="5">Установление порядка</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Баллы за вопрос:</label>
+                <input type="number" name="questions[][points]" min="1" value="1" required>
+            </div>
+
+            <div class="answers-container">
+                <!-- Здесь будут добавляться варианты ответов в зависимости от типа вопроса -->
+            </div>
+        </div>
+        
+        </template>
+
+
+
+
+
+   
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Инициализация проверки критериев оценивания
+            initGradingCriteriaValidation();
+            
+            // Инициализация счетчика вопросов
+            window.questionCounter = 0;
+
+            // Функция добавления вопроса
+            window.addQuestion = function() {
+                const template = document.getElementById('question-template');
+                const container = document.getElementById('questions-container');
+                const clone = template.content.cloneNode(true);
+                
+                // Обновляем номер вопроса
+                const questionNumber = ++window.questionCounter;
+                const questionBlock = clone.querySelector('.question-block');
+                const numberElement = clone.querySelector('.question-number');
+                if (numberElement) {
+                    numberElement.textContent = questionNumber;
+                }
+
+                // Добавляем data-question-id
+                questionBlock.dataset.questionId = `new_${questionNumber}`;
+
+                // Обновляем имена полей
+                const inputs = clone.querySelectorAll('input, select, textarea');
+                inputs.forEach(input => {
+                    const name = input.getAttribute('name');
+                    if (name) {
+                        input.setAttribute('name', name.replace('[]', `[new_${questionNumber}]`));
+                    }
+                });
+
+                container.appendChild(clone);
+                
+                // Инициализируем тип вопроса
+                const select = questionBlock.querySelector('select');
+                select.value = '1';
+                handleQuestionTypeChange(select);
+                
+                // Обновляем счетчик баллов
+                if (typeof updateScoreCounter === 'function') {
+                    updateScoreCounter();
+                }
+            };
+
+            // Функция удаления вопроса
+            window.removeQuestion = function(button) {
+                const questionBlock = button.closest('.question-block');
+                if (questionBlock) {
+                    questionBlock.remove();
+                    updateQuestionNumbers();
+                    
+                    // Обновляем счетчик баллов
+                    if (typeof updateScoreCounter === 'function') {
+                        updateScoreCounter();
+                    }
+                }
+            };
+
+            // Функция обновления номеров вопросов
+            window.updateQuestionNumbers = function() {
+                const questions = document.querySelectorAll('.question-block');
+                questions.forEach((question, index) => {
+                    const numberElement = question.querySelector('.question-number');
+                    if (numberElement) {
+                        numberElement.textContent = index + 1;
+                    }
+                });
+                window.questionCounter = questions.length;
+            };
+
+            // Добавляем первый вопрос при загрузке страницы
+            addQuestion();
+        });
+
+        function handleQuestionTypeChange(select) {
+            const questionBlock = select.closest('.question-block');
+            const questionId = questionBlock.dataset.questionId || 'new_question';
+            const answersContainer = questionBlock.querySelector('.answers-container');
+            const type = select.value;
+            
+            let html = '';
+            
+            switch(type) {
+                case '1': // Один правильный ответ
+                case '2': // Несколько правильных ответов
+                    html = `
+                        <div class="answers-group">
+                            ${[0,1,2,3].map(i => `
+                            <div class="form-group">
+                                <label>Вариант ${i + 1}:</label>
+                                <input type="text" 
+                                       name="questions[${questionId}][answers][]" 
+                                       required>
+                                <input type="${type === '1' ? 'radio' : 'checkbox'}" 
+                                       name="questions[${questionId}][correct]${type === '2' ? '[]' : ''}" 
+                                       value="${i}">
+                            </div>
+                            `).join('')}
+                        </div>
+                    `;
+                    break;
+                    
+                case '3': // Сопоставление
+                    html = `
+                        <div class="matching-group">
+                            ${[1,2,3,4].map(i => `
+                            <div class="form-group matching-pair">
+                                <label>Пара ${i}:</label>
+                                <input type="text" 
+                                       name="questions[${questionId}][left][]" 
+                                       placeholder="Левая часть" 
+                                       required>
+                                <input type="text" 
+                                       name="questions[${questionId}][right][]" 
+                                       placeholder="Правая часть" 
+                                       required>
+                            </div>
+                            `).join('')}
+                        </div>
+                    `;
+                    break;
+                
+                case '4': // Ввод ответа
+                    html = `
+                        <div class="form-group">
+                            <label>Правильный ответ:</label>
+                            <input type="text" 
+                                   name="questions[${questionId}][correct_answer]" 
+                                   required>
+                        </div>
+                    `;
+                    break;
+
+                case '5': // Установление порядка
+                    html = `
+                        <div class="order-group">
+                            ${[1,2,3,4].map(i => `
+                            <div class="form-group">
+                                <label>Элемент ${i}:</label>
+                                <input type="text" 
+                                       name="questions[${questionId}][order][]" 
+                                       required>
+                                <span class="order-number">${i}</span>
+                            </div>
+                            `).join('')}
+                        </div>
+                    `;
+                    break;
+            }
+            
+            answersContainer.innerHTML = html;
+        }
+
+        // Функция инициализации проверки критериев оценивания
+        function initGradingCriteriaValidation() {
+            // Получаем все поля ввода критериев
+            const grade5Min = document.getElementById('grade5Min');
+            const grade5Max = document.getElementById('grade5Max');
+            const grade4Min = document.getElementById('grade4Min');
+            const grade4Max = document.getElementById('grade4Max');
+            const grade3Min = document.getElementById('grade3Min');
+            const grade3Max = document.getElementById('grade3Max');
+            const gradingError = document.getElementById('gradingError');
+            
+            // Получаем форму
+            const form = document.getElementById('testForm');
+            
+            // Функция для проверки значений при изменении
+            function validateGradingCriteria() {
+                // Очищаем сообщение об ошибке
+                gradingError.textContent = '';
+                gradingError.style.display = 'none';
+                
+                // Очищаем классы ошибок
+                [grade5Min, grade5Max, grade4Min, grade4Max, grade3Min, grade3Max].forEach(input => {
+                    input.classList.remove('input-error');
+                });
+                
+                // Получаем текущие значения полей
+                const g5Min = parseInt(grade5Min.value) || 0;
+                const g5Max = parseInt(grade5Max.value) || 0;
+                const g4Min = parseInt(grade4Min.value) || 0;
+                const g4Max = parseInt(grade4Max.value) || 0;
+                const g3Min = parseInt(grade3Min.value) || 0;
+                const g3Max = parseInt(grade3Max.value) || 0;
+                
+                // Получаем общий балл теста (из счетчика)
+                const totalScore = parseInt(document.getElementById('total-score')?.textContent) || 0;
+                
+                // Проверка 1: Общий балл за тест
+                const maxPoints = Math.max(g5Max, g4Max, g3Max);
+                if (maxPoints > totalScore && totalScore > 0) {
+                    gradingError.textContent = `Ошибка: Общий счет баллов за тест - ${totalScore}, вы не можете поставить число большее этому баллу (${maxPoints})`;
+                    gradingError.style.display = 'block';
+                    // Подсвечиваем поля с ошибкой
+                    if (g5Max > totalScore) grade5Max.classList.add('input-error');
+                    if (g4Max > totalScore) grade4Max.classList.add('input-error');
+                    if (g3Max > totalScore) grade3Max.classList.add('input-error');
+                    return false;
+                }
+                
+                // Проверка 2: Минимальный балл должен быть меньше или равен максимальному
+                if (g5Min > g5Max) {
+                    gradingError.textContent = 'Ошибка: Минимальный балл для оценки 5 не может быть больше максимального';
+                    gradingError.style.display = 'block';
+                    grade5Min.classList.add('input-error');
+                    grade5Max.classList.add('input-error');
+                    return false;
+                }
+                
+                if (g4Min > g4Max) {
+                    gradingError.textContent = 'Ошибка: Минимальный балл для оценки 4 не может быть больше максимального';
+                    gradingError.style.display = 'block';
+                    grade4Min.classList.add('input-error');
+                    grade4Max.classList.add('input-error');
+                    return false;
+                }
+                
+                if (g3Min > g3Max) {
+                    gradingError.textContent = 'Ошибка: Минимальный балл для оценки 3 не может быть больше максимального';
+                    gradingError.style.display = 'block';
+                    grade3Min.classList.add('input-error');
+                    grade3Max.classList.add('input-error');
+                    return false;
+                }
+                
+                // Проверка 3: Логика распределения баллов между оценками
+                // Для оценки 5 и 4
+                if (g4Max >= g5Min) {
+                    gradingError.textContent = `Ошибка: Максимальный балл для оценки 4 (${g4Max}) не может быть больше или равен минимальному баллу для оценки 5 (${g5Min})`;
+                    gradingError.style.display = 'block';
+                    grade4Max.classList.add('input-error');
+                    grade5Min.classList.add('input-error');
+                    return false;
+                }
+                
+                // Для оценки 4 и 3
+                if (g3Max >= g4Min) {
+                    gradingError.textContent = `Ошибка: Максимальный балл для оценки 3 (${g3Max}) не может быть больше или равен минимальному баллу для оценки 4 (${g4Min})`;
+                    gradingError.style.display = 'block';
+                    grade3Max.classList.add('input-error');
+                    grade4Min.classList.add('input-error');
+                    return false;
+                }
+                
+                return true;
+            }
+            
+            // Добавляем обработчики событий для полей ввода
+            [grade5Min, grade5Max, grade4Min, grade4Max, grade3Min, grade3Max].forEach(input => {
+                input.addEventListener('input', validateGradingCriteria);
+            });
+            
+            // Обработчик для события обновления счетчика баллов
+            document.addEventListener('score-counter-updated', validateGradingCriteria);
+            
+            // Проверка перед отправкой формы
+            form.addEventListener('submit', function(event) {
+                if (!validateGradingCriteria()) {
+                    event.preventDefault();
+                }
+            });
+        }
+
+        document.getElementById('testForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Получаем все значения диапазонов
+            const grade5Min = parseInt(document.getElementById('grade5Min').value) || 0;
+            const grade5Max = parseInt(document.getElementById('grade5Max').value) || 0;
+            const grade4Min = parseInt(document.getElementById('grade4Min').value) || 0;
+            const grade4Max = parseInt(document.getElementById('grade4Max').value) || 0;
+            const grade3Min = parseInt(document.getElementById('grade3Min').value) || 0;
+            const grade3Max = parseInt(document.getElementById('grade3Max').value) || 0;
+
+            // Проверяем корректность диапазонов
+            let errorMessage = '';
+            
+            if (grade5Min > grade5Max) {
+                errorMessage = 'Для оценки 5: значение "От" не может быть больше значения "До"';
+            } else if (grade4Min > grade4Max) {
+                errorMessage = 'Для оценки 4: значение "От" не может быть больше значения "До"';
+            } else if (grade3Min > grade3Max) {
+                errorMessage = 'Для оценки 3: значение "От" не может быть больше значения "До"';
+            } else if (grade5Min <= grade4Max) {
+                errorMessage = 'Диапазон для оценки 5 должен начинаться после максимального значения для оценки 4';
+            } else if (grade4Min <= grade3Max) {
+                errorMessage = 'Диапазон для оценки 4 должен начинаться после максимального значения для оценки 3';
+            }
+
+            const errorDiv = document.getElementById('gradingError');
+            if (errorMessage) {
+                errorDiv.textContent = errorMessage;
+                errorDiv.style.display = 'block';
+                return;
+            }
+            errorDiv.style.display = 'none';
+
+            // Формируем текст критериев оценивания
+            const criteriaText = JSON.stringify([
+                { grade: 5, minPoints: grade5Min, maxPoints: grade5Max },
+                { grade: 4, minPoints: grade4Min, maxPoints: grade4Max },
+                { grade: 3, minPoints: grade3Min, maxPoints: grade3Max }
+            ]);
+            
+            document.getElementById('gradingCriteriaFinal').value = criteriaText;
+
+            // Собираем данные о вопросах
+            const questions = [];
+            document.querySelectorAll('.question-block').forEach((block, index) => {
+                const questionData = {
+                    text: block.querySelector('input[name$="[text]"]').value,
+                    type: parseInt(block.querySelector('select[name$="[type]"]').value),
+                    points: parseInt(block.querySelector('input[name$="[points]"]').value),
+                    answers: [],
+                    correctAnswer: ''
+                };
+
+                // Обрабатываем ответы в зависимости от типа вопроса
+                switch(questionData.type) {
+                    case 1: // Один правильный ответ
+                    case 2: // Несколько правильных ответов
+                        const answers = block.querySelectorAll('input[type="text"][name$="[answers][]"]');
+                        const selected = block.querySelectorAll(`input[type="${questionData.type === 1 ? 'radio' : 'checkbox'}"][name$="[correct]${questionData.type === 2 ? '[]' : ''}"]`);
+                        
+                        answers.forEach((answer, i) => {
+                            questionData.answers.push(answer.value);
+                            if (selected[i].checked) {
+                                if (questionData.type === 1) {
+                                    questionData.correctAnswer = answer.value;
+                                } else {
+                                    questionData.correctAnswer += (questionData.correctAnswer ? '; ' : '') + answer.value;
+                                }
+                            }
+                        });
+                        break;
+
+                    case 3: // Сопоставление
+                        const leftParts = block.querySelectorAll('input[name$="[left][]"]');
+                        const rightParts = block.querySelectorAll('input[name$="[right][]"]');
+                        leftParts.forEach((left, i) => {
+                            const pair = `${left.value} - ${rightParts[i].value}`;
+                            questionData.answers.push(pair);
+                        });
+                        questionData.correctAnswer = questionData.answers.join('; ');
+                        break;
+
+                    case 4: // Ввод ответа
+                        questionData.correctAnswer = block.querySelector('input[name$="[correct_answer]"]').value;
+                        break;
+
+                    case 5: // Установление порядка
+                        const orderItems = block.querySelectorAll('input[name$="[order][]"]');
+                        orderItems.forEach(item => {
+                            questionData.answers.push(item.value);
+                        });
+                        questionData.correctAnswer = questionData.answers.join('; ');
+                        break;
+                }
+
+                questions.push(questionData);
+            });
+
+            // Добавляем вопросы в форму
+            const questionsInput = document.createElement('input');
+            questionsInput.type = 'hidden';
+            questionsInput.name = 'questions';
+            questionsInput.value = JSON.stringify(questions);
+            this.appendChild(questionsInput);
+
+            // Отправляем форму
+            this.submit();
+        });
+    </script>
+
+    <style>
+        .error-message {
+            color: #ff3860;
+            background-color: rgba(255, 56, 96, 0.1);
+            border: 1px solid rgba(255, 56, 96, 0.3);
+            border-radius: 4px;
+            padding: 8px 12px;
+            margin: 10px 0;
+            display: none;
+        }
+        
+        .input-error {
+            border-color: #ff3860 !important;
+            background-color: rgba(255, 56, 96, 0.05) !important;
+        }
+    </style>
+</body>
+</html> 

@@ -1,0 +1,53 @@
+<!-- LectionCRUD.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавление лекции</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/LectionCRUD.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-book-open"></i> Добавить новую лекцию</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="nameLectionMaterial">Название лекции:</label>
+                <input type="text" id="nameLectionMaterial" name="nameLectionMaterial" required 
+                       placeholder="Введите название лекции">
+            </div>
+
+            <div class="form-group">
+                <label for="descriptionLectionMaterial">Описание лекции:</label>
+                <textarea id="descriptionLectionMaterial" name="descriptionLectionMaterial" required
+                          placeholder="Введите описание лекции"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="nameFileLection">Название файла лекции:</label>
+                <input type="text" id="nameFileLection" name="nameFileLection" required
+                       placeholder="Введите название файла">
+            </div>
+
+            <div class="form-group">
+                <label for="urlFileLection">Ссылка на файл лекции:</label>
+                <input type="url" id="urlFileLection" name="urlFileLection" required
+                       placeholder="Вставьте ссылку на файл">
+            </div>
+
+            <button type="submit" class="submit-button">
+                <i class="fas fa-plus"></i> Добавить лекцию
+            </button>
+        </form>
+        {% if error %}
+            <p class="error-message">
+                <i class="fas fa-exclamation-circle"></i> {{ error }}
+            </p>
+        {% endif %}
+    </div>
+</body>
+</html>

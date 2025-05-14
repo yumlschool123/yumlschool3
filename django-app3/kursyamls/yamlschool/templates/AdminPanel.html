@@ -1,0 +1,78 @@
+<!-- AdminPanel.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Административная Панель</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/AdminPanel.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/PracticalWork.css' %}">
+    <link rel="stylesheet" href="{% static 'css/CreateTest.css' %}">
+    <link rel="stylesheet" href="{% static 'css/TestEditor.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    {% include 'header.html' %} 
+
+
+    <div class="container">
+        <h1>Административная Панель</h1>
+
+        <nav class="menu">
+            <ul>
+                <li><a href="{% url 'group_crud' %}">Управление Группами</a></li>
+                <li><a href="{% url 'user_crud' %}">Управление Пользователями</a></li>
+                <li><a href="{% url 'subject_crud' %}">Управление Предметами</a></li>
+            </ul>
+        </nav>
+        <h2>Выгрузка данных</h2>
+
+        <div class="export-actions">
+            <a href="{% url 'export_groups_to_json' %}" class="export-button">
+                📥 Выгрузить группы в JSON
+            </a>
+        
+            <form action="{% url 'import_groups_from_json' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+        
+                <div class="form-group">
+                    <label for="json_file" class="custom-file-upload">
+                        Выберите файл из которого надо загрузить группы
+                    </label>
+                    <div class="custom-file-input-wrapper">  <!-- Added wrapper for better styling -->
+                        <label for="json_file" class="export-button">
+                            <span id="file-name">Ваш файл</span>
+                            <input type="file" name="json_file" id="json_file" accept=".json" required style="display: none;" onchange="updateFileName()">
+                        </label>
+                    </div>
+                </div>
+        
+                <button type="submit" class="export-button"> 
+                    📤 Загрузить группы из JSON
+                </button>  <!-- Moved inside the form -->
+            </form>
+        </div>
+        
+        <script>
+            function updateFileName() {
+                const input = document.getElementById('json_file');
+                const fileName = input.files.length > 0 ? input.files[0].name : 'Выберите файл';
+                document.getElementById('file-name').textContent = fileName;
+            }
+        </script>
+        
+        
+
+
+
+    </div>
+
+    
+    
+
+</body>
+</html>

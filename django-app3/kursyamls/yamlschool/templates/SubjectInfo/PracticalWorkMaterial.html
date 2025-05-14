@@ -1,0 +1,497 @@
+<!-- PracticalWorkMaterial.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <title>Практическая работа: {{ practical_work.namePracticalWork }}</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/PracticalWork.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    {% include 'header.html' %}
+    
+    <div class="container">
+        <h1>Практическая работа: {{ practical_work.namePracticalWork }}</h1>  
+  
+        <!-- Добавляем кнопку удаления рядом с кнопкой "Назад к предмету" -->
+        <div class="button-group">
+            <a href="{% url 'SubjectPage' practical_work.subjectId %}" class="back-button">
+                <i class="fas fa-arrow-left"></i> Назад к предмету
+            </a>
+        </div>
+
+
+        <div class="details">
+            <p><strong>Описание:</strong> {{ practical_work.descriptionPracticalWork }}</p>
+            <p><strong>Дата загрузки:</strong> {{ practical_work.dateUploadPracticalWork }}</p>
+            <p><strong>Время загрузки:</strong> {{ practical_work.timeUploadPracticalWork }}</p>
+            <div class="file-info">
+                <strong>Ссылка на файл:</strong>
+                <a href="{{ practical_work.urlFilePracticalWork }}" class="file-link" target="_blank">
+                    <span class="file-icon">📄</span>
+                    {{ practical_work.nameFilePracticalWork }}
+                </a>
+            </div>
+        </div>
+
+
+
+        <div>    
+            {% if user_role_id == 2 or user_role_id == 1 %}
+                <form method="POST" action="{% url 'delete_practical_work' practical_work.idPracticalWork %}" 
+                      class="delete-form" onsubmit="return confirm('Вы уверены, что хотите удалить эту практическую работу?');">
+                    {% csrf_token %}
+                    <input type="hidden" name="subjectId" value="{{ practical_work.subjectId }}">
+                    <button type="submit" class="delete-button">
+                        <i class="fas fa-trash"></i> Удалить работу
+                    </button>
+                </form>
+            {% endif %}
+        </div>
+
+        <!-- Секция для студента -->
+        {% if user_role_id == 3 %}
+            {% if completed_works %}
+                {% for work in completed_works %}
+                    <div class="completed-work">
+                        <h3>Ваша работа</h3>
+                        <p><strong>Имя файла:</strong> 
+                            <a href="{{ work.urlFileCompletedWork }}" target="_blank">
+                                <span class="file-icon">📄</span>
+                                {{ work.nameFileCompletedWork }}
+                            </a>
+                        </p>
+                        <p><strong>Дата сдачи:</strong> {{ work.dateUploadCompletedWork }} в {{ work.timeUploadCompletedWork }}</p>
+                        <p><strong>Статус работы:</strong> 
+                            {% if work.grade == "На проверке" %}
+                                <span class="grade-pending">{{ work.grade }}</span>
+                            {% elif '2' in work.grade %}
+                                <span class="grade-2">{{ work.grade }}</span>
+                            {% elif work.grade == '3' or work.grade == '4' or work.grade == '5' %}
+                                <span class="grade-3-5">{{ work.grade }}</span>
+                            {% else %}
+                                {{ work.grade }}
+                            {% endif %}
+                        </p>
+                        <div class="work-info">
+                            <p>Текущее количество попыток: {{ work.attempt_count }} из 3</p>
+                            
+                            <div class="attempts-visualization">
+                                <p>Использовано попыток:</p>
+                                <div class="attempt-circles">
+                                    {% for i in "123" %}
+                                        {% if forloop.counter <= work.attempt_count %}
+                                            <div class="attempt-circle attempt-used">{{ forloop.counter }}</div>
+                                        {% else %}
+                                            <div class="attempt-circle attempt-available">{{ forloop.counter }}</div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="student-grade">
+                            <strong>Оценка:</strong> 
+                            {% if work.grade == "На проверке" %}
+                                <span class="grade-pending">{{ work.grade }}</span>
+                                <div class="info-banner">
+                                    ⏳ Ваша работа находится на проверке. Пожалуйста, ожидайте оценки преподавателя.
+                                </div>
+                                {% if forloop.counter >= 3 %}
+                                    <div class="error-banner">
+                                        ⚠️ Вы использовали все доступные попытки (3 из 3) для сдачи этой работы.
+                                    </div>
+                                {% endif %}
+                            {% elif '2' in work.grade %}
+                                <span class="grade-2">{{ work.grade }}</span>
+                                {% if forloop.counter >= 3 %}
+                                    <div class="error-banner">
+                                        ⚠️ Вы исчерпали все попытки (3 из 3) для пересдачи этой работы.
+                                    </div>
+                                    <div class="disabled-button">
+                                        🔒 Пересдача недоступна
+                                    </div>
+                                {% else %}
+                                    <a href="{% url 'AddCompleteWork' practical_work.idPracticalWork %}" class="active-button">
+                                        🔄 Отправить исправленную работу (попытка {{ forloop.counter|add:"1" }} из 3)
+                                    </a>
+                                {% endif %}
+                            {% elif work.grade == '3' or work.grade == '4' or work.grade == '5' %}
+                                <span class="grade-3-5">{{ work.grade }}</span>
+                                <div class="success-banner">
+                                    ✅ Поздравляем! Ваша работа зачтена с оценкой {{ work.grade }}. Пересдача не требуется.
+                                </div>
+                                <div class="disabled-button">
+                                    🔒 Повторная отправка недоступна для зачтенных работ
+                                </div>
+                            {% else %}
+                                {{ work.grade }}
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="warning-banner">
+                    📝 Вы еще не сдали работу по данной теме. Используйте кнопку ниже для добавления своей первой работы.
+                </div>
+                <a href="{% url 'AddCompleteWork' practical_work.idPracticalWork %}" class="active-button">
+                    ➕ Добавить работу
+                </a>
+                
+                <!-- Добавляем блок с информацией о попытках, используя user_role_id == 3 вместо is_student -->
+                <div class="attempts-info">
+                    <h3>Статистика попыток</h3>
+                    <div class="attempts-container">
+                        <div class="attempts-summary">
+                            <h4>Использовано попыток: {{ used_attempts|length }} из 3</h4>
+                            
+                            <!-- Визуализация попыток кружками -->
+                            <div class="attempt-circles">
+                                {% for i in "123" %}
+                                    {% if forloop.counter|stringformat:"i" in used_attempts|stringformat:"s" %}
+                                        <div class="attempt-circle attempt-used">{{ forloop.counter }}</div>
+                                    {% else %}
+                                        <div class="attempt-circle attempt-available">{{ forloop.counter }}</div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            
+                            <!-- Список использованных попыток -->
+                            <div class="attempts-list">
+                                <h5>Номера использованных попыток:</h5>
+                                {% for attempt in used_attempts %}
+                                    <span class="attempt-badge">{{ attempt }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <div class="remaining-attempts">
+                            {% if remaining_attempts > 0 %}
+                                <p>У вас осталось <strong>{{ remaining_attempts }}</strong> попыток для сдачи этой работы.</p>
+                            {% else %}
+                                <p>Вы использовали все доступные попытки.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                
+            {% endif %}
+        {% endif %}
+
+        <!-- Секция для преподавателя -->
+        {% if user_role_id == 2 %}
+            <h2>Сданные работы студентов</h2>
+            
+            {% if not students_completed_works %}
+                <div class="warning-banner">
+                    📝 Пока нет сданных работ по этой практической работе.
+                </div>
+            {% else %}
+                <div class="student-table-container">
+                    <table class="student-table">
+                        <thead>
+                            <tr>
+                                <th>Студент</th>
+                                <th>Последняя попытка</th>
+                                <th>Статус</th>
+                                <th>Оценка</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user_id, student in students_completed_works.items %}
+                                {% with latest_work=student.works|first %}
+                                <tr class="student-row">
+                                    <td>{{ student.full_name }}</td>
+                                    <td>{{ latest_work.dateUploadCompletedWork }} в {{ latest_work.timeUploadCompletedWork }}</td>
+                                    <td>
+                                        {% if latest_work.statusId == 1 %}
+                                            <span class="status-badge status-passed">Задание сдано</span>
+                                        {% else %}
+                                            <span class="status-badge status-pending">Задание не сдано</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if latest_work.grade == "На проверке" %}
+                                            <span class="grade-pending">{{ latest_work.grade }}</span>
+                                        {% elif '2' in latest_work.grade %}
+                                            <span class="grade-2">{{ latest_work.grade }}</span>
+                                        {% elif latest_work.grade == '3' or latest_work.grade == '4' or latest_work.grade == '5' %}
+                                            <span class="grade-3-5">{{ latest_work.grade }}</span>
+                                        {% else %}
+                                            {{ latest_work.grade }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <button type="button" class="toggle-details-btn" 
+                                                id="button-{{ user_id }}" 
+                                                data-student-id="{{ user_id }}"
+                                                onclick="handleDetails('{{ user_id }}')">
+                                            Подробнее
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="student-details" id="details-{{ user_id }}" style="display: none;">
+                                    <td colspan="5">
+                                        <div class="student-work-details">
+                                            <!-- Форма для просмотра/оценки последней работы -->
+                                            <div class="quick-grade-section">
+                                                <h4>Последняя работа студента</h4>
+                                                <div class="completed-work">
+                                                    <div class="work-header">
+                                                        <span class="attempt-number">Попытка {{ latest_work.attemptCount }} из 3</span>
+                                                        <span class="work-date">{{ latest_work.dateUploadCompletedWork }} в {{ latest_work.timeUploadCompletedWork }}</span>
+                                                    </div>
+                                                    <p>
+                                                        <strong>Файл:</strong> 
+                                                        <a href="{{ latest_work.urlFileCompletedWork }}" target="_blank">
+                                                            <span class="file-icon">📄</span>
+                                                            {{ latest_work.nameFileCompletedWork }}
+                                                        </a>
+                                                    </p>
+                                                    <p>
+                                                        <strong>Статус:</strong> 
+                                                        {% if latest_work.grade == "На проверке" %}
+                                                            <span class="grade-pending">Требуется проверка</span>
+                                                        {% elif '2' in latest_work.grade %}
+                                                            <span class="grade-2">Не зачтено ({{ latest_work.grade }})</span>
+                                                        {% elif latest_work.grade == '3' or latest_work.grade == '4' or latest_work.grade == '5' %}
+                                                            <span class="grade-3-5">Зачтено ({{ latest_work.grade }})</span>
+                                                        {% else %}
+                                                            {{ latest_work.grade }}
+                                                        {% endif %}
+                                                    </p>
+                                                    
+                                                    <!-- Форма оценки только для последней работы, если она на проверке -->
+                                                    {% if latest_work.grade == "На проверке" %}
+                                                        <form action="{% url 'grade_completed_work' practical_work.idPracticalWork latest_work.userId %}" method="post" class="grade-form">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="completed_work_id" value="{{ latest_work.idCompletedWork }}">
+                                                            <div class="grade-form-group">
+                                                                <label for="grade-latest-{{ latest_work.idCompletedWork }}">Оценка:</label>
+                                                                <select name="grade" id="grade-latest-{{ latest_work.idCompletedWork }}" required>
+                                                                    <option value="" disabled selected>Выберите оценку</option>
+                                                                    <option value="2">2 (Не зачтено)</option>
+                                                                    <option value="3">3 (Удовлетворительно)</option>
+                                                                    <option value="4">4 (Хорошо)</option>
+                                                                    <option value="5">5 (Отлично)</option>
+                                                                </select>
+                                                                <button type="submit" class="grade-submit-btn">Оценить работу</button>
+                                                            </div>
+                                                        </form>
+                                                    {% elif '2' in latest_work.grade or latest_work.grade == '3' or latest_work.grade == '4' or latest_work.grade == '5' %}
+                                                        <div class="grade-result">
+                                                            <h5>Результат проверки:</h5>
+                                                            <p>
+                                                                <strong>Итоговая оценка:</strong> 
+                                                                <span class="{% if '2' in latest_work.grade %}grade-2{% else %}grade-3-5{% endif %}">
+                                                                    {{ latest_work.grade }}
+                                                                </span>
+                                                            </p>
+                                                            <div class="{% if '2' in latest_work.grade %}error-banner{% else %}success-banner{% endif %}">
+                                                                {% if '2' in latest_work.grade %}
+                                                                    ❌ Работа не зачтена. Студент может отправить исправленную работу.
+                                                                {% else %}
+                                                                    ✅ Работа зачтена с оценкой {{ latest_work.grade }}
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endwith %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+
+            <div class="export-actions">
+
+                
+                <a href="{% url 'export_students_performance' practical_work.idPracticalWork %}" class="export-button">
+                    📝 Выгрузить данные об успеваемости в Word
+                </a>
+
+            </div>
+        {% endif %}
+        
+        <!-- Статистика только для преподавателей -->
+        {% if user_role_id == 2 %}
+        <h2>Статистика успеваемости</h2>
+        <canvas id="gradesChart" style="display: block; box-sizing: border-box; height: 2000px; width: 2000px;" width="320" height="160"></canvas>
+        {% endif %}
+    </div>
+
+    <script>
+        "use strict";
+        
+        // Глобальная функция для переключения отображения деталей - доступна напрямую из HTML
+        function handleDetails(userId) {
+            console.log("Функция handleDetails вызвана с ID:", userId);
+            var detailsRow = document.getElementById('details-' + userId);
+            var button = document.getElementById('button-' + userId);
+            
+            if (detailsRow) {
+                // Используем classList.toggle вместо прямой манипуляции style.display
+                var isHidden = detailsRow.style.display === 'none' || detailsRow.style.display === '';
+                
+                if (isHidden) {
+                    detailsRow.style.display = 'table-row';
+                    button.textContent = 'Скрыть';
+                    console.log("Показываем строку details-" + userId);
+                } else {
+                    detailsRow.style.display = 'none';
+                    button.textContent = 'Подробнее';
+                    console.log("Скрываем строку details-" + userId);
+                }
+            } else {
+                console.error("Строка details-" + userId + " не найдена!");
+                alert("Ошибка: детали не найдены. Пожалуйста, обновите страницу.");
+            }
+            
+            // Предотвращаем выполнение других обработчиков
+            return false;
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Получаем данные из серверных переменных Django и преобразуем их в JavaScript переменные
+            var passedCount = parseInt("{{ passed_count }}") || 0;
+            var notPassedCount = parseInt("{{ not_passed_count }}") || 0;
+            
+            var chartElement = document.getElementById('gradesChart');
+            if (chartElement) {
+                var ctx = chartElement.getContext('2d');
+                var chart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Сдано', 'Не сдано'],
+                        datasets: [{
+                            label: 'Количество работ',
+                            data: [passedCount, notPassedCount],
+                            backgroundColor: [
+                                'rgba(76, 175, 80, 0.2)',
+                                'rgba(244, 67, 54, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgb(76, 175, 80)',
+                                'rgb(244, 67, 54)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    precision: 0
+                                }
+                            }
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Распределение оценок по работе'
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // ПРОВЕРКА НАЛИЧИЯ ЭЛЕМЕНТОВ В DOM
+            console.log("Проверка наличия студенческих строк в DOM:");
+            var studentRows = document.querySelectorAll('.student-row');
+            console.log("Найдено строк студентов:", studentRows.length);
+            
+            var detailsRows = document.querySelectorAll('.student-details');
+            console.log("Найдено строк с деталями:", detailsRows.length);
+            
+            // Вывод всех ID строк с деталями для отладки
+            detailsRows.forEach(function(row) {
+                console.log("ID строки с деталями:", row.id);
+            });
+            
+            // Дублирующий обработчик событий для кнопок (на случай, если прямой onclick не сработает)
+            var detailButtons = document.querySelectorAll('.toggle-details-btn');
+            console.log("Найдено кнопок 'Подробнее':", detailButtons.length);
+            
+            detailButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    var studentId = this.getAttribute('data-student-id');
+                    console.log("Событие click на кнопке для студента с ID:", studentId);
+                    handleDetails(studentId);
+                });
+            });
+            
+            // Для совместимости с существующим кодом
+            window.toggleStudentDetails = handleDetails;
+        });
+
+        // Этот скрипт выполняется в самом конце, когда весь DOM уже загружен
+        (function() {
+            console.log("=== ИТОГОВАЯ ПРОВЕРКА КНОПОК ПОДРОБНЕЕ ===");
+            
+            // Проверяем, существуют ли кнопки и строки с деталями
+            var allButtons = document.querySelectorAll('.toggle-details-btn');
+            var allDetailsRows = document.querySelectorAll('.student-details');
+            
+            console.log("Найдено кнопок:", allButtons.length);
+            console.log("Найдено строк с деталями:", allDetailsRows.length);
+            
+            if (allButtons.length === 0 || allDetailsRows.length === 0) {
+                console.error("ОШИБКА: Не найдены кнопки или строки с деталями!");
+                return;
+            }
+            
+            // Принудительное добавление обработчиков для всех кнопок
+            allButtons.forEach(function(btn) {
+                console.log("Повторное добавление обработчика для кнопки:", btn.id);
+                
+                // Удаляем существующие обработчики (чтобы избежать дублирования)
+                var btnClone = btn.cloneNode(true);
+                btn.parentNode.replaceChild(btnClone, btn);
+                
+                // Добавляем новый обработчик
+                btnClone.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    var studentId = this.getAttribute('data-student-id');
+                    console.log("Нажатие на кнопку:", this.id, "для студента:", studentId);
+                    
+                    var detailsRow = document.getElementById('details-' + studentId);
+                    if (!detailsRow) {
+                        console.error("Не найдена строка details-" + studentId);
+                        return;
+                    }
+                    
+                    // Простое переключение видимости
+                    if (detailsRow.style.display === 'table-row') {
+                        detailsRow.style.display = 'none';
+                        this.textContent = 'Подробнее';
+                    } else {
+                        detailsRow.style.display = 'table-row';
+                        this.textContent = 'Скрыть';
+                    }
+                });
+                
+                // Также установим атрибут onclick напрямую
+                btnClone.setAttribute('onclick', 'event.preventDefault(); var row = document.getElementById("details-' + 
+                    btnClone.getAttribute('data-student-id') + '"); if(row) { row.style.display = row.style.display === "table-row" ? "none" : "table-row"; this.textContent = row.style.display === "table-row" ? "Скрыть" : "Подробнее"; } return false;');
+            });
+            
+            console.log("Обработчики успешно переустановлены для всех кнопок.");
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!-- SubjectCRUD.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление Предметами</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/SubjectCRUD.css' %}">
+</head>
+<body>
+    {% include 'header.html' %} 
+
+
+    <div class="container">
+        <div class="header-section">
+            <a href="{% url 'adminPage' %}" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                Назад к панели администратора
+            </a>
+            <h1>Управление Предметами</h1>
+        </div>
+
+        <form action="{% url 'subject_crud' %}" method="post" class="crud-form">
+            {% csrf_token %}
+            <label for="nameSubject">Название предмета:</label>
+            <input type="text" id="nameSubject" name="nameSubject" required>
+
+            <label for="idGroup">Группа:</label>
+            <select id="idGroup" name="idGroup" required>
+                {% for group in groups %}
+                    <option value="{{ group.idGroup }}">{{ group.nameGroup }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="userId">Преподаватель:</label>
+            <select id="userId" name="userId" required>
+                {% for user in users %}
+                    {% if user.idRole == 2 %}
+                        <option value="{{ user.idUser }}">
+                            {{ user.firstName }} {{ user.secondName }} {{ user.middleName }}
+                        </option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+
+            <button type="submit">Добавить предмет</button>
+        </form>
+    </div>
+    
+    <div class="container">
+
+        <h2>Список предметов</h2>
+        <div class="subject-list">
+            
+            {% for subject in subjects %}
+            <div class="subject-card">
+                <h3>{{ subject.nameSubject }}</h3>
+                <p><strong>Группа:</strong> 
+                    {% for group in groups %}
+                        {% if group.idGroup == subject.idGroup %}
+                            {{ group.nameGroup }}
+                        {% endif %}
+                    {% endfor %}
+                </p>
+                <p><strong>Преподаватель:</strong> 
+                    {% for user in users %}
+                        {% if user.idUser == subject.userId %}
+                            {{ user.firstName }} {{ user.secondName }} {{ user.middleName }}
+                        {% endif %}
+                    {% endfor %}
+                </p>
+                <div class="crud-actions">
+                    <a href="{% url 'edit_subject' subject.idSubject %}" class="button">Изменить</a>
+                    <form action="{% url 'delete_subject' subject.idSubject %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="delete-button">Удалить</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

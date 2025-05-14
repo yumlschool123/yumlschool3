@@ -1,0 +1,714 @@
+/* Темная пурпурная тема для страницы теста */
+:root {
+    --dark-purple: #1a1225;
+    --medium-purple: #7743DB;
+    --light-purple: #B39DDB;
+    --accent-purple: #9D4EDD;
+    --text-light: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.85);
+    --card-bg: #272134;
+    --card-hover: #362b48;
+    --gradient-bg: linear-gradient(135deg, #1a1225 0%, #3a1d69 100%);
+    --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 6px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.5);
+    --transition-slow: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    --transition-fast: all 0.2s ease;
+    --border-radius: 12px;
+    --card-spacing: 1.75rem;
+    
+    /* Функциональные цвета */
+    --success: #4CAF50;
+    --success-dark: #388E3C;
+    --success-light: rgba(76, 175, 80, 0.15);
+    --danger: #F44336;
+    --danger-dark: #D32F2F;
+    --danger-light: rgba(244, 67, 54, 0.15);
+    --warning: #FFC107;
+    --warning-dark: #FFA000;
+    --warning-light: rgba(255, 193, 7, 0.15);
+    --info: #2196F3;
+    --info-dark: #1976D2;
+    --info-light: rgba(33, 150, 243, 0.15);
+}
+
+/* Принудительное переопределение базовых стилей */
+html {
+    background-color: var(--dark-purple) !important;
+}
+
+body {
+    background-color: var(--dark-purple) !important;
+    color: var(--text-light) !important;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden; /* Предотвращает горизонтальный скролл */
+}
+
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Верхняя часть с заголовком и таймером */
+.test-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 1.5rem 2rem;
+    background: var(--gradient-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+}
+
+.test-header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1" d="M0,0 L100,100 M100,0 L0,100"/></svg>');
+    background-size: 20px 20px;
+    opacity: 0.3;
+    z-index: 0;
+}
+
+.test-header h1 {
+    color: var(--text-light) !important;
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 1;
+}
+
+.timer {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--warning);
+    padding: 10px 20px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    z-index: 1;
+    border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.timer::before {
+    content: "\f017"; /* Иконка часов Font Awesome */
+    font-family: 'Font Awesome 5 Free';
+    margin-right: 8px;
+}
+
+/* Вопросы */
+.questions {
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    overflow: visible;
+}
+
+.question-card {
+    background-color: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: var(--border-radius);
+    padding: 1.8rem;
+    margin-bottom: 0.5rem;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-fast);
+    position: relative;
+    overflow: visible;
+}
+
+.question-card:hover {
+    transform: translateY(-3px);
+    background-color: var(--card-hover);
+    box-shadow: var(--shadow-md);
+}
+
+.question-card h3 {
+    color: var(--accent-purple) !important;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(157, 78, 221, 0.3);
+    padding-bottom: 0.7rem;
+}
+
+.question-text {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+    color: var(--text-light);
+}
+
+.question-points {
+    color: var(--text-secondary);
+    font-size: 0.9em;
+    margin-bottom: 15px;
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+}
+
+/* Улучшенные стили для вариантов ответов */
+.answer-option {
+    margin: 15px 0;
+    background-color: rgba(255, 255, 255, 0.03);
+    padding: 12px 18px;
+    border-radius: 10px;
+    border-left: 3px solid var(--medium-purple);
+    transition: all 0.2s ease;
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.answer-option:hover {
+    background-color: rgba(157, 78, 221, 0.15);
+    transform: translateX(5px);
+    box-shadow: var(--shadow-sm);
+}
+
+.answer-option label {
+    margin-left: 12px;
+    cursor: pointer;
+    color: var(--text-light);
+    font-size: 1.05rem;
+    font-weight: 400;
+    flex: 1;
+    padding: 3px 0;
+}
+
+/* Кастомные стили для радио-кнопок */
+.answer-option input[type="radio"],
+.answer-option input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--accent-purple);
+    background-color: rgba(0, 0, 0, 0.3);
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.answer-option input[type="radio"] {
+    border-radius: 50%;
+}
+
+.answer-option input[type="checkbox"] {
+    border-radius: 5px;
+}
+
+.answer-option input[type="radio"]:checked,
+.answer-option input[type="checkbox"]:checked {
+    background-color: var(--accent-purple);
+    border-color: var(--light-purple);
+    box-shadow: 0 0 8px rgba(157, 78, 221, 0.6);
+}
+
+.answer-option input[type="radio"]:checked::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.answer-option input[type="checkbox"]:checked::after {
+    content: "✓";
+    position: absolute;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.answer-option input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(157, 78, 221, 0.4);
+}
+
+/* Контейнер, когда выбран ответ */
+.answer-option:has(input:checked) {
+    background-color: rgba(157, 78, 221, 0.2);
+    border-left-width: 5px;
+    padding-left: 16px;
+}
+
+/* Улучшенные стили для текстовых полей */
+.answer-input {
+    margin: 20px 0;
+}
+
+.answer-input input[type="text"] {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid rgba(157, 78, 221, 0.4);
+    border-radius: var(--border-radius);
+    background-color: rgba(0, 0, 0, 0.2);
+    color: var(--text-light);
+    font-size: 1.05rem;
+    transition: all 0.3s;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.answer-input input[type="text"]::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.answer-input input[type="text"]:hover {
+    border-color: var(--accent-purple);
+    background-color: rgba(0, 0, 0, 0.25);
+}
+
+.answer-input input[type="text"]:focus {
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 0 3px rgba(157, 78, 221, 0.3), inset 0 2px 5px rgba(0, 0, 0, 0.1);
+    outline: none;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Полностью переработанные стили для вопросов на сопоставление */
+.matching-container {
+    margin: 20px 0;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius);
+    background-color: rgba(0, 0, 0, 0.15);
+    position: relative;
+    overflow: visible;
+}
+
+.matching-instructions {
+    margin-bottom: 20px;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    background-color: rgba(157, 78, 221, 0.1);
+    padding: 12px;
+    border-radius: 8px;
+    border-left: 3px solid var(--accent-purple);
+}
+
+.matching-area {
+    display: flex;
+    position: relative;
+    margin: 20px 0;
+    gap: 100px; /* Увеличиваем расстояние между колонками */
+    min-height: 300px;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0 20px; /* Добавляем отступы по бокам */
+}
+
+.matching-left-column,
+.matching-right-column {
+    flex: 0 0 40%; /* Немного уменьшаем ширину колонок */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    position: relative;
+    z-index: 2;
+    max-width: 250px; /* Уменьшаем максимальную ширину */
+}
+
+.matching-canvas-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    min-height: 300px; /* Уменьшаем минимальную высоту */
+}
+
+.matching-canvas {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+/* Элементы сопоставления */
+.matching-item {
+    background-color: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 12px 25px; /* Уменьшаем padding */
+    margin: 4px 0;
+    display: flex;
+    align-items: center;
+    min-height: 25px;
+    position: relative;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-fast);
+}
+
+.left-item {
+    padding-right: 30px; /* Уменьшаем отступ справа */
+    margin-right: 0;
+    border-right: none;
+    text-align: right;
+}
+
+.right-item {
+    padding-left: 30px; /* Уменьшаем отступ слева */
+    margin-left: 0;
+    border-left: none;
+    text-align: left;
+}
+
+/* Точки соединения */
+.connection-point {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid #9D4EDD;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.connection-point.active {
+    background-color: #9D4EDD;
+    transform: scale(1.2);
+}
+
+.connection-point.connected {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+/* Текст элементов */
+.item-text {
+    font-size: 0.95rem; /* Немного уменьшаем размер текста */
+    color: var(--text-light);
+    flex-grow: 1;
+    padding: 5px 0;
+    line-height: 1.2;
+    user-select: none;
+}
+
+/* Контролы и счетчик */
+.matching-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding: 10px 15px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+
+.reset-connections-btn {
+    background-color: var(--danger);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.reset-connections-btn:hover {
+    background-color: var(--danger-dark);
+}
+
+.connection-counter {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+/* Линии соединения */
+.connection-line {
+    stroke: var(--accent-purple);
+    stroke-width: 3;
+    fill: none;
+    stroke-linecap: round;
+    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.3));
+    transition: all 0.3s ease;
+}
+
+.connection-line.connected {
+    stroke: var(--success);
+    stroke-width: 3;
+}
+
+/* Инструкции по сопоставлению */
+.matching-instructions {
+    background-color: rgba(0, 0, 0, 0.15);
+    border-left: 3px solid var(--medium-purple);
+    color: var(--text-secondary);
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+/* Специфический стиль для корректного отображения сопоставлений с учётом текущего HTML */
+.question-card .matching-area {
+    margin-top: 30px;
+    min-height: 200px;
+    position: relative;
+}
+
+/* Предупреждение когда не все связи установлены */
+.matching-container.warning {
+    border: 2px solid var(--warning);
+    background-color: rgba(255, 193, 7, 0.05);
+    animation: warningPulse 2s infinite;
+}
+
+/* Стили для вопросов на установление порядка */
+.order-container {
+    margin: 20px 0;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius);
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+.order-instructions {
+    margin-bottom: 20px;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    background-color: rgba(157, 78, 221, 0.1);
+    padding: 12px;
+    border-radius: 8px;
+    border-left: 3px solid var(--accent-purple);
+}
+
+.order-items-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 50px;
+    padding: 5px;
+}
+
+.order-item {
+    display: flex;
+    align-items: center;
+    background-color: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 12px 15px;
+    cursor: grab;
+    user-select: none;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+}
+
+.order-item:hover {
+    background-color: var(--card-hover);
+    transform: translateX(3px);
+}
+
+.order-item:active {
+    cursor: grabbing;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.order-item.dragging {
+    opacity: 0.7;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    background-color: rgba(157, 78, 221, 0.2);
+    border: 1px dashed var(--accent-purple);
+    z-index: 1000;
+}
+
+.order-item.placeholder {
+    background-color: rgba(157, 78, 221, 0.08);
+    border: 2px dashed var(--accent-purple);
+    box-shadow: none;
+}
+
+.order-number {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 28px;
+    height: 28px;
+    background-color: var(--accent-purple);
+    color: white;
+    border-radius: 50%;
+    font-weight: bold;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.order-text {
+    flex: 1;
+    font-size: 1rem;
+    color: var(--text-light);
+    line-height: 1.4;
+}
+
+.order-handle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    margin-left: 10px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 22px;
+    cursor: grab;
+    border-radius: 4px;
+    transition: background-color 0.15s ease;
+}
+
+.order-handle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+}
+
+.order-item:active .order-handle {
+    cursor: grabbing;
+}
+
+.order-controls {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 15px;
+}
+
+.reset-order-btn {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+    border: none;
+    border-radius: 6px;
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.reset-order-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.reset-order-btn:active {
+    transform: translateY(0);
+}
+
+.order-hidden-inputs {
+    display: none;
+}
+
+.order-container.warning {
+    border: 1px solid var(--warning);
+    background-color: rgba(255, 193, 7, 0.05);
+}
+
+/* Небольшие уточнения для области сопоставления */
+.matching-hidden-inputs {
+    display: none;
+}
+
+/* Медиа-запросы для мобильных устройств */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1rem;
+        margin: 1rem auto;
+    }
+    
+    .test-header {
+        flex-direction: column;
+        gap: 15px;
+        padding: 1.2rem;
+    }
+    
+    .test-header h1 {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+    
+    .timer {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .question-card {
+        padding: 1.2rem;
+    }
+    
+    .matching-area {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .matching-left-column,
+    .matching-right-column {
+        flex: 0 0 auto;
+        width: 100%;
+    }
+    
+    .matching-canvas-container {
+        display: none;  /* Скрываем canvas на мобильных */
+    }
+    
+    .matching-item {
+        margin: 5px 0;
+    }
+    
+    .left-item, .right-item {
+        margin: 5px 0;
+    }
+    
+    .submit-btn {
+        width: 100%;
+        padding: 12px 20px;
+    }
+    
+    .order-item {
+        padding: 10px;
+    }
+    
+    .order-number {
+        width: 24px;
+        height: 24px;
+        font-size: 0.9rem;
+        margin-right: 10px;
+    }
+    
+    .order-text {
+        font-size: 0.9rem;
+    }
+    
+    .order-handle {
+        width: 20px;
+        height: 20px;
+    }
+} 

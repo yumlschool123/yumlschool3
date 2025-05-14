@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактировать практическую работу</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/SubjectPage.css' %}">
+    <script src="{% static 'js/confirmations.js' %}"></script>
+</head>
+<body>
+    <h1>Редактировать практическую работу</h1>
+
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <div>
+            <label for="namePracticalWork">Название практической работы:</label>
+            <input type="text" id="namePracticalWork" name="namePracticalWork" value="{{ practical_work.namePracticalWork }}" required>
+        </div>
+        <div>
+            <label for="descriptionPracticalWork">Описание:</label>
+            <textarea id="descriptionPracticalWork" name="descriptionPracticalWork" required>{{ practical_work.descriptionPracticalWork }}</textarea>
+        </div>
+        <div>
+            <label for="nameFilePracticalWork">Имя файла:</label>
+            <input type="text" id="nameFilePracticalWork" name="nameFilePracticalWork" value="{{ practical_work.nameFilePracticalWork }}">
+        </div>
+        <div>
+            <label for="urlFilePracticalWork">URL файла:</label>
+            <input type="url" id="urlFilePracticalWork" name="urlFilePracticalWork" value="{{ practical_work.urlFilePracticalWork }}">
+        </div>
+        <button type="submit">Сохранить изменения</button>
+    </form>
+    <div>    
+        {% if user_role_id == 2 or user_role_id == 1 %}
+            <form id="deleteForm" action="{% url 'delete_practical_work' practical_work.idPracticalWork %}" method="post" style="display: inline;" data-confirm="Вы уверены, что хотите удалить эту практическую работу? Это действие нельзя отменить.">
+                {% csrf_token %}
+                <input type="hidden" name="subjectId" value="{{ practical_work.subjectId }}">
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Удалить
+                </button>
+            </form>
+        {% endif %}
+    </div>
+    <a href="{% url 'SubjectPage' practical_work.subjectId %}">Назад к предмету</a>
+</body>
+</html>
+

@@ -1,0 +1,52 @@
+<!-- SubjectEdit.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактирование Предмета</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/SubjectCRUD.css' %}">
+</head>
+<body>
+    {% include 'header.html' %} 
+
+    <div class="container">
+        <div class="header-section">
+            <a href="{% url 'subject_crud' %}" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                Назад к списку предметов
+            </a>
+            <h1>Редактирование Предмета</h1>
+        </div>
+
+        <form action="{% url 'edit_subject' subject.idSubject %}" method="post" class="crud-form">
+            {% csrf_token %}
+            <label for="nameSubject">Название предмета:</label>
+            <input type="text" id="nameSubject" name="nameSubject" value="{{ subject.nameSubject }}" required>
+
+            <label for="idGroup">Группа:</label>
+            <select id="idGroup" name="idGroup" required>
+                {% for group in groups %}
+                    <option value="{{ group.idGroup }}" {% if group.idGroup == subject.idGroup %}selected{% endif %}>
+                        {{ group.nameGroup }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <label for="userId">Преподаватель:</label>
+            <select id="userId" name="userId" required>
+                {% for user in users %}
+                    {% if user.idRole == 2 %}
+                        <option value="{{ user.idUser }}" {% if user.idUser == subject.userId %}selected{% endif %}>
+                            {{ user.firstName }} {{ user.secondName }} {{ user.middleName }}
+                        </option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+
+            <button type="submit">Сохранить изменения</button>
+        </form>
+    </div>
+</body>
+</html>

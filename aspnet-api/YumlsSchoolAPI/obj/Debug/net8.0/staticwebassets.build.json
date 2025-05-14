@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "AMIoSjj1KCD0gaMnahjI+tGrmINs8hJxYAT1UaBFWrU=",
+  "Source": "YumlsSchoolAPI",
+  "BasePath": "_content/YumlsSchoolAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

@@ -1,0 +1,812 @@
+/* Темная пурпурная тема для страницы теста */
+:root {
+    --dark-purple: #1a1225;
+    --medium-purple: #7743DB;
+    --light-purple: #B39DDB;
+    --accent-purple: #9D4EDD;
+    --text-light: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.85);
+    --card-bg: #272134;
+    --card-hover: #362b48;
+    --gradient-bg: linear-gradient(135deg, #1a1225 0%, #3a1d69 100%);
+    --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 6px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.5);
+    --transition-slow: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    --transition-fast: all 0.2s ease;
+    --border-radius: 12px;
+    --card-spacing: 1.75rem;
+    
+    /* Функциональные цвета */
+    --success: #4CAF50;
+    --success-dark: #388E3C;
+    --success-light: rgba(76, 175, 80, 0.15);
+    --danger: #F44336;
+    --danger-dark: #D32F2F;
+    --danger-light: rgba(244, 67, 54, 0.15);
+    --warning: #FFC107;
+    --warning-dark: #FFA000;
+    --warning-light: rgba(255, 193, 7, 0.15);
+    --info: #2196F3;
+    --info-dark: #1976D2;
+    --info-light: rgba(33, 150, 243, 0.15);
+}
+
+/* Принудительное переопределение базовых стилей */
+html {
+    background-color: var(--dark-purple) !important;
+}
+
+body {
+    background-color: var(--dark-purple) !important;
+    color: var(--text-light) !important;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    width: 100%;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Заголовок страницы */
+h1 {
+    color: var(--text-light) !important;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 1;
+}
+
+/* Форма создания теста */
+.test-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: var(--gradient-bg);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+    animation: fadeIn 0.3s ease-out;
+    z-index: 0;
+}
+
+.test-form::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1" d="M0,0 L100,100 M100,0 L0,100"/></svg>');
+    background-size: 20px 20px;
+    opacity: 0.3;
+    z-index: -1;
+}
+
+.test-info-section,
+.grading-section {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.section-title {
+    color: var(--text-light);
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--accent-purple);
+}
+
+/* Обновляем стили для основных полей формы */
+.test-info-section .form-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    background: transparent !important; /* Убираем фоновый цвет */
+    padding: 0 !important; /* Убираем лишние отступы */
+    border: none !important; /* Убираем границу */
+}
+
+.test-info-section .form-group label {
+    color: var(--text-light) !important;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.test-info-section .form-group input[type="text"],
+.test-info-section .form-group input[type="number"],
+.test-info-section .form-group textarea {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius);
+    color: var(--text-light) !important;
+    font-size: 1rem;
+    z-index: 1;
+}
+
+/* Обновляем стили для критериев оценивания */
+.grading-section {
+    position: relative;
+    z-index: 1;
+}
+
+.grading-criteria-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
+.grading-row {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 1rem;
+}
+
+.grade-label {
+    min-width: 120px;
+    font-weight: 600;
+    color: var(--text-light);
+    margin-right: 2rem;
+}
+
+.points-range {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-grow: 1;
+}
+
+.range-input {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-grow: 1;
+}
+
+.range-input input[type="number"] {
+    width: 100px;
+    padding: 0.8rem;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius);
+    color: var(--text-light);
+    font-size: 1rem;
+}
+
+.range-separator {
+    color: var(--text-light);
+    font-weight: 500;
+    font-size: 1.2rem;
+    margin: 0 1rem;
+}
+
+.points-label {
+    color: var(--text-light);
+    margin-left: 1rem;
+    min-width: 60px;
+}
+
+/* Стили для фокуса полей ввода в критериях */
+.range-input input[type="number"]:focus {
+    outline: none;
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 0 2px rgba(157, 78, 221, 0.3);
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Адаптивность для критериев оценивания */
+@media (max-width: 768px) {
+    .grading-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .grade-label {
+        margin-bottom: 0.5rem;
+    }
+
+    .points-range {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .range-input {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .range-input input[type="number"] {
+        width: calc(50% - 1rem);
+    }
+
+    .points-label {
+        width: 100%;
+        text-align: center;
+        margin-top: 0.5rem;
+    }
+}
+
+/* Убираем конфликтующие стили */
+.form-group:hover {
+    transform: none !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Обновляем стили фокуса */
+.test-info-section .form-group input:focus,
+.test-info-section .form-group textarea:focus,
+.grading-section input:focus {
+    outline: none;
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 0 2px rgba(157, 78, 221, 0.3);
+    background-color: rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Обновленные стили для блока вопроса */
+.question-block {
+    background-color: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition-fast);
+    position: relative;
+    -webkit-animation: fadeIn 0.3s ease-out;
+    -moz-animation: fadeIn 0.3s ease-out;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.question-block:hover {
+    transform: translateY(-3px);
+    background-color: var(--card-hover);
+    box-shadow: var(--shadow-lg);
+}
+
+.question-block h3 {
+    color: var(--text-light) !important;
+    margin: 0 0 1.5rem 0;
+    font-size: 1.4rem;
+    font-weight: 600;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--accent-purple);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Стили для формы внутри вопроса */
+.question-block .form-group {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.2s ease;
+}
+
+.question-block .form-group label {
+    display: block;
+    margin-bottom: 0.8rem;
+    color: var(--text-light) !important;
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+.question-block input[type="text"],
+.question-block input[type="number"],
+.question-block textarea,
+.question-block select {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: var(--text-light) !important;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.question-block input[type="text"]:focus,
+.question-block input[type="number"]:focus,
+.question-block textarea:focus,
+.question-block select:focus {
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 0 2px rgba(157, 78, 221, 0.3);
+    outline: none;
+}
+
+/* Стили для группы ответов */
+.answers-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Стили для контейнера варианта ответа */
+.answers-group .form-group {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 1rem;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Стили для текстового поля ответа */
+.answers-group .form-group input[type="text"] {
+    flex: 1;
+    width: calc(100% - 60px); /* Оставляем место для радио/чекбокса */
+    margin-right: 50px; /* Место для радио/чекбокса */
+}
+
+/* Стили для радио и чекбоксов */
+.answers-group .form-group input[type="radio"],
+.answers-group .form-group input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--accent-purple);
+    background-color: rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0;
+    padding: 0;
+}
+
+/* Стили для радиокнопок */
+.answers-group .form-group input[type="radio"] {
+    border-radius: 50%;
+}
+
+/* Стили для чекбоксов */
+.answers-group .form-group input[type="checkbox"] {
+    border-radius: 4px;
+}
+
+/* Стили для отмеченного состояния */
+.answers-group .form-group input[type="radio"]:checked,
+.answers-group .form-group input[type="checkbox"]:checked {
+    background-color: var(--accent-purple);
+    border-color: var(--light-purple);
+    box-shadow: 0 0 8px rgba(157, 78, 221, 0.6);
+}
+
+/* Добавляем галочку для чекбокса */
+.answers-group .form-group input[type="checkbox"]:checked::after {
+    content: "✓";
+    position: absolute;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Добавляем точку для радио */
+.answers-group .form-group input[type="radio"]:checked::after {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Стили для метки варианта ответа */
+.answers-group .form-group label {
+    min-width: 100px;
+    font-weight: 500;
+}
+
+/* Эффект при наведении на вариант ответа */
+.answers-group .form-group:hover {
+    background-color: rgba(157, 78, 221, 0.15);
+    transform: translateX(5px);
+    transition: all 0.2s ease;
+}
+
+/* Стили фокуса для радио и чекбоксов */
+.answers-group .form-group input[type="radio"]:focus,
+.answers-group .form-group input[type="checkbox"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(157, 78, 221, 0.4);
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .answers-group .form-group {
+        padding: 0.8rem;
+    }
+
+    .answers-group .form-group input[type="text"] {
+        width: calc(100% - 40px);
+        margin-right: 35px;
+    }
+
+    .answers-group .form-group input[type="radio"],
+    .answers-group .form-group input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        right: 0.8rem;
+    }
+}
+
+/* Обновленные стили для кнопок */
+.add-question-btn,
+.submit-btn,
+.remove-btn {
+    display: inline-block;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    margin: 1rem 0;
+    color: var(--text-light) !important;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.add-question-btn {
+    background-color: var(--accent-purple);
+    width: 100%;
+}
+
+.submit-btn {
+    background-color: var(--success);
+    width: 100%;
+    margin-top: 2rem;
+}
+
+.remove-btn {
+    background-color: var(--danger);
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
+}
+
+/* Эффекты при наведении */
+.add-question-btn:hover,
+.submit-btn:hover,
+.remove-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    opacity: 0.9;
+}
+
+/* Эффекты при нажатии */
+.add-question-btn:active,
+.submit-btn:active,
+.remove-btn:active {
+    transform: translateY(1px);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Состояние фокуса */
+.add-question-btn:focus,
+.submit-btn:focus,
+.remove-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(157, 78, 221, 0.4);
+}
+
+/* Отключенное состояние */
+.add-question-btn:disabled,
+.submit-btn:disabled,
+.remove-btn:disabled {
+    background-color: var(--card-bg);
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Стили для установления порядка */
+.order-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background-color: var(--accent-purple);
+    color: white;
+    border-radius: 50%;
+    margin-right: 1rem;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .question-block {
+        padding: 1.5rem;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .matching-pair {
+        grid-template-columns: 1fr;
+    }
+
+    .remove-btn {
+        position: relative;
+        top: auto;
+        right: auto;
+        width: 100%;
+        margin-top: 1rem;
+    }
+
+    .container {
+        padding: 0 1rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    .test-form {
+        padding: 1.5rem;
+    }
+
+    .grading-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .points-range {
+        flex-wrap: wrap;
+    }
+}
+
+#gradingCriteria {
+    font-family: monospace;
+    white-space: pre-wrap;
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.question-block {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Стили для состояния наведения и фокуса */
+.form-group:focus-within label {
+    color: #740978;
+}
+
+.error-message {
+    display: none;
+    color: #fff;
+    background-color: var(--danger-light);
+    border: 1px solid var(--danger);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    margin-top: 1rem;
+    font-size: 0.9em;
+}
+
+/* Удаляем старые стили, которые больше не нужны */
+.remove-criteria,
+.add-criteria {
+    display: none;
+}
+
+/* Анимация появления */
+.criterion-group {
+    animation: slideIn 0.3s ease-out forwards;
+    opacity: 0;
+    transform: translateY(20px);
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #fff;
+}
+
+@keyframes slideIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Добавляем задержку для последовательной анимации */
+.criterion-group:nth-child(1) { animation-delay: 0.1s; }
+.criterion-group:nth-child(2) { animation-delay: 0.2s; }
+.criterion-group:nth-child(3) { animation-delay: 0.3s; }
+
+/* Обновляем стили для состояния фокуса */
+.form-group:focus-within label {
+    color: #fff !important;
+}
+
+/* Обновляем стили для placeholder */
+input::placeholder,
+textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Обновляем стили для текста внутри вопросов */
+.question-block input[type="text"],
+.question-block input[type="number"],
+.question-block textarea,
+.question-block select {
+    color: #fff !important;
+}
+
+/* Обновляем стили для меток радио и чекбоксов */
+.form-group label {
+    color: #fff !important;
+}
+
+/* Обновляем стили для текста в сопоставлениях */
+.matching-pair input {
+    color: #fff !important;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Обновляем стили для текста в установке порядка */
+.order-item {
+    color: #fff !important;
+}
+
+/* Принудительно устанавливаем белый цвет для всех текстовых элементов */
+*, *::before, *::after {
+    color: #fff !important;
+}
+
+/* Обновляем стили для всех заголовков */
+h1, h2, h3, h4, h5, h6 {
+    color: #fff !important;
+}
+
+/* Обновляем стили для всех параграфов */
+p {
+    color: #fff !important;
+}
+
+/* Обновляем стили для всех span элементов */
+span {
+    color: #fff !important;
+}
+
+/* Обновляем стили для всех input элементов */
+input {
+    color: #fff !important;
+}
+
+/* Обновляем стили для всех select элементов */
+select {
+    color: #fff !important;
+}
+
+/* Обновляем стили для всех textarea элементов */
+textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius);
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    color: #fff !important;
+    font-size: 1rem;
+    transition: var(--transition-fast);
+    resize: vertical;
+    min-height: 120px;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 0 3px rgba(157, 78, 221, 0.3);
+    background-color: rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Принудительно переопределяем стили для textarea в форме теста */
+.test-form textarea {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    color: #fff !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.test-form textarea:focus {
+    background-color: rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Обновляем стили для всех полей ввода в форме теста */
+.test-form input,
+.test-form textarea,
+.test-form select {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    color: #fff !important;
+}
+
+/* Стили для placeholder в textarea */
+textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Обновляем стили для всех label элементов */
+label {
+    color: #fff !important;
+}
+
+select option {
+    background-color: var(--card-bg);
+    color: #fff;
+}
+
+/* Улучшение доступности */
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: 2px solid var(--accent-purple);
+    outline-offset: 2px;
+}
+
+/* Улучшение контрастности */
+.form-group label {
+    color: var(--text-light) !important;
+    font-weight: 600;
+}
+
+.question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.question-header h3 {
+    margin: 0;
+}
+
+.question-number {
+    color: var(--text);
+    font-weight: bold;
+}

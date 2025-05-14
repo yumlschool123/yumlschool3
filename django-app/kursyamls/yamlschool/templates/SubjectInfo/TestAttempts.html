@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    {% load custom_filters %}
+    <title>Попытки прохождения теста - {{ test.nameTest }}</title>
+    <link rel="stylesheet" href="{% static 'css/TestAttempts.css' %}">
+</head>
+<body>
+    {% include 'header.html' %}
+
+    <div class="container">
+        <h1>Попытки прохождения теста "{{ test.nameTest }}"</h1>
+        
+        <div class="test-info">
+            <p><strong>Описание:</strong> {{ test.descriptionTest }}</p>
+            <p><strong>Ограничение по времени:</strong> {{ test.timeLimit }} минут</p>
+        </div>
+
+        {% if grading_criteria %}
+        <div class="grading-criteria">
+            <h2>Критерии оценивания</h2>
+            <table class="criteria-table">
+                <thead>
+                    <tr>
+                        <th>Оценка</th>
+                        <th>Минимальные баллы</th>
+                        <th>Максимальные баллы</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for criterion in grading_criteria %}
+                        <tr>
+                            <td><strong data-grade="{{ criterion.grade }}">{{ criterion.grade }}</strong></td>
+                            <td>{{ criterion.minPoints }}</td>
+                            <td>{{ criterion.maxPoints }}</td>
+                        </tr>
+                    {% endfor %}
+                    <tr class="grade-2-row">
+                        <td><strong data-grade="2">2</strong></td>
+                        <td colspan="2">
+                            {% with grade_3=grading_criteria|filter_by_grade:3 %}
+                                {% if grade_3 %}
+                                    Менее {{ grade_3.minPoints }} баллов
+                                {% else %}
+                                    Недостаточно баллов
+                                {% endif %}
+                            {% endwith %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        <div class="students-attempts">
+            {% if students %}
+                {% for user_id, student in students.items %}
+                    <div class="student-card">
+                        <h2>{{ student.full_name }}</h2>
+                        
+                        {% if student.attempts %}
+                            <table class="attempts-table">
+                                <thead>
+                                    <tr>
+                                        <th>Дата</th>
+                                        <th>Время</th>
+                                        <th>Статус</th>
+                                        <th>Баллы</th>
+                                        <th>Оценка</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for attempt in student.attempts %}
+                                        <tr>
+                                            <td>{{ attempt.endTime|date:"d.m.Y"|default:"-" }}</td>
+                                            <td>{{ attempt.endTime|time:"H:i"|default:"-" }}</td>
+                                            <td>
+                                                {% if attempt.status == 'completed' %}
+                                                    <span class="status completed">Завершено</span>
+                                                {% elif attempt.status == 'in_progress' %}
+                                                    <span class="status in-progress">В процессе</span>
+                                                {% else %}
+                                                    <span class="status">{{ attempt.status }}</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ attempt.score|default:"-" }}</td>
+                                            <td>
+                                                {% if attempt.grade %}
+                                                    <strong data-grade="{{ attempt.grade }}">{{ attempt.grade }}</strong>
+                                                {% else %}
+                                                    -
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <p class="no-attempts">Нет попыток прохождения теста</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="no-students">Нет данных о попытках прохождения теста</p>
+            {% endif %}
+        </div>
+
+        <div class="actions">
+            <a href="{% url 'test_material' test.idTest %}" class="button">Вернуться к материалам теста</a>
+            <a href="{% url 'SubjectPage' test.subjectId %}" class="button">Вернуться к предмету</a>
+        </div>
+    </div>
+</body>
+</html> 

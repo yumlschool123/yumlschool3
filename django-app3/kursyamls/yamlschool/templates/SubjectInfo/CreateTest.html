@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    {% load custom_filters %}
+    <title>Создание теста</title>
+    <link rel="stylesheet" href="{% static 'css/CreateTest.css' %}">
+    <link rel="stylesheet" href="{% static 'css/TestEditor.css' %}">
+    <script src="{% static 'js/scoreCounter.js' %}"></script>
+</head>
+<body>
+    {% include 'header.html' %}
+
+    <div class="container">
+        <h1>Создание теста</h1>
+        
+        <form id="testForm" method="POST" action="{% url 'create_test' subject_id %}" class="test-form">
+            {% csrf_token %}
+            <input type="hidden" name="subject_id" value="{{ subject_id }}">
+            <input type="hidden" id="gradingCriteriaFinal" name="gradingCriteria">
+            
+            <!-- Основная информация о тесте -->
+            <div class="test-info-section">
+                <div class="form-group">
+                    <label for="nameTest">Название теста:</label>
+                    <input type="text" id="nameTest" name="nameTest" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="descriptionTest">Описание теста:</label>
+                    <textarea id="descriptionTest" name="descriptionTest" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="timeLimit">Ограничение по времени (в минутах):</label>
+                    <input type="number" id="timeLimit" name="timeLimit" required min="1">
+                </div>
+            </div>
+
+            <!-- Критерии оценивания -->
+            <div class="grading-section">
+                <h3 class="section-title">Критерии оценивания</h3>
+                <div id="gradingCriteria" class="grading-criteria-container">
+                    <div class="grading-row">
+                        <div class="grade-label">Оценка 5:</div>
+                        <div class="points-range">
+                            <div class="range-input">
+                                <input type="number" id="grade5Min" name="grade5Min" placeholder="От" min="0" required>
+                                <span class="range-separator">-</span>
+                                <input type="number" id="grade5Max" name="grade5Max" placeholder="До" min="0" required>
+                            </div>
+                            <span class="points-label">баллов</span>
+                        </div>
+                    </div>
+
+                    <div class="grading-row">
+                        <div class="grade-label">Оценка 4:</div>
+                        <div class="points-range">
+                            <div class="range-input">
+                                <input type="number" id="grade4Min" name="grade4Min" placeholder="От" min="0" required>
+                                <span class="range-separator">-</span>
+                                <input type="number" id="grade4Max" name="grade4Max" placeholder="До" min="0" required>
+                            </div>
+                            <span class="points-label">баллов</span>
+                        </div>
+                    </div>
+
+                    <div class="grading-row">
+                        <div class="grade-label">Оценка 3:</div>
+                        <div class="points-range">
+                            <div class="range-input">
+                                <input type="number" id="grade3Min" name="grade3Min" placeholder="От" min="0" required>
+                                <span class="range-separator">-</span>
+                                <input type="number" id="grade3Max" name="grade3Max" placeholder="До" min="0" required>
+                            </div>
+                            <span class="points-label">баллов</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="gradingError" class="error-message"></div>
+            </div>
+
+            <div id="questions-container">
+                <!-- Здесь будут добавляться вопросы -->
+            </div>
+
+            <button type="button" class="add-question-btn" onclick="addQuestion()">Добавить вопрос</button>
+            <button type="submit" class="submit-btn">Создать тест</button>
+        </form>
+    </div>
+
+    <template id="question-template">
+        <div class="question-block">
+            <div class="question-header">
+                <h3>Вопрос #<span class="question-number"></span></h3>
+                <button type="button" onclick="removeQuestion(this)" class="remove-btn">Удалить вопрос</button>
+            </div>
+            <div class="form-group">
+                <label>Текст вопроса:</label>
+                <input type="text" name="questions[][text]" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Тип вопроса:</label>
+                <select name="questions[][type]" onchange="handleQuestionTypeChange(this)" required>
+                    <option value="1">Один правильный ответ</option>
+                    <option value="2">Несколько правильных ответов</option>
+                    <option value="3">Сопоставление</option>
+                    <option value="4">Ввод ответа</option>
+                    <option value="5">Установление порядка</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Баллы за вопрос:</label>
+                <input type="number" name="questions[][points]" min="1" value="1" required>
+            </div>
+
+            <div class="answers-container">
+                <!-- Здесь будут добавляться варианты ответов в зависимости от типа вопроса -->
+            </div>
+        </div>
+    </template>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Инициализация счетчика вопросов
+            window.questionCounter = 0;
+
+            // Функция добавления вопроса
+            window.addQuestion = function() {
+                const template = document.getElementById('question-template');
+                const container = document.getElementById('questions-container');
+                const clone = template.content.cloneNode(true);
+                
+                // Обновляем номер вопроса
+                const questionNumber = ++window.questionCounter;
+                const questionBlock = clone.querySelector('.question-block');
+                const numberElement = clone.querySelector('.question-number');
+                if (numberElement) {
+                    numberElement.textContent = questionNumber;
+                }
+
+                // Добавляем data-question-id
+                questionBlock.dataset.questionId = `new_${questionNumber}`;
+
+                // Обновляем имена полей
+                const inputs = clone.querySelectorAll('input, select, textarea');
+                inputs.forEach(input => {
+                    const name = input.getAttribute('name');
+                    if (name) {
+                        input.setAttribute('name', name.replace('[]', `[new_${questionNumber}]`));
+                    }
+                });
+
+                container.appendChild(clone);
+                
+                // Инициализируем тип вопроса
+                const select = questionBlock.querySelector('select');
+                select.value = '1';
+                handleQuestionTypeChange(select);
+            };
+
+            // Функция удаления вопроса
+            window.removeQuestion = function(button) {
+                const questionBlock = button.closest('.question-block');
+                if (questionBlock) {
+                    questionBlock.remove();
+                    updateQuestionNumbers();
+                }
+            };
+
+            // Функция обновления номеров вопросов
+            window.updateQuestionNumbers = function() {
+                const questions = document.querySelectorAll('.question-block');
+                questions.forEach((question, index) => {
+                    const numberElement = question.querySelector('.question-number');
+                    if (numberElement) {
+                        numberElement.textContent = index + 1;
+                    }
+                });
+                window.questionCounter = questions.length;
+            };
+
+            // Добавляем первый вопрос при загрузке страницы
+            addQuestion();
+        });
+
+        function handleQuestionTypeChange(select) {
+            const questionBlock = select.closest('.question-block');
+            const questionId = questionBlock.dataset.questionId || 'new_question';
+            const answersContainer = questionBlock.querySelector('.answers-container');
+            const type = select.value;
+            
+            let html = '';
+            
+            switch(type) {
+                case '1': // Один правильный ответ
+                case '2': // Несколько правильных ответов
+                    html = `
+                        <div class="answers-group">
+                            ${[0,1,2,3].map(i => `
+                            <div class="form-group">
+                                <label>Вариант ${i + 1}:</label>
+                                <input type="text" 
+                                       name="questions[${questionId}][answers][]" 
+                                       required>
+                                <input type="${type === '1' ? 'radio' : 'checkbox'}" 
+                                       name="questions[${questionId}][correct]${type === '2' ? '[]' : ''}" 
+                                       value="${i}">
+                            </div>
+                            `).join('')}
+                        </div>
+                    `;
+                    break;
+                    
+                case '3': // Сопоставление
+                    html = `
+                        <div class="matching-group">
+                            ${[1,2,3,4].map(i => `
+                            <div class="form-group matching-pair">
+                                <label>Пара ${i}:</label>
+                                <input type="text" 
+                                       name="questions[${questionId}][left][]" 
+                                       placeholder="Левая часть" 
+                                       required>
+                                <input type="text" 
+                                       name="questions[${questionId}][right][]" 
+                                       placeholder="Правая часть" 
+                                       required>
+                            </div>
+                            `).join('')}
+                        </div>
+                    `;
+                    break;
+                
+                case '4': // Ввод ответа
+                    html = `
+                        <div class="form-group">
+                            <label>Правильный ответ:</label>
+                            <input type="text" 
+                                   name="questions[${questionId}][correct_answer]" 
+                                   required>
+                        </div>
+                    `;
+                    break;
+
+                case '5': // Установление порядка
+                    html = `
+                        <div class="order-group">
+                            ${[1,2,3,4].map(i => `
+                            <div class="form-group">
+                                <label>Элемент ${i}:</label>
+                                <input type="text" 
+                                       name="questions[${questionId}][order][]" 
+                                       required>
+                                <span class="order-number">${i}</span>
+                            </div>
+                            `).join('')}
+                        </div>
+                    `;
+                    break;
+            }
+            
+            answersContainer.innerHTML = html;
+        }
+
+        document.getElementById('testForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Получаем все значения диапазонов
+            const grade5Min = parseInt(document.getElementById('grade5Min').value) || 0;
+            const grade5Max = parseInt(document.getElementById('grade5Max').value) || 0;
+            const grade4Min = parseInt(document.getElementById('grade4Min').value) || 0;
+            const grade4Max = parseInt(document.getElementById('grade4Max').value) || 0;
+            const grade3Min = parseInt(document.getElementById('grade3Min').value) || 0;
+            const grade3Max = parseInt(document.getElementById('grade3Max').value) || 0;
+
+            // Проверяем корректность диапазонов
+            let errorMessage = '';
+            
+            if (grade5Min > grade5Max) {
+                errorMessage = 'Для оценки 5: значение "От" не может быть больше значения "До"';
+            } else if (grade4Min > grade4Max) {
+                errorMessage = 'Для оценки 4: значение "От" не может быть больше значения "До"';
+            } else if (grade3Min > grade3Max) {
+                errorMessage = 'Для оценки 3: значение "От" не может быть больше значения "До"';
+            } else if (grade5Min <= grade4Max) {
+                errorMessage = 'Диапазон для оценки 5 должен начинаться после максимального значения для оценки 4';
+            } else if (grade4Min <= grade3Max) {
+                errorMessage = 'Диапазон для оценки 4 должен начинаться после максимального значения для оценки 3';
+            }
+
+            const errorDiv = document.getElementById('gradingError');
+            if (errorMessage) {
+                errorDiv.textContent = errorMessage;
+                errorDiv.style.display = 'block';
+                return;
+            }
+            errorDiv.style.display = 'none';
+
+            // Формируем текст критериев оценивания
+            const criteriaText = JSON.stringify([
+                { grade: 5, minPoints: grade5Min, maxPoints: grade5Max },
+                { grade: 4, minPoints: grade4Min, maxPoints: grade4Max },
+                { grade: 3, minPoints: grade3Min, maxPoints: grade3Max }
+            ]);
+            
+            document.getElementById('gradingCriteriaFinal').value = criteriaText;
+
+            // Собираем данные о вопросах
+            const questions = [];
+            document.querySelectorAll('.question-block').forEach((block, index) => {
+                const questionData = {
+                    text: block.querySelector('input[name$="[text]"]').value,
+                    type: parseInt(block.querySelector('select[name$="[type]"]').value),
+                    points: parseInt(block.querySelector('input[name$="[points]"]').value),
+                    answers: [],
+                    correctAnswer: ''
+                };
+
+                // Обрабатываем ответы в зависимости от типа вопроса
+                switch(questionData.type) {
+                    case 1: // Один правильный ответ
+                    case 2: // Несколько правильных ответов
+                        const answers = block.querySelectorAll('input[type="text"][name$="[answers][]"]');
+                        const selected = block.querySelectorAll(`input[type="${questionData.type === 1 ? 'radio' : 'checkbox'}"][name$="[correct]${questionData.type === 2 ? '[]' : ''}"]`);
+                        
+                        answers.forEach((answer, i) => {
+                            questionData.answers.push(answer.value);
+                            if (selected[i].checked) {
+                                if (questionData.type === 1) {
+                                    questionData.correctAnswer = answer.value;
+                                } else {
+                                    questionData.correctAnswer += (questionData.correctAnswer ? '; ' : '') + answer.value;
+                                }
+                            }
+                        });
+                        break;
+
+                    case 3: // Сопоставление
+                        const leftParts = block.querySelectorAll('input[name$="[left][]"]');
+                        const rightParts = block.querySelectorAll('input[name$="[right][]"]');
+                        leftParts.forEach((left, i) => {
+                            const pair = `${left.value} - ${rightParts[i].value}`;
+                            questionData.answers.push(pair);
+                        });
+                        questionData.correctAnswer = questionData.answers.join('; ');
+                        break;
+
+                    case 4: // Ввод ответа
+                        questionData.correctAnswer = block.querySelector('input[name$="[correct_answer]"]').value;
+                        break;
+
+                    case 5: // Установление порядка
+                        const orderItems = block.querySelectorAll('input[name$="[order][]"]');
+                        orderItems.forEach(item => {
+                            questionData.answers.push(item.value);
+                        });
+                        questionData.correctAnswer = questionData.answers.join('; ');
+                        break;
+                }
+
+                questions.push(questionData);
+            });
+
+            // Добавляем вопросы в форму
+            const questionsInput = document.createElement('input');
+            questionsInput.type = 'hidden';
+            questionsInput.name = 'questions';
+            questionsInput.value = JSON.stringify(questions);
+            this.appendChild(questionsInput);
+
+            // Отправляем форму
+            this.submit();
+        });
+    </script>
+</body>
+</html> 

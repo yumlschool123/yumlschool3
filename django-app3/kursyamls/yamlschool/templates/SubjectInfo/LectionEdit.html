@@ -1,0 +1,75 @@
+<!-- LectionEdit.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактировать лекцию</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/LectionMaterial.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    {% include 'header.html' %}
+
+    <div class="container">
+        <h1>Редактирование лекции</h1>
+
+        <div class="button-group">
+            <a href="{% url 'SubjectPage' lection.subjectId %}" class="back-button">
+                <i class="fas fa-arrow-left"></i> Назад к предмету
+            </a>
+        </div>
+
+        {% if error %}
+            <div class="error-message">
+                <i class="fas fa-exclamation-circle"></i> {{ error }}
+            </div>
+        {% endif %}
+
+        <div class="edit-form-container">
+            <form method="POST" class="edit-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="nameLectionMaterial">
+                        <i class="fas fa-heading"></i> Название лекции:
+                    </label>
+                    <input type="text" id="nameLectionMaterial" name="nameLectionMaterial" 
+                           value="{{ lection.nameLectionMaterial }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="descriptionLectionMaterial">
+                        <i class="fas fa-align-left"></i> Описание лекции:
+                    </label>
+                    <textarea id="descriptionLectionMaterial" name="descriptionLectionMaterial" 
+                              required>{{ lection.descriptionLectionMaterial }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="nameFileLection">
+                        <i class="fas fa-file-alt"></i> Имя файла:
+                    </label>
+                    <input type="text" id="nameFileLection" name="nameFileLection" 
+                           value="{{ lection.nameFileLection }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="urlFileLection">
+                        <i class="fas fa-link"></i> URL файла:
+                    </label>
+                    <input type="url" id="urlFileLection" name="urlFileLection" 
+                           value="{{ lection.urlFileLection }}" required>
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" class="save-button">
+                        <i class="fas fa-save"></i> Сохранить изменения
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!-- LectionCRUD.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавление лекции</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/LectionCRUD.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-book-open"></i> Добавить новую лекцию</h1>
+        <form method="post" action="{% url 'create_lection' subject_id=subject_id %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="nameLectionMaterial">
+                    <i class="fas fa-heading"></i> Название лекции:
+                </label>
+                <input type="text" id="nameLectionMaterial" name="nameLectionMaterial" required 
+                       placeholder="Введите название лекции"
+                       value="{% if form_data.nameLectionMaterial %}{{ form_data.nameLectionMaterial }}{% endif %}">
+            </div>
+
+            <div class="form-group">
+                <label for="descriptionLectionMaterial">
+                    <i class="fas fa-align-left"></i> Описание лекции:
+                </label>
+                <textarea id="descriptionLectionMaterial" name="descriptionLectionMaterial" required
+                          placeholder="Введите описание лекции">{% if form_data.descriptionLectionMaterial %}{{ form_data.descriptionLectionMaterial }}{% endif %}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-upload"></i> Способ добавления файла:</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="upload_method" id="method_url" value="url" checked>
+                    <label class="form-check-label" for="method_url">
+                        <i class="fas fa-link"></i> Указать ссылку на файл
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="upload_method" id="method_file" value="file">
+                    <label class="form-check-label" for="method_file">
+                        <i class="fas fa-file-upload"></i> Загрузить файл с компьютера
+                    </label>
+                </div>
+            </div>
+            
+            <div id="url_upload_block" class="form-group">
+                <div class="form-field">
+                    <label for="nameFileLection">
+                        <i class="fas fa-file-alt"></i> Название файла:
+                    </label>
+                    <input type="text" id="nameFileLection" name="nameFileLection" 
+                           placeholder="Введите название файла (например, Лекция 1.pdf)">
+                </div>
+                <div class="form-field">
+                    <label for="urlFileLection">
+                        <i class="fas fa-link"></i> URL файла:
+                    </label>
+                    <input type="url" id="urlFileLection" name="urlFileLection" 
+                           placeholder="Введите URL файла (например, https://example.com/files/lecture.pdf)">
+                </div>
+            </div>
+            
+            <div id="file_upload_block" class="form-group" style="display:none;">
+                <label for="uploadedFile">
+                    <i class="fas fa-file-upload"></i> Выберите файл:
+                </label>
+                <input type="file" id="uploadedFile" name="uploadedFile">
+                <p class="file-hint">
+                    <i class="fas fa-info-circle"></i> Поддерживаемые форматы: PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX, TXT
+                </p>
+            </div>
+
+            <button type="submit" class="submit-button">
+                <i class="fas fa-plus"></i> Добавить лекцию
+            </button>
+        </form>
+        {% if error %}
+            <p class="error-message">
+                <i class="fas fa-exclamation-circle"></i> {{ error }}
+            </p>
+        {% endif %}
+        
+        <div class="back-link">
+            <a href="{% url 'SubjectPage' subject_id %}">
+                <i class="fas fa-arrow-left"></i> Вернуться к предмету
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Переключение между способами загрузки
+        document.addEventListener('DOMContentLoaded', function() {
+            const methodUrl = document.getElementById('method_url');
+            const methodFile = document.getElementById('method_file');
+            const urlBlock = document.getElementById('url_upload_block');
+            const fileBlock = document.getElementById('file_upload_block');
+            
+            methodUrl.addEventListener('change', function() {
+                if(this.checked) {
+                    urlBlock.style.display = 'block';
+                    fileBlock.style.display = 'none';
+                }
+            });
+            
+            methodFile.addEventListener('change', function() {
+                if(this.checked) {
+                    urlBlock.style.display = 'none';
+                    fileBlock.style.display = 'block';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

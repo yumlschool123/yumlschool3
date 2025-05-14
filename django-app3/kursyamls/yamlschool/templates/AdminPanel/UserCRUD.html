@@ -1,0 +1,106 @@
+<!-- AdminPanel/UserCRUD.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление Пользователями</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/UserCRUD.css' %}">
+</head>
+<body>
+    {% include 'header.html' %} 
+
+    <div class="container">
+        <div class="header-section">
+            <a href="{% url 'adminPage' %}" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                Назад к панели администратора
+            </a>
+            <h1>Управление Пользователями</h1>
+        </div>
+        <div class="search-options">
+            <form method="GET" action="{% url 'user_crud' %}">
+                <input type="text" name="search" placeholder="Поиск по ФИО" value="{{ request.GET.search }}">
+                <button type="submit">Поиск</button>
+            </form>
+        </div>
+
+        <div class="filter-options">
+            <form method="GET" action="{% url 'user_crud' %}">
+                <label for="group_id">Фильтр по группе:</label>
+                <select name="group_id" id="group_id" onchange="this.form.submit()">
+                    <option value="">Все группы</option>
+                    {% for group in groups %}
+                        <option value="{{ group.idGroup }}" {% if group.idGroup|stringformat:"s" == request.GET.group_id %}selected{% endif %}>
+                            {{ group.nameGroup }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </form>
+        </div>
+
+
+        
+
+        <div class="filter-options">
+            <form method="GET" action="{% url 'user_crud' %}">
+                <label for="sort_by">Сортировка по пользователям:</label>
+                <select name="sort_by" id="sort_by" onchange="this.form.submit()">
+                    <option value="secondName" {% if request.GET.sort_by == 'secondName' %}selected{% endif %}>Имя</option>
+                    <option value="firstName" {% if request.GET.sort_by == 'firstName' %}selected{% endif %}>Фамилия</option>
+                    <option value="group" {% if request.GET.sort_by == 'group' %}selected{% endif %}>Группа</option>
+                </select>
+                <input type="hidden" name="search" value="{{ request.GET.search }}">
+                <input type="hidden" name="group_id" value="{{ request.GET.group_id }}">
+            </form>
+        </div>
+        
+        
+        
+
+        <div class="user-list">
+            {% for user in users %}
+            <div class="user-card" id="user-{{ user.idUser }}">
+                <div class="user-info">
+                    <h3>  {{ user.firstName }} {{ user.secondName }} {{ user.middleName }}</h3>
+
+                </div>
+
+                <div class="crud-actions">
+
+                    <form action="{% url 'edit_user' user.idUser %}" method="post" class="crud-form">
+                        {% csrf_token %}
+                        <input type="text" name="firstName" value="{{ user.firstName }}" required>
+                        <input type="text" name="secondName" value="{{ user.secondName }}" required>
+                        <input type="text" name="middleName" value="{{ user.middleName }}">
+                        <input type="email" name="email" value="{{ user.email }}" required>
+                        <select name="idRole">
+                            {% for role in roles %}
+                            <option value="{{ role.idRole }}" {% if role.idRole == user.idRole %}selected{% endif %}>
+                                {{ role.roleName }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <select name="idGroup">
+                            {% for group in groups %}
+                            <option value="{{ group.idGroup }}" {% if group.idGroup == user.idGroup %}selected{% endif %}>
+                                {{ group.nameGroup }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit">Сохранить</button>
+                    </form>
+                    <form action="{% url 'delete_user' user.idUser %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="delete-button">Удалить</button>
+                    </form>
+
+
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,747 @@
+/* Стили для страницы практических работ - согласованные с общим дизайном */
+:root {
+  /* Основные цвета */
+  --dark-purple: #1a1225;
+  --medium-purple: #7743DB;
+  --light-purple: #B39DDB;
+  --accent-purple: #9D4EDD;
+  --primary: #9d4edd;
+  --primary-light: #c77dff;
+  --primary-dark: #7b2cbf;
+  --text-color: #ffffff !important;
+  --text-secondary: rgba(255, 255, 255, 0.85) !important;
+  --text-light: #ffffff !important;
+  --card-bg: rgba(39, 33, 52, 0.95);
+  --card-hover: #362b48;
+  --gradient-bg: linear-gradient(135deg, #1a1225 0%, #3a1d69 100%);
+  --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 6px 12px rgba(0, 0, 0, 0.4);
+  
+  /* Статусы */
+  --success: #28a745;
+  --warning: #ffc107;
+  --danger: #dc3545;
+  --info: #17a2b8;
+  
+  /* Визуальные элементы */
+  --border-radius-lg: 16px;
+  --border-radius: 12px;
+  --border-radius-sm: 8px;
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.15);
+  --shadow-strong: 0 15px 35px rgba(0, 0, 0, 0.2);
+  --glass-effect: rgba(255, 255, 255, 0.08);
+  
+  /* Анимации */
+  --transition-fast: 0.2s ease;
+  --transition-medium: 0.3s ease;
+  
+  /* Градиенты */
+  --gradient-primary: linear-gradient(135deg, #9d4edd, #7b2cbf);
+  --gradient-dark: linear-gradient(135deg, #1a1225, #2d1c3b);
+}
+
+.main-header .container {
+  margin: 0 !important;
+  max-width: 100% !important;
+}
+
+.main-header .container {
+  max-width: 100% !important;
+  width: 100%;
+  padding: 0.8rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Принудительное переопределение базовых стилей - согласованно с другими страницами */
+html, body {
+  background-color: var(--dark-purple) !important;
+  color: var(--text-color, #ffffff) !important;
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+/* Основной контейнер */
+.container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Заголовок страницы */
+.container h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--text-color);
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  position: relative;
+}
+
+/* Убираем декоративные элементы из заголовка */
+.container h1::before, .container h1::after {
+  display: none;
+}
+
+.container h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin: 2rem 0 1.5rem;
+}
+
+/* Упрощаем стиль подзаголовков */
+.container h2::before {
+  display: none;
+}
+
+/* Карточки и панели */
+.details, .completed-work, .student-table-container,
+.student-work-details, .export-actions, .warning-banner,
+.success-banner, .info-banner, .error-banner,
+.grade-form, .grade-result, .quick-grade-section {
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  color: var(--text-color);
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Убираем анимацию при наведении */
+.details:hover, .completed-work:hover, .student-table-container:hover,
+.export-actions:hover {
+  transform: none;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Убираем цветную полосу слева */
+.details::before, .completed-work::before,
+.export-actions::before {
+  display: none;
+}
+
+/* Заголовки в карточках */
+.completed-work h3, .student-work-details h4, .quick-grade-section h4 {
+  color: var(--text-color);
+  font-size: 1.4rem;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Информация о файле */
+.file-info {
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Ссылки на файлы */
+.file-link, a[href$=".pdf"], a[href$=".doc"], a[href$=".docx"], 
+a[href$=".zip"], a[href$=".rar"] {
+  color: var(--accent-purple);
+  text-decoration: none;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.file-link:hover, a[href$=".pdf"]:hover, a[href$=".doc"]:hover, 
+a[href$=".docx"]:hover, a[href$=".zip"]:hover, a[href$=".rar"]:hover {
+  color: var(--light-purple);
+  text-decoration: underline;
+}
+
+.file-icon {
+  font-size: 1.2rem;
+}
+
+/* Кнопки */
+.back-button, .active-button, .export-button,
+.toggle-details-btn, .grade-button, 
+button[type="submit"], .submit-btn, .grade-submit-btn {
+  background: var(--medium-purple);
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.7rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+/* Упрощаем эффект при наведении */
+.back-button:hover, .active-button:hover, .export-button:hover,
+.toggle-details-btn:hover, .grade-button:hover, 
+button[type="submit"]:hover, .submit-btn:hover, .grade-submit-btn:hover {
+  background: var(--accent-purple);
+  transform: none;
+}
+
+/* Убираем анимацию подсветки */
+.back-button::before, .active-button::before, .export-button::before,
+.toggle-details-btn::before, .grade-button::before,
+button[type="submit"]::before, .submit-btn::before, .grade-submit-btn::before {
+  display: none;
+}
+
+/* Кнопка назад */
+.back-button {
+  margin: 1rem 0 2rem;
+  background: var(--dark-purple);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Таблица студентов */
+.student-table-container {
+  padding: 0;
+  overflow: hidden;
+  border-radius: var(--border-radius);
+}
+
+.student-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.student-table th {
+  background: var(--medium-purple);
+  color: white;
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.student-table td {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-color);
+}
+
+.student-details {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* Отображение статусов */
+.status-badge, .grade-pending, .grade-2, .grade-3-5 {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem 1rem;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  min-width: 100px;
+}
+
+.status-passed {
+  background-color: rgba(40, 167, 69, 0.15);
+  color: var(--success);
+  border: 1px solid rgba(40, 167, 69, 0.3);
+}
+
+.status-pending {
+  background-color: rgba(255, 193, 7, 0.15);
+  color: var(--warning);
+  border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.grade-pending {
+  background-color: rgba(108, 117, 125, 0.15);
+  color: var(--text-secondary);
+  border: 1px solid rgba(108, 117, 125, 0.3);
+}
+
+.grade-2 {
+  background-color: rgba(220, 53, 69, 0.15);
+  color: var(--danger);
+  border: 1px solid rgba(220, 53, 69, 0.3);
+}
+
+.grade-3-5 {
+  background-color: rgba(40, 167, 69, 0.15);
+  color: var(--success);
+  border: 1px solid rgba(40, 167, 69, 0.3);
+}
+
+/* Информационные баннеры */
+.warning-banner, .success-banner, .info-banner, .error-banner {
+  padding: 1.5rem 1.5rem 1.5rem 4rem;
+  margin: 1.5rem 0;
+  border-radius: var(--border-radius-sm);
+  position: relative;
+}
+
+.warning-banner::before, .success-banner::before, 
+.info-banner::before, .error-banner::before {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  position: absolute;
+  left: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.5rem;
+}
+
+.warning-banner {
+  background-color: rgba(255, 193, 7, 0.1);
+  border-left: 4px solid var(--warning);
+}
+.warning-banner::before {
+  content: '\f071'; /* иконка предупреждения */
+  color: var(--warning);
+}
+
+.success-banner {
+  background-color: rgba(40, 167, 69, 0.1);
+  border-left: 4px solid var(--success);
+}
+.success-banner::before {
+  content: '\f00c'; /* иконка галочки */
+  color: var(--success);
+}
+
+.info-banner {
+  background-color: rgba(23, 162, 184, 0.1);
+  border-left: 4px solid var(--info);
+}
+.info-banner::before {
+  content: '\f129'; /* иконка информации */
+  color: var(--info);
+}
+
+.error-banner {
+  background-color: rgba(220, 53, 69, 0.1);
+  border-left: 4px solid var(--danger);
+}
+.error-banner::before {
+  content: '\f00d'; /* иконка крестика */
+  color: var(--danger);
+}
+
+/* Формы */
+.grade-form {
+  background-color: rgba(255, 255, 255, 0.03);
+  border-radius: var(--border-radius);
+  padding: 1.2rem;
+  margin-top: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.grade-form-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.grade-form label {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.grade-form select, 
+.grade-form input[type="text"], 
+.grade-form textarea {
+  padding: 0.8rem 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: var(--border-radius-sm);
+  font-size: 1rem;
+  transition: all var(--transition-fast);
+  min-width: 200px;
+}
+
+.grade-form select:focus, 
+.grade-form input[type="text"]:focus, 
+.grade-form textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(157, 78, 221, 0.2);
+}
+
+/* Индикатор попыток */
+.attempt-counter {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 1.5rem 0;
+}
+
+.attempt-counter-label {
+  font-weight: 500;
+}
+
+.attempt-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: transform var(--transition-fast);
+}
+
+.attempt-used {
+  background: var(--gradient-primary);
+  color: white;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.attempt-available {
+  background-color: rgba(108, 117, 125, 0.1);
+  color: var(--text-secondary);
+  border: 1px solid rgba(108, 117, 125, 0.3);
+}
+
+.attempt-used:hover, 
+.attempt-available:hover {
+  transform: scale(1.1);
+}
+
+/* Работы студентов */
+.student-work-details {
+  padding: 1.8rem;
+}
+
+.work-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
+}
+
+.attempt-number {
+  font-weight: 600;
+  color: var(--primary);
+  padding: 0.3rem 0.8rem;
+  background-color: rgba(157, 78, 221, 0.1);
+  border-radius: 20px;
+  font-size: 0.85rem;
+}
+
+.work-date {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.grade-result {
+  margin: 1.5rem 0;
+  padding: 1.5rem;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.grade-result h5 {
+  margin-top: 0;
+  font-size: 1.2rem;
+  color: var(--primary-dark);
+  margin-bottom: 1rem;
+}
+
+/* Экспорт данных */
+.export-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  flex-wrap: wrap;
+  background-color: var(--card-bg);
+}
+
+.export-button {
+  padding: 1rem 1.5rem;
+  background: var(--gradient-primary);
+  min-width: 220px;
+  font-size: 1.05rem;
+}
+
+/* График (chart.js) */
+canvas {
+  max-width: 100%;
+  margin: 2.5rem auto;
+  background-color: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-soft);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Отладочная информация */
+div[style*="background-color: #f8f9fa"] {
+  background-color: var(--card-bg) !important;
+  border-radius: var(--border-radius-sm);
+  padding: 1.5rem;
+  margin-top: 2rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Анимации */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Стиль для кнопки выхода - соответствует стилю на других страницах */
+.logout-btn {
+  background-color: var(--medium-purple);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: var(--transition-fast);
+}
+
+.logout-btn:hover {
+  background-color: var(--accent-purple);
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+/* Адаптивность */
+@media (max-width: 992px) {
+  .container {
+    padding: 0 1.5rem;
+  }
+  
+  .container h1 {
+    font-size: 2rem;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+    margin: 1rem auto;
+  }
+  
+  .container h1 {
+    font-size: 1.8rem;
+    padding: 1.2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .details, .completed-work, .student-table-container,
+  .student-work-details, .export-actions {
+    padding: 1.5rem;
+  }
+  
+  .student-table th, .student-table td {
+    padding: 1rem 0.75rem;
+    font-size: 0.9rem;
+  }
+  
+  .grade-form-group {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .grade-form select, 
+  .grade-form input[type="text"] {
+    width: 100%;
+    min-width: auto;
+  }
+  
+  .export-actions {
+    flex-direction: column;
+  }
+  
+  .attempt-counter {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 576px) {
+  .container h1 {
+    font-size: 1.5rem;
+  }
+  
+  .container h2 {
+    font-size: 1.4rem;
+  }
+  
+  .back-button, .active-button, .export-button,
+  .toggle-details-btn, .grade-button {
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+  }
+  
+  .student-work-details {
+    padding: 1.2rem;
+  }
+  
+  .work-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+/* Общие стили для текста на странице */
+body, p, h1, h2, h3, h4, h5, h6, span, div, li, a, button, input, textarea, label {
+  color: var(--text-color, #ffffff) !important;
+}
+
+.task-text, .description-text, .work-content, .work-details, .work-header, .work-title, .work-instructions {
+  color: var(--text-color, #ffffff) !important;
+}
+
+/* Для элементов с установленным темным цветом текста */
+.dark-text, .task-title, .completion-status, .work-status, .deadline, .submission-info, .grade-info {
+  color: var(--text-color, #ffffff) !important;
+}
+
+/* Making sure headers are clearly visible */
+.content-header h1, .content-header h2, .section-title, .practical-title {
+  color: var(--text-color);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); /* Adding shadow for better contrast */
+}
+
+/* Targeting specific containers and important text */
+.practical-info p, .practical-description, .work-details, .student-info, .completed-works-list, .work-card {
+  color: var(--text-color);
+}
+
+/* Ensuring form labels and important instructions are visible */
+label, .form-group span, .instructions, .upload-note {
+  color: var(--text-secondary);
+}
+
+/* Making sure links are visible */
+a, a:visited {
+  color: #b39ddb; /* Light purple for links */
+}
+
+a:hover {
+  color: #ffffff; /* White on hover for better visibility */
+}
+
+/* Improving visibility of table text if present */
+table {
+  color: var(--text-color);
+}
+
+/* Ensuring status and grading information is visible */
+.status-label, .grade-label, .attempt-number {
+  color: var(--text-color);
+  font-weight: 500; /* Making it slightly bolder */
+}
+
+/* Targeting specific panel and card elements */
+.panel-content, .card-body, .info-panel, .work-submission {
+  color: var(--text-color);
+}
+
+/* Группа кнопок */
+.button-group {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0 2rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Стили для формы удаления */
+.delete-form {
+    margin: 0;
+}
+
+/* Кнопка удаления */
+.delete-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.2rem;
+    background-color: #dc3545;
+    color: white !important;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow-sm);
+}
+
+.delete-button:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Обновляем стиль кнопки "Назад" для соответствия */
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.2rem;
+    background: var(--dark-purple);
+    color: white !important;
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow-sm);
+}
+
+.back-button:hover {
+    background: var(--card-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    text-decoration: none;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 576px) {
+    .button-group {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .back-button,
+    .delete-button {
+        width: 100%;
+        justify-content: center;
+    }
+} 

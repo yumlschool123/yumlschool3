@@ -1,0 +1,236 @@
+/* Современный адаптивный стиль для страницы предмета - темная тема */
+:root {
+    --dark-purple: #1a1225;
+    --medium-purple: #7743DB;
+    --light-purple: #B39DDB;
+    --accent-purple: #9D4EDD;
+    --text-light: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.85);
+    --card-bg: #272134;
+    --card-hover: #362b48;
+    --gradient-bg: linear-gradient(135deg, #1a1225 0%, #3a1d69 100%);
+    --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 6px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.5);
+    --transition-slow: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    --transition-fast: all 0.2s ease;
+    --border-radius: 12px;
+    --card-spacing: 1.75rem;
+}
+
+/* Принудительное переопределение базовых стилей */
+html {
+    background-color: var(--dark-purple) !important;
+}
+
+body {
+    background-color: var(--dark-purple) !important;
+    color: var(--text-light) !important;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+/* Основной контейнер страницы */
+.container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Заголовок */
+h1 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: white !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    background: var(--gradient-bg);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Форма */
+.form-group {
+    margin-bottom: 1.5rem;
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: var(--transition-fast);
+}
+
+.form-group:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+}
+
+label {
+    display: block;
+    margin-bottom: 0.8rem;
+    color: var(--text-light);
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+/* Обновленные стили для полей ввода */
+input[type="text"],
+input[type="url"],
+textarea {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    background: linear-gradient(145deg, #2d1f3a, #231630);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: var(--border-radius);
+    color: var(--text-light);
+    font-size: 1rem;
+    transition: var(--transition-fast);
+    box-shadow: var(--shadow-sm);
+    box-sizing: border-box;
+    margin: 0;
+}
+
+textarea {
+    min-height: 150px;
+    resize: vertical;
+    line-height: 1.5;
+    padding: 1rem;
+}
+
+input[type="text"]:focus,
+input[type="url"]:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 0 2px rgba(157, 78, 221, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Кнопка отправки */
+.submit-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 1rem 1.2rem;
+    background-color: var(--accent-purple);
+    color: white !important;
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    font-size: 1.1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    justify-content: center;
+}
+
+.submit-button:hover {
+    background-color: var(--medium-purple);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.submit-button i {
+    font-size: 1.1rem;
+}
+
+/* Сообщение об ошибке */
+.error-message {
+    color: #ff6b6b;
+    text-align: center;
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background-color: rgba(255, 107, 107, 0.1);
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(255, 107, 107, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-weight: 500;
+}
+
+/* Плейсхолдеры */
+::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* Стилизация скроллбара */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--dark-purple);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--medium-purple);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-purple);
+}
+
+/* Адаптивный дизайн */
+@media (max-width: 992px) {
+    .container {
+        margin: 1rem;
+    }
+    
+    h1 {
+        font-size: 2.4rem;
+        padding: 1.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1.5rem;
+    }
+    
+    h1 {
+        font-size: 2rem;
+        padding: 1.5rem;
+    }
+    
+    .form-group {
+        padding: 1.2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        margin: 0.5rem;
+        padding: 1rem;
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+        padding: 1.2rem;
+    }
+    
+    .form-group {
+        padding: 1rem;
+    }
+    
+    input[type="text"],
+    input[type="url"],
+    textarea {
+        padding: 0.8rem;
+    }
+}

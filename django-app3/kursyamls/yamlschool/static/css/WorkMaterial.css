@@ -1,0 +1,670 @@
+/* Современный адаптивный стиль для страницы практических работ - темная тема с светлыми блоками */
+:root {
+  --dark-purple: #1a1225;
+  --medium-purple: #7743DB;
+  --light-purple: #B39DDB;
+  --accent-purple: #9D4EDD;
+  --text-light: #ffffff;
+  --text-dark: #333333;
+  --text-secondary: rgba(255, 255, 255, 0.85);
+  --card-bg-light: rgba(255, 255, 255, 0.9);
+  --card-bg-accent: rgba(179, 157, 219, 0.2);
+  --card-hover: #f8f5ff;
+  --gradient-bg: linear-gradient(135deg, #1a1225 0%, #3a1d69 100%);
+  --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 6px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.5);
+  --transition-slow: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  --transition-fast: all 0.2s ease;
+  --border-radius: 12px;
+  --card-spacing: 1.75rem;
+}
+
+/* Принудительное переопределение базовых стилей */
+html {
+  background-color: var(--dark-purple) !important;
+}
+
+body {
+  background-color: var(--dark-purple) !important;
+  color: var(--text-light) !important;
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Корректировка стилей header */
+.main-header {
+  background-color: var(--dark-purple) !important;
+  width: 100%;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  z-index: 100;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.main-header .container {
+  max-width: 100% !important;
+  width: 100%;
+  padding: 0.8rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Основной контейнер страницы */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Заголовок практической работы */
+.practical-work-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: white !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  background: var(--gradient-bg);
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  margin-top: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.practical-work-title::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1" d="M0,0 L100,100 M100,0 L0,100"/></svg>');
+  background-size: 20px 20px;
+  opacity: 0.3;
+  z-index: 0;
+}
+
+/* Описание практической работы - СВЕТЛЫЙ БЛОК */
+.practical-work-description {
+  background-color: var(--card-bg-light);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  color: var(--text-dark) !important;
+  line-height: 1.6;
+  font-size: 1.1rem;
+  white-space: pre-line;
+  position: relative;
+  overflow: hidden;
+}
+
+.practical-work-description::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--medium-purple), var(--accent-purple));
+}
+
+/* Информация о дате и авторе - СВЕТЛЫЙ БЛОК */
+.meta-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding: 1.2rem 1.2rem 1.2rem 1.5rem;
+  background-color: var(--card-bg-light);
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: var(--shadow-sm);
+}
+
+.meta-info p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--text-dark);
+}
+
+.meta-info strong {
+  color: var(--accent-purple);
+  margin-right: 0.5rem;
+  font-weight: 600;
+}
+
+/* Материалы практической работы - СВЕТЛЫЙ БЛОК */
+.materials-container {
+  margin-bottom: 2.5rem;
+  background-color: var(--card-bg-light);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.materials-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--medium-purple), var(--accent-purple));
+}
+
+.materials-title {
+  color: var(--text-dark) !important;
+  font-size: 1.8rem;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--accent-purple);
+  position: relative;
+  font-weight: 600;
+}
+
+.material-link {
+  display: block;
+  padding: 1.2rem;
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--text-dark) !important;
+  text-decoration: none;
+  border-radius: var(--border-radius);
+  transition: var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.material-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--medium-purple), var(--accent-purple));
+  opacity: 0.7;
+}
+
+.material-link:hover {
+  background: var(--card-hover);
+  color: var(--accent-purple) !important;
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  text-decoration: none;
+  padding-left: 1.5rem;
+}
+
+.material-link i {
+  margin-right: 0.75rem;
+  color: var(--accent-purple);
+  transition: all 0.3s;
+}
+
+.material-link:hover i {
+  transform: scale(1.1);
+  color: var(--medium-purple);
+}
+
+/* Стили для формы отправки работы - СВЕТЛЫЙ БЛОК */
+.submit-work-container {
+  margin-top: 2.5rem;
+  background-color: var(--card-bg-light);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.submit-work-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--medium-purple), var(--accent-purple));
+}
+
+.submit-work-title {
+  color: var(--text-dark) !important;
+  font-size: 1.8rem;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--accent-purple);
+  position: relative;
+  font-weight: 600;
+}
+
+.submit-btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, var(--accent-purple) 0%, var(--medium-purple) 100%);
+  color: white !important;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: var(--border-radius);
+  border: none;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  text-align: center;
+  font-size: 1rem;
+  box-shadow: var(--shadow-sm);
+  margin-top: 1rem;
+}
+
+.submit-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  text-decoration: none;
+}
+
+.submit-btn i {
+  margin-right: 0.5rem;
+}
+
+/* Стили для полей формы */
+.submit-work-container label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-dark) !important;
+  font-weight: 500;
+}
+
+.submit-work-container input[type="text"],
+.submit-work-container input[type="file"],
+.submit-work-container textarea,
+.submit-work-container select {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background-color: white;
+  color: var(--text-dark);
+  font-size: 1rem;
+}
+
+.submit-work-container input[type="text"]:focus,
+.submit-work-container input[type="file"]:focus,
+.submit-work-container textarea:focus,
+.submit-work-container select:focus {
+  border-color: var(--accent-purple);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(157, 78, 221, 0.2);
+}
+
+/* Стили для списка сданных работ - СВЕТЛЫЙ БЛОК */
+.completed-works-container {
+  margin-top: 2.5rem;
+  background-color: var(--card-bg-light);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.completed-works-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--medium-purple), var(--accent-purple));
+}
+
+.completed-works-title {
+  color: var(--text-dark) !important;
+  font-size: 1.8rem;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--accent-purple);
+  position: relative;
+  font-weight: 600;
+}
+
+.completed-work-item {
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: var(--border-radius);
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  transition: var(--transition-fast);
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.completed-work-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--medium-purple), var(--accent-purple));
+  opacity: 0.7;
+  border-radius: var(--border-radius) 0 0 var(--border-radius);
+}
+
+.completed-work-item:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  background: var(--card-hover);
+}
+
+.completed-work-item p {
+  margin: 0.5rem 0;
+  color: var(--text-dark) !important;
+}
+
+.completed-work-item .work-meta {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: var(--text-dark);
+}
+
+.completed-work-item .work-link {
+  color: var(--accent-purple);
+  text-decoration: none;
+  transition: var(--transition-fast);
+  font-weight: 500;
+}
+
+.completed-work-item .work-link:hover {
+  color: var(--medium-purple);
+  text-decoration: underline;
+}
+
+.work-status {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.status-pending {
+  background-color: rgba(255, 193, 7, 0.2);
+  color: #cc9700;
+  border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.status-passed {
+  background-color: rgba(40, 167, 69, 0.2);
+  color: #1e7e34;
+  border: 1px solid rgba(40, 167, 69, 0.3);
+}
+
+.status-failed {
+  background-color: rgba(220, 53, 69, 0.2);
+  color: #b21f2d;
+  border: 1px solid rgba(220, 53, 69, 0.3);
+}
+
+/* Стили для статистики преподавателя - СВЕТЛЫЕ БЛОКИ */
+.teacher-stats {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat-card {
+  flex: 1;
+  padding: 1.2rem;
+  background-color: var(--card-bg-light);
+  border-radius: var(--border-radius);
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-fast);
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--accent-purple);
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: var(--text-dark);
+  font-weight: 500;
+}
+
+/* Стили для формы оценки работы - СВЕТЛЫЙ БЛОК */
+.grading-form {
+  background-color: var(--card-bg-light);
+  border-radius: var(--border-radius);
+  padding: 1.2rem;
+  margin-top: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: var(--shadow-sm);
+}
+
+.grading-form select, 
+.grading-form button {
+  margin-top: 0.5rem;
+}
+
+.grading-form select {
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: white;
+  color: var(--text-dark);
+}
+
+.grading-form button {
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, var(--accent-purple) 0%, var(--medium-purple) 100%);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.grading-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Стили для студентов и работ в режиме преподавателя - СВЕТЛЫЕ БЛОКИ */
+.student-list {
+  margin-top: 2rem;
+}
+
+.student-item {
+  background-color: var(--card-bg-light);
+  border-radius: var(--border-radius);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transition: var(--transition-fast);
+}
+
+.student-item:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.student-header {
+  background: linear-gradient(135deg, var(--medium-purple) 0%, var(--accent-purple) 100%);
+  padding: 1rem 1.5rem;
+  font-weight: 600;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.student-works {
+  padding: 1.2rem;
+}
+
+.student-work-item {
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  transition: var(--transition-fast);
+  color: var(--text-dark);
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.student-work-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--medium-purple), var(--accent-purple));
+  opacity: 0.7;
+  border-radius: var(--border-radius) 0 0 var(--border-radius);
+}
+
+.student-work-item:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  background: var(--card-hover);
+}
+
+.grade-selector {
+  display: inline-block;
+  padding: 0.5rem;
+  background-color: white;
+  border-radius: 4px;
+  margin-left: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: var(--text-dark);
+  font-weight: 500;
+}
+
+.grade-button {
+  background-color: var(--accent-purple);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  margin-left: 0.5rem;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.grade-button:hover {
+  background-color: var(--medium-purple);
+  transform: translateY(-2px);
+}
+
+/* Сообщение об отсутствии работ */
+.no-works-message {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-dark);
+  font-style: italic;
+  background-color: var(--card-bg-light);
+  border-radius: var(--border-radius);
+  margin-top: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: var(--shadow-sm);
+}
+
+.no-works-message i {
+  font-size: 3rem;
+  color: var(--accent-purple);
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+/* Анимации и дополнительные эффекты */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.fadeIn {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Адаптивный дизайн */
+@media (max-width: 768px) {
+  .practical-work-title {
+    font-size: 1.8rem;
+    padding: 1.5rem;
+  }
+  
+  .container {
+    padding: 1rem;
+  }
+  
+  .teacher-stats {
+    flex-direction: column;
+  }
+  
+  .meta-info {
+    flex-direction: column;
+    padding: 1rem;
+  }
+}
+
+/* Обеспечение светлого текста для всех элементов на странице практических работ */
+.practical-work-container {
+  color: #ffffff !important;
+}
+
+.practical-work-container * {
+  color: inherit !important;
+}
+
+/* Для специфических элементов, которые могут иметь переопределенные стили */
+.task-details, .work-header h1, .work-header h2, .work-instructions p, 
+.submission-block label, .submission-block p, .completion-info, 
+.grade-info, .deadline-info, .attachment-info {
+  color: #ffffff !important;
+}

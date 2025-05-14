@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <title>{{ lection.nameLectionMaterial }}</title>
+    <link rel="stylesheet" href="{% static 'css/LectionMaterial.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    {% include 'header.html' %}
+
+    <div class="container">
+        <h1>{{ lection.nameLectionMaterial }}</h1>
+
+        <div class="button-group">
+            <a href="{% url 'SubjectPage' lection.subjectId %}" class="back-button">
+                <i class="fas fa-arrow-left"></i> Назад к предмету
+            </a>
+            
+            {% if role_id == 2 or role_id == 1 or lection.userId == user_id %}
+                <a href="{% url 'edit_lection' lection.idLectionMaterial %}" class="edit-button">
+                    <i class="fas fa-edit"></i> Редактировать лекцию
+                </a>
+                
+                <form method="POST" action="{% url 'delete_lection' lection.idLectionMaterial %}" 
+                      class="delete-form" onsubmit="return confirm('Вы уверены, что хотите удалить эту лекцию?');">
+                    {% csrf_token %}
+                    <input type="hidden" name="subjectId" value="{{ lection.subjectId }}">
+                    <button type="submit" class="delete-button">
+                        <i class="fas fa-trash"></i> Удалить лекцию
+                    </button>
+                </form>
+            {% endif %}
+        </div>
+
+        <div class="details">
+            <p><strong>Описание:</strong> {{ lection.descriptionLectionMaterial }}</p>
+            <p><strong>Дата загрузки:</strong> {{ lection.dateUploadLectionMaterial }}</p>
+            <p><strong>Время загрузки:</strong> {{ lection.timeUploadLectionMaterial }}</p>
+            <div class="file-info">
+                <strong>Файл лекции:</strong>
+                <a href="{{ lection.urlFileLection }}" class="file-link" target="_blank">
+                    <i class="fas fa-file-alt file-icon"></i>
+                    <span>{{ lection.nameFileLection }}</span>
+                </a>
+            </div>
+            <p><strong>Преподаватель:</strong> {{ teacher.firstName }} {{ teacher.secondName }} {{ teacher.middleName }}</p>
+        </div>
+    </div>
+</body>
+</html>

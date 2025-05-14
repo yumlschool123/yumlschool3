@@ -1,0 +1,121 @@
+/* Стили для счетчика баллов */
+.score-counter {
+    position: fixed;
+    top: 150px;
+    right: 20px;
+    width: 200px;
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    z-index: 1000;
+    transition: var(--transition-fast);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.score-counter:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-3px);
+    background-color: var(--card-hover);
+}
+
+.score-counter h3 {
+    color: var(--text-light) !important;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+    border-bottom: 2px solid var(--accent-purple);
+    padding-bottom: 0.7rem;
+    text-align: center;
+}
+
+.score-counter-info {
+    margin-bottom: 1rem;
+}
+
+.total-score {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--text-light);
+    text-align: center;
+    display: block;
+    margin: 1rem 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.score-counter p {
+    margin: 0.5rem 0;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+}
+
+.score-counter-valid,
+.score-counter-invalid {
+    display: none;
+}
+
+/* Кнопка скрытия счетчика */
+.toggle-counter {
+    position: fixed;
+    top: 110px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background-color: var(--accent-purple);
+    color: var(--text-light);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    z-index: 1001;
+    font-size: 1.5rem;
+    transition: var(--transition-fast);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.toggle-counter:hover {
+    background-color: var(--medium-purple);
+    transform: rotate(180deg);
+    box-shadow: var(--shadow-md);
+}
+
+/* Скрытый счетчик */
+.score-counter.hidden {
+    transform: translateX(200px);
+    opacity: 0;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .score-counter {
+        width: 180px;
+        padding: 1rem;
+    }
+
+    .total-score {
+        font-size: 2rem;
+    }
+}
+
+/* Дополнительные стили для улучшения читаемости */
+.score-counter span {
+    color: var(--text-light);
+}
+
+.score-counter label {
+    color: var(--text-light);
+}
+
+.score-counter input {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-light);
+}
+
+.score-counter input:focus {
+    border-color: var(--accent-purple);
+    background-color: rgba(255, 255, 255, 0.15);
+} 

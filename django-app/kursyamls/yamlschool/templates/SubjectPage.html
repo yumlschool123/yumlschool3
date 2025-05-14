@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ subject.nameSubject }} | YumlSchool</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/SubjectPage.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Принудительное переопределение стилей */
+        html,
+        body {
+            background-color: #1a1225 !important;
+            color: #e9e8ee !important;
+        }
+
+        .container {
+            background-color: transparent !important;
+            box-shadow: none !important;
+        }
+
+        .main-header {
+            background-color: #1a1225 !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .main-header .container {
+            margin: 0 !important;
+            max-width: 100% !important;
+        }
+    </style>
+</head>
+
+<body>
+    {% include 'header.html' %}
+    <div class="container">
+        <div class="button-group">
+            <a href="{% url 'AllSubjectPage' %}" class="back-button">
+                <i class="fas fa-arrow-left"></i> Назад к предметам
+            </a>
+        </div>
+
+
+        <div class="container">
+            <h1>{{ subject.nameSubject }}</h1>
+
+            <div class="subject-info">
+                <p><strong>Группа:</strong> {{ group.nameGroup }}</p>
+                <p><strong>Преподаватель:</strong> {{ teacher.firstName }} {{ teacher.secondName }} {{ teacher.middleName }}</p>
+            </div>
+            
+            <div class="content-section">
+                <div class="section-header">
+                    <h2>Студенты группы</h2>
+                </div>
+                {% if students %}
+                <ul class="content-list">
+                    {% for student in students %}
+                    <li>
+                        {{ student.firstName }} {{ student.secondName }} {{ student.middleName }}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>Студенты отсутствуют</p>
+                {% endif %}
+            </div>
+            
+            <div class="content-section">
+                <div class="section-header">
+                    <h2>Лекции</h2>
+                    {% if role_id == 2 or role_id == 1 %}
+                    <a href="{% url 'create_lection' subject.idSubject %}" class="add-content-btn">
+                        <i class="fas fa-plus"></i> Добавить лекцию
+                    </a>
+                    {% endif %}
+                </div>
+                {% if lections %}
+                <ul class="content-list">
+                    {% for lection in lections %}
+                    <li>
+                        <a href="{% url 'LectionMaterial' lection.idLectionMaterial %}">
+                            <i class="fas fa-book-open"></i> {{ lection.nameLectionMaterial }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>Лекции отсутствуют</p>
+                {% endif %}
+            </div>
+
+            <div class="content-section">
+                <div class="section-header">
+                    <h2>Практические работы</h2>
+                    {% if role_id == 2 or role_id == 1 %}
+                    <a href="{% url 'create_practical_work' subject.idSubject %}" class="add-content-btn">
+                        <i class="fas fa-plus"></i> Добавить практическую работу
+                    </a>
+                    {% endif %}
+                </div>
+                {% if practical_works %}
+                <ul class="content-list">
+                    {% for work in practical_works %}
+                    <li>
+                        <a href="{% url 'PracticalWorkMaterial' work.idPracticalWork %}">
+                            <i class="fas fa-laptop-code"></i> {{ work.namePracticalWork }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>Практические работы отсутствуют</p>
+                {% endif %}
+            </div>
+
+            <div class="content-section">
+                <div class="section-header">
+                    <h2>Тесты</h2>
+                    {% if role_id == 2 or role_id == 1 %}
+                    <a href="{% url 'create_test' subject.idSubject %}" class="add-content-btn">
+                        <i class="fas fa-plus"></i> Добавить тест
+                    </a>
+                    {% endif %}
+                </div>
+                {% if tests %}
+                <ul class="content-list">
+                    {% for test in tests %}
+                    <li>
+                        <a href="{% url 'test_material' test.idTest %}">
+                            <i class="fas fa-tasks"></i> {{ test.nameTest }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>Тесты отсутствуют</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

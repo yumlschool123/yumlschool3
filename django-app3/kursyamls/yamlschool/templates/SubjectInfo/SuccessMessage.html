@@ -1,0 +1,21 @@
+<!-- SuccessMessage.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Работа прикреплена</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/SubjectPage.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Вы прикрепили работу!</h1>
+        <p><strong>Имя файла:</strong> {{ name_file_completed_work }}</p>
+        <p><strong>Дата:</strong> {{ date_upload }}</p>
+        <p><strong>Время:</strong> {{ time_upload }}</p>
+        
+        <a href="{% url 'SubjectPage' subject_id %}" class="back-button">Назад к предмету</a>
+    </div>
+</body>
+</html>

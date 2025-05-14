@@ -1,0 +1,551 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--dark-purple);
+    margin: 0;
+    padding: 0;
+    color: var(--text-light);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+
+h1, h2, h3, h4, p {
+    color: var(--text-light);
+}
+
+h2 {
+    font-size: 1.5rem;
+    margin: 1.5rem 0;
+    border-bottom: 2px solid var(--accent-purple);
+    padding-bottom: 0.5rem;
+}
+
+/* Карточки и контейнеры */
+.statistics-card, .test-info, .grading-criteria, .results-summary, .students-results {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-md);
+}
+
+/* Статистика */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.stat-item {
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    text-align: center;
+    color: var(--text-light);
+}
+
+.stat-value {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--text-light);
+}
+
+.stat-label {
+    color: var(--text-secondary);
+}
+
+/* Карточки студентов */
+.student-card {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: var(--transition-fast);
+    color: var(--text-light);
+}
+
+.student-card:hover {
+    transform: translateY(-2px);
+    background-color: var(--card-hover);
+}
+
+.student-card h3 {
+    color: var(--text-light) !important;
+}
+
+/* Таблица попыток */
+.attempts-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.attempts-table th,
+.attempts-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-light) !important;
+}
+
+/* Специальные стили для колонок даты и времени */
+.attempts-table td:nth-child(2),  /* Колонка даты */
+.attempts-table td:nth-child(3) { /* Колонка времени */
+    font-family: 'Consolas', monospace;
+    white-space: nowrap;
+    color: var(--text-light) !important;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Заголовки таблицы */
+.attempts-table thead th {
+    background-color: rgba(255, 255, 255, 0.1);
+    font-weight: 600;
+    padding: 1rem;
+    color: var(--text-light) !important;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+/* Стили для строк при наведении */
+.attempts-table tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Стили для пустых значений */
+.attempts-table td.no-data {
+    color: rgba(255, 255, 255, 0.5) !important;
+    font-style: italic;
+}
+
+/* Статусы и оценки */
+.grade-cell.passed {
+    color: var(--success);
+}
+
+.grade-cell.failed {
+    color: var(--danger);
+}
+
+.no-attempts {
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* Кнопки */
+.button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--accent-purple);
+    color: var(--text-light);
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    transition: var(--transition-fast);
+}
+
+.button:hover {
+    background-color: var(--medium-purple);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Пустое состояние */
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    color: var(--text-light);
+}
+
+.empty-state i {
+    font-size: 3rem;
+    color: var(--accent-purple);
+    margin-bottom: 1rem;
+}
+
+/* Информация о попытках */
+.attempt-info {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    color: var(--text-light);
+}
+
+.attempt-info span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-light);
+}
+
+.attempts-count, .best-score {
+    color: var(--text-light);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1rem;
+    }
+    
+    .student-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .attempt-info {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .attempts-table {
+        font-size: 0.9rem;
+    }
+}
+
+/* Стили для таблицы критериев оценивания */
+.criteria-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+
+.criteria-table th, .criteria-table td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.criteria-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.criteria-table tr:hover {
+    background-color: #f5f5f5;
+}
+
+.grade-2-row {
+    background-color: rgba(220, 53, 69, 0.1);
+}
+
+.grade-2-row:hover {
+    background-color: rgba(220, 53, 69, 0.2);
+}
+
+/* Стили для оценок в таблице критериев */
+.criteria-table strong[data-grade], .results-table strong[data-grade] {
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    min-width: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+strong[data-grade="5"] {
+    background-color: #28a745;
+    color: white;
+}
+
+strong[data-grade="4"] {
+    background-color: #17a2b8;
+    color: white;
+}
+
+strong[data-grade="3"] {
+    background-color: #ffc107;
+    color: #333;
+}
+
+strong[data-grade="2"] {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* Стили для сводки результатов */
+.summary-cards {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.summary-card {
+    flex: 1;
+    min-width: 200px;
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s;
+    color: var(--text-light);
+}
+
+.summary-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.summary-value {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+}
+
+.summary-label {
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+/* Стили для таблицы результатов */
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.results-table th, .results-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    color: var(--text-light);
+}
+
+.results-table th {
+    background-color: rgba(255, 255, 255, 0.1);
+    font-weight: bold;
+    color: var(--text-light);
+}
+
+.results-table tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Стили для строк с разными статусами */
+.results-table tr.passed {
+    background-color: rgba(40, 167, 69, 0.05);
+}
+
+.results-table tr.passed:hover {
+    background-color: rgba(40, 167, 69, 0.1);
+}
+
+.results-table tr.failed {
+    background-color: rgba(220, 53, 69, 0.05);
+}
+
+.results-table tr.failed:hover {
+    background-color: rgba(220, 53, 69, 0.1);
+}
+
+.results-table tr.not-attempted {
+    background-color: rgba(108, 117, 125, 0.05);
+}
+
+.results-table tr.not-attempted:hover {
+    background-color: rgba(108, 117, 125, 0.1);
+}
+
+/* Стили для статусов */
+.status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.status.passed {
+    background-color: var(--success);
+    color: var(--text-light);
+}
+
+.status.failed {
+    background-color: var(--danger);
+    color: var(--text-light);
+}
+
+.status.not-attempted {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: var(--text-light);
+}
+
+/* Стили для кнопок действий */
+.actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.no-results {
+    text-align: center;
+    color: var(--text-secondary);
+    font-style: italic;
+    padding: 2rem;
+}
+
+/* Основные стили */
+.student-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    color: var(--text-light);
+}
+
+/* Список попыток */
+.attempts-list {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.attempts-list h4 {
+    color: var(--text-light);
+    margin-bottom: 1rem;
+}
+
+.grade-cell {
+    font-weight: bold;
+    color: var(--text-light);
+}
+
+/* Заголовки */
+.page-header h1,
+.page-header .description,
+.students-results h2 {
+    color: var(--text-light);
+}
+
+.no-attempts {
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* Обновляем все текстовые элементы на белый цвет */
+body, 
+h1, h2, h3, h4, h5, h6,
+p, span, div, td, th,
+.student-info,
+.attempt-info,
+.attempts-count,
+.best-score,
+.grade,
+.no-attempts,
+.empty-state p,
+.stat-label,
+.stat-value,
+.summary-value,
+.summary-label,
+.description,
+.student-card h3,
+.attempts-list h4,
+.no-data,
+.status {
+    color: var(--text-light) !important;
+}
+
+/* Обновляем цвета для таблицы */
+.attempts-table th,
+.attempts-table td {
+    color: var(--text-light) !important;
+}
+
+/* Обновляем цвета для статистики */
+.stat-item {
+    color: var(--text-light) !important;
+}
+
+.stat-item .stat-value,
+.stat-item .stat-label {
+    color: var(--text-light) !important;
+}
+
+/* Обновляем цвета для карточек студентов */
+.student-card {
+    color: var(--text-light) !important;
+}
+
+.student-card * {
+    color: var(--text-light) !important;
+}
+
+/* Обновляем цвета для попыток */
+.attempt-info span {
+    color: var(--text-light) !important;
+}
+
+/* Обновляем цвета для статусов, сохраняя цветовое кодирование */
+.status.passed {
+    background-color: var(--success);
+    color: var(--text-light) !important;
+}
+
+.status.failed {
+    background-color: var(--danger);
+    color: var(--text-light) !important;
+}
+
+.status.not-attempted {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: var(--text-light) !important;
+}
+
+/* Обновляем цвета для оценок */
+.grade-cell {
+    color: var(--text-light) !important;
+}
+
+.grade-cell.passed {
+    color: var(--success) !important;
+}
+
+.grade-cell.failed {
+    color: var(--danger) !important;
+}
+
+/* Обновляем цвета для пустых состояний */
+.no-data,
+.no-attempts {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Обновляем цвета для заголовков таблицы */
+.attempts-table thead th {
+    color: var(--text-light) !important;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Обновляем цвета для статистики */
+.statistics-card h2,
+.statistics-card .stat-label,
+.statistics-card .stat-value {
+    color: var(--text-light) !important;
+}
+
+/* Обновляем цвета для описания */
+.page-header .description {
+    color: var(--text-light) !important;
+}
+
+/* Обновляем цвета для иконок */
+.fas {
+    color: var(--text-light) !important;
+} 

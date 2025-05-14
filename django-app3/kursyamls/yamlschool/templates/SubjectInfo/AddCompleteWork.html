@@ -1,0 +1,541 @@
+<!-- AddCompleteWork.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавить выполненную работу</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Принудительное переопределение стилей для тёмной темы */
+        html, body {
+            background-color: #1a1225 !important;
+            color: #ffffff !important;
+            min-height: 100vh;
+            width: 100%;
+            font-family: 'Roboto', sans-serif !important;
+        }
+        
+        /* Глобальное переопределение цвета текста */
+        *, *::before, *::after {
+            color: #ffffff !important;
+        }
+        
+        /* Базовые переменные */
+        :root {
+            --dark-purple: #1a1225;
+            --medium-purple: #7743DB;
+            --light-purple: #B39DDB;
+            --accent-purple: #9D4EDD;
+            --text-light: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.85);
+            --card-bg: #272134;
+            --card-hover: #362b48;
+            --gradient-bg: linear-gradient(135deg, #1a1225 0%, #3a1d69 100%);
+            --shadow-md: 0 6px 12px rgba(0, 0, 0, 0.4);
+            --border-radius: 12px;
+            --glow: 0 0 15px rgba(157, 78, 221, 0.5);
+        }
+        
+        /* Обеспечение темного фона для всех потенциальных контейнеров */
+        .main-header {
+            background-color: var(--dark-purple) !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .main-header .container {
+            background-color: transparent !important;
+            box-shadow: none !important;
+        }
+        
+        .main-header .logo,
+        .main-header .user-info,
+        .main-header .user-name,
+        .main-header .user-role {
+            color: var(--text-light) !important;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 30px;
+            background: linear-gradient(145deg, #272134, #231630) !important;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        /* Анимация появления */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Улучшенные стили заголовка */
+        h1 {
+            color: var(--text-light) !important;
+            text-align: center;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            font-size: 28px;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        h1:after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent-purple), transparent);
+        }
+        
+        form {
+            margin-top: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: var(--text-light) !important;
+            font-size: 16px;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Улучшенные поля ввода */
+        input[type="text"],
+        input[type="url"] {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 25px;
+            background-color: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            font-size: 16px;
+            color: var(--text-light) !important;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        input[type="text"]:focus,
+        input[type="url"]:focus {
+            border-color: var(--accent-purple);
+            outline: none;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), 0 0 10px rgba(157, 78, 221, 0.4);
+            background-color: rgba(0, 0, 0, 0.35);
+        }
+        
+        /* Улучшенные стили плейсхолдеров */
+        ::placeholder {
+            color: rgba(255, 255, 255, 0.5) !important;
+            opacity: 1;
+        }
+        
+        /* Улучшенная кнопка отправки */
+        button[type="submit"] {
+            background: linear-gradient(135deg, var(--accent-purple) 0%, var(--medium-purple) 100%);
+            color: white !important;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        button[type="submit"]:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.2), 
+                transparent);
+            transition: all 0.6s ease;
+            z-index: -1;
+        }
+        
+        button[type="submit"]:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(157, 78, 221, 0.5);
+        }
+        
+        button[type="submit"]:hover:before {
+            left: 100%;
+        }
+        
+        button[type="submit"]:active {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        button[type="submit"]::after {
+            content: '\f15b';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            margin-left: 10px;
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        button[type="submit"]:hover::after {
+            opacity: 1;
+            right: 20px;
+        }
+        
+        /* Улучшенная кнопка "Назад" */
+        .back-button {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-light) !important;
+            padding: 12px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            margin-top: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .back-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                rgba(157, 78, 221, 0.1),
+                rgba(157, 78, 221, 0.3));
+            transition: all 0.3s ease;
+            z-index: -1;
+        }
+        
+        .back-button:hover {
+            background-color: rgba(255, 255, 255, 0.12);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-decoration: none;
+            color: white !important;
+            border-color: rgba(157, 78, 221, 0.3);
+        }
+        
+        .back-button:hover:before {
+            width: 100%;
+        }
+        
+        .back-button::after {
+            content: '\f060';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            margin-right: 10px;
+        }
+        
+        /* Улучшенный счетчик попыток */
+        .attempt-counter {
+            display: flex;
+            margin: 15px 0 25px 0;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            align-items: center;
+            border-left: 5px solid var(--accent-purple);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .attempt-counter:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(157, 78, 221, 0.05), 
+                transparent);
+            z-index: 0;
+        }
+        
+        .attempt-counter-label {
+            font-weight: 500;
+            margin-right: 15px;
+            color: var(--text-light) !important;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .attempt-circle {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            margin: 0 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+            color: white !important;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .attempt-used {
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+        }
+        
+        .attempt-current {
+            background: linear-gradient(135deg, #ff9800, #f57c00);
+            box-shadow: 0 0 15px rgba(255, 152, 0, 0.5);
+            transform: scale(1.2);
+        }
+        
+        .attempt-available {
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+        }
+        
+        .attempt-inactive {
+            background: linear-gradient(135deg, #9e9e9e, #616161);
+            opacity: 0.6;
+        }
+        
+        /* Улучшенные баннеры */
+        .info-banner {
+            background: rgba(33, 150, 243, 0.1);
+            border-left: 5px solid #2196f3;
+            color: var(--text-light) !important;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0 30px 0;
+            font-weight: 500;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .info-banner:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(33, 150, 243, 0.05), 
+                transparent);
+            z-index: 0;
+        }
+        
+        .info-banner i {
+            color: #2196f3 !important;
+            margin-right: 10px;
+            font-size: 18px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .error-banner {
+            background: rgba(244, 67, 54, 0.1);
+            border-left: 5px solid #f44336;
+            color: var(--text-light) !important;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0 30px 0;
+            font-weight: 500;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .error-banner:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(244, 67, 54, 0.05), 
+                transparent);
+            z-index: 0;
+        }
+        
+        .error-banner i {
+            color: #f44336 !important;
+            margin-right: 10px;
+            font-size: 18px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Улучшенные группы полей */
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .form-group-icon {
+            position: relative;
+        }
+        
+        .form-group-icon i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-purple) !important;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+        
+        .form-group-icon:hover i {
+            color: var(--text-light) !important;
+        }
+        
+        .form-group-icon input {
+            padding-left: 45px;
+        }
+        
+        .form-helper {
+            font-size: 13px;
+            color: var(--text-secondary) !important;
+            margin-top: -20px;
+            margin-bottom: 20px;
+            display: block;
+            opacity: 0.8;
+            margin-left: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group:hover .form-helper {
+            opacity: 1;
+            color: var(--text-light) !important;
+        }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    
+    <div class="container">
+        <h1>Добавить выполненную работу</h1>
+        
+        {% if attempt_count %}
+            <div class="attempt-counter">
+                <span class="attempt-counter-label">
+                    {% if attempt_count == 1 %}
+                        Первая попытка:
+                    {% elif attempt_count == 2 %}
+                        Вторая попытка:
+                    {% elif attempt_count == 3 %}
+                        Последняя попытка:
+                    {% endif %}
+                </span>
+                {% for i in "123" %}
+                    {% if forloop.counter < attempt_count %}
+                        <div class="attempt-circle attempt-used">{{ forloop.counter }}</div>
+                    {% elif forloop.counter == attempt_count %}
+                        <div class="attempt-circle attempt-current">{{ forloop.counter }}</div>
+                    {% else %}
+                        <div class="attempt-circle attempt-available">{{ forloop.counter }}</div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            
+            {% if max_attempts_reached %}
+                <div class="error-banner">
+                    <i class="fas fa-exclamation-triangle"></i> Вы исчерпали все попытки для сдачи этой работы. Обратитесь к преподавателю.
+                </div>
+            {% else %}
+                <div class="info-banner">
+                    <i class="fas fa-info-circle"></i> Введите название файла и URL, по которому можно найти вашу работу.
+                    {% if attempt_count > 1 %}
+                        <br><i class="fas fa-exclamation-circle"></i> Это попытка {{ attempt_count }} из 3. Осталось попыток: {{ 3|add:"-"|add:attempt_count|add:"1" }}.
+                    {% endif %}
+                </div>
+                
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    
+                    <div class="form-group">
+                        <label for="nameFileCompletedWork">Название файла:</label>
+                        <div class="form-group-icon">
+                            <i class="fas fa-file-alt"></i>
+                            <input type="text" id="nameFileCompletedWork" name="nameFileCompletedWork" required 
+                                   placeholder="Например: Иванов_задание1.docx">
+                        </div>
+                        <span class="form-helper">Введите понятное имя файла с вашей работой</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="urlFileCompletedWork">Ссылка на файл:</label>
+                        <div class="form-group-icon">
+                            <i class="fas fa-link"></i>
+                            <input type="url" id="urlFileCompletedWork" name="urlFileCompletedWork" required 
+                                   placeholder="https://example.com/my-work.pdf">
+                        </div>
+                        <span class="form-helper">Укажите URL-адрес, где хранится ваша работа (Google Drive, Dropbox и т.д.)</span>
+                    </div>
+                    
+                    <input type="hidden" name="statusId" value="2">
+                    <input type="hidden" name="attempt_count" value="{{ attempt_count|default:'1' }}">
+                
+                    <button type="submit">
+                        {% if attempt_count > 1 %}
+                            Отправить исправленную работу (попытка {{ attempt_count }} из 3)
+                        {% else %}
+                            Добавить выполненную работу
+                        {% endif %}
+                    </button>
+                </form>
+            {% endif %}
+        {% else %}
+            <div class="attempt-counter">
+                <span class="attempt-counter-label">Первая попытка:</span>
+                <div class="attempt-circle attempt-current">1</div>
+                <div class="attempt-circle attempt-available">2</div>
+                <div class="attempt-circle attempt-available">3</div>
+            </div>
+        {% endif %}
+        
+        {% if subject_id %}
+            <a href="{% url 'SubjectPage' subject_id %}" class="back-button">Назад к предмету</a>
+        {% else %}
+            <a href="{% url 'PracticalWorkMaterial' practical_work.idPracticalWork %}" class="back-button">Назад к практической работе</a>
+        {% endif %}
+    </div>
+</body>
+</html>

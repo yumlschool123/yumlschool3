@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Практическая работа: {{ practical_work.namePracticalWork }}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/WorkMaterial.css' %}">
+</head>
+<body>
+    {% include 'header.html' %} 
+
+    <div class="container">
+        <h1>Практическая работа: {{ practical_work.namePracticalWork }}</h1>
+        <div class="details">
+            <p><strong>Описание:</strong> {{ practical_work.descriptionPracticalWork }}</p>
+            <p><strong>Дата загрузки:</strong> {{ practical_work.dateUploadPracticalWork }}</p>
+            <p><strong>Время загрузки:</strong> {{ practical_work.timeUploadPracticalWork }}</p>
+            <div class="file-info">
+                <strong>Ссылка на файл:</strong>
+                <a href="{{ practical_work.urlFilePracticalWork }}" class="file-link">
+                    <div class="file-icon">📄</div>
+                    <span>{{ practical_work.nameFilePracticalWork }}</span>
+                </a>
+            </div>
+        </div>
+
+        <a href="{% url 'AddCompleteWork' practical_work.idPracticalWork %}" class="add-completed-work-button">Добавить выполненную работу</a>
+        <a href="{% url 'SubjectPage' practical_work.subjectId %}" class="back-button">Назад к предмету</a>
+
+        <h2>Сданные работы:</h2>
+        <ul>
+            {% for work in completed_works %}
+                <li class="completed-work">
+                    <strong>Имя файла:</strong> <a href="{{ work.urlFileCompletedWork }}" class="file-link">{{ work.nameFileCompletedWork }}</a> <br>
+                    <strong>Дата:</strong> {{ work.dateUploadCompletedWork }} <br>
+                    <strong>Время:</strong> {{ work.timeUploadCompletedWork }} <br>
+                    <strong>Оценка:</strong> {{ work.grade }} <br>
+                    <strong>Статус:</strong>
+                    {% if work.statusId == 1 %}
+                        Работа оценена.
+                    {% else %}
+                        Работа не оценена.
+                    {% endif %}
+                </li>
+            {% empty %}
+                <li>Нет сданных работ.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

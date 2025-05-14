@@ -1,0 +1,525 @@
+/* Темная пурпурная тема для страницы результатов теста */
+:root {
+    --dark-purple: #1a1225;
+    --medium-purple: #7743DB;
+    --light-purple: #B39DDB;
+    --accent-purple: #9D4EDD;
+    --text-light: #ffffff;
+    --text-bright: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.9);
+    --card-bg: #272134;
+    --card-hover: #362b48;
+    --gradient-bg: linear-gradient(135deg, #1a1225 0%, #3a1d69 100%);
+    --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 6px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.5);
+    --transition-slow: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    --transition-fast: all 0.2s ease;
+    --border-radius: 12px;
+    --card-spacing: 1.75rem;
+    
+    /* Функциональные цвета с повышенной яркостью */
+    --success: #4CAF50;
+    --success-dark: #388E3C;
+    --success-light: rgba(76, 175, 80, 0.15);
+    --success-text: #C8E6C9;
+    --danger: #F44336;
+    --danger-dark: #D32F2F;
+    --danger-light: rgba(244, 67, 54, 0.15);
+    --danger-text: #FFCDD2;
+    --warning: #FFC107;
+    --warning-dark: #FFA000;
+    --warning-light: rgba(255, 193, 7, 0.15);
+    --warning-text: #FFECB3;
+    --info: #2196F3;
+    --info-dark: #1976D2;
+    --info-light: rgba(33, 150, 243, 0.15);
+    --info-text: #B3E5FC;
+}
+
+/* Принудительное переопределение базовых стилей */
+html {
+    background-color: var(--dark-purple) !important;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--dark-purple) !important;
+    background-image: radial-gradient(circle at top right, rgba(121, 68, 154, 0.13), transparent),
+                     radial-gradient(circle at bottom left, rgba(41, 10, 89, 0.13), transparent);
+    color: var(--text-light) !important;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    color: var(--text-light);
+}
+
+h1 {
+    color: var(--text-bright) !important;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.2rem;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    position: relative;
+    padding-bottom: 0.8rem;
+    letter-spacing: 0.5px;
+}
+
+h1::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 3px;
+    background-color: var(--accent-purple);
+    border-radius: 3px;
+}
+
+h2 {
+    color: var(--text-bright) !important;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.7rem;
+    position: relative;
+    letter-spacing: 0.3px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+h2::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 70px;
+    height: 3px;
+    background-color: var(--accent-purple);
+    border-radius: 3px;
+}
+
+/* Единый стиль для всех карточек */
+.results-card, .grading-criteria, .previous-attempts {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 1.8rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: var(--transition-fast);
+    position: relative;
+    overflow: hidden;
+    color: var(--text-light);
+}
+
+.results-card::before, .grading-criteria::before, .previous-attempts::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1" d="M0,0 L100,100 M100,0 L0,100"/></svg>');
+    background-size: 20px 20px;
+    opacity: 0.3;
+    z-index: 0;
+}
+
+.results-card:hover, .grading-criteria:hover, .previous-attempts:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    background-color: var(--card-hover);
+}
+
+/* Содержимое карточек */
+.score-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.score, .grade, .completion-time {
+    display: flex;
+    align-items: center;
+    font-size: 1.15rem;
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+.score::before, .grade::before, .completion-time::before {
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    margin-right: 12px;
+    font-size: 1.2rem;
+    color: var(--light-purple);
+    width: 25px;
+    text-align: center;
+}
+
+.score::before { content: "\f005"; } /* звезда */
+.grade::before { content: "\f091"; } /* трофей */
+.completion-time::before { content: "\f017"; } /* часы */
+
+.score strong, .completion-time strong {
+    color: var(--text-bright);
+    font-weight: 600;
+    margin-left: 5px;
+}
+
+.grade strong {
+    font-size: 1.3rem;
+    padding: 6px 12px;
+    border-radius: 6px;
+    display: inline-block;
+    min-width: 30px;
+    text-align: center;
+    margin-left: 5px;
+    box-shadow: var(--shadow-sm);
+}
+
+/* Стили для разных оценок с повышенной контрастностью */
+.grade strong[data-grade="5"] {
+    background-color: var(--success);
+    color: white !important;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+.grade strong[data-grade="4"] {
+    background-color: var(--info);
+    color: white !important;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+.grade strong[data-grade="3"] {
+    background-color: var(--warning);
+    color: var(--dark-purple) !important;
+    font-weight: 700;
+}
+
+.grade strong[data-grade="2"] {
+    background-color: var(--danger);
+    color: white !important;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+/* Информация о пересдаче со светлым текстом */
+.retake-info {
+    margin-top: 25px;
+    padding: 18px;
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 1.05rem;
+    position: relative;
+    box-shadow: var(--shadow-sm);
+}
+
+.retake-info p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.retake-info::before {
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    margin-right: 12px;
+    font-size: 1.2rem;
+}
+
+.retake-info.success {
+    background-color: #1e392a; /* Темно-зеленый фон */
+    color: var(--success-text); /* Светлый зеленый текст */
+    border-left: 4px solid var(--success);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Добавление тени для выделения */
+}
+
+.retake-info.success::before {
+    content: "\f058"; /* галочка в круге */
+    color: var(--success); /* Сохраняем зеленый цвет для иконки */
+}
+
+.retake-info.success p {
+    color: #c8e6c9; /* Светло-зеленый текст для лучшей видимости */
+    font-weight: 500; /* Немного жирнее для лучшей читаемости */
+}
+
+.retake-info.warning {
+    background-color: var(--card-hover);
+    color: var(--warning-text);
+    border-left: 4px solid var(--warning);
+}
+
+.retake-info.warning::before {
+    content: "\f071"; /* предупреждение */
+    color: var(--warning);
+}
+
+.retake-info.danger {
+    /* background-color: var(--danger-light); */
+    color: var(--danger-text);
+    border-left: 4px solid var(--danger);
+}
+
+.retake-info.danger::before {
+    content: "\f057"; /* X в круге */
+    color: var(--danger);
+}
+
+.retake-btn {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: var(--warning);
+    color: var(--dark-purple);
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 700;
+    transition: all 0.2s;
+    box-shadow: var(--shadow-sm);
+}
+
+.retake-btn::before {
+    content: "\f2f1"; /* иконка обновления */
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    margin-right: 10px;
+}
+
+.retake-btn:hover {
+    background-color: var(--warning-dark);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Таблицы со светлым текстом */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    color: var(--text-light);
+}
+
+table th, table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    position: relative;
+}
+
+table th {
+    background-color: rgba(157, 78, 221, 0.2);
+    color: var(--text-bright);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+table tr:last-child td {
+    border-bottom: none;
+}
+
+table tr:nth-child(odd) {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+table tr:hover {
+    background-color: rgba(157, 78, 221, 0.1);
+}
+
+table td {
+    color: var(--text-light);
+}
+
+table td strong[data-grade] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 35px;
+    min-height: 35px;
+    padding: 5px;
+    border-radius: 50%;
+    font-weight: 700;
+    box-shadow: var(--shadow-sm);
+}
+
+.criteria-table {
+    margin-top: 20px;
+    overflow-x: auto;
+    position: relative;
+    z-index: 1;
+    padding-bottom: 5px;
+}
+
+.criteria-table table {
+    width: 100%;
+    margin-bottom: 0;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.criteria-table th {
+    text-align: center;
+    padding: 15px 20px;
+}
+
+.criteria-table td {
+    text-align: center;
+    padding: 12px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.criteria-table strong[data-grade] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 1.2rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.grade-2-row {
+    background-color: rgba(220, 53, 69, 0.1) !important;
+}
+
+.grade-2-row:hover {
+    background-color: rgba(220, 53, 69, 0.2) !important;
+}
+
+.grade-2-row td {
+    color: var(--danger-text) !important;
+}
+
+/* Кнопки со светлым текстом */
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.actions a {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 25px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.25s;
+    box-shadow: var(--shadow-sm);
+    letter-spacing: 0.3px;
+}
+
+.actions a::before {
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    margin-right: 10px;
+}
+
+.actions a:first-child {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-bright) !important;
+}
+
+.actions a:first-child::before {
+    content: "\f060"; /* стрелка влево */
+}
+
+.actions a:first-child:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+.button {
+    background-color: var(--accent-purple) !important;
+    color: white !important;
+}
+
+.button::before {
+    content: "\f0a8" !important; /* стрелка назад */
+}
+
+.button:hover {
+    background-color: #8637c6 !important;
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1rem;
+        margin: 1rem auto;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    h2 {
+        font-size: 1.4rem;
+    }
+
+    .results-card, .grading-criteria, .previous-attempts {
+        padding: 1.5rem;
+    }
+
+    .score-info {
+        gap: 15px;
+    }
+
+    .score, .grade, .completion-time {
+        font-size: 1.05rem;
+    }
+
+    .retake-info {
+        padding: 15px;
+        font-size: 0.95rem;
+    }
+
+    .actions {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .actions a {
+        width: 100%;
+        justify-content: center;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    table th, table td {
+        padding: 12px 10px;
+    }
+
+    .criteria-table th, .criteria-table td {
+        padding: 10px;
+    }
+} 

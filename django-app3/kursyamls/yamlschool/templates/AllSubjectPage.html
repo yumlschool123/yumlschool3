@@ -1,0 +1,102 @@
+<!-- AllSubjectPage.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Все Предметы | YumlSchool</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/AllSubjectPage.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Принудительное переопределение стилей */
+        html, body {
+            background-color: #1a1225 !important;
+            color: #e9e8ee !important;
+        }
+        
+        .container {
+            background-color: transparent !important;
+            box-shadow: none !important;
+        }
+        
+        .main-header {
+            background-color: #1a1225 !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .main-header .container {
+            margin: 0 !important;
+            max-width: 100% !important;
+        }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    
+    <section class="hero-section">
+        <div class="container">
+            <h1>Мои предметы</h1>
+            <p>Изучайте материалы, выполняйте задания и проходите тесты для успешного освоения программы обучения</p>
+        </div>
+    </section>
+    
+    <div class="subjects-container">
+        {% if subjects %}
+            <div class="subject-list">
+                {% for subject in subjects %}
+                    <a href="{% url 'SubjectPage' subject.idSubject %}" class="subject-card-link">
+                        <div class="subject-card">
+                            <div class="card-content">
+                                {% if request.session.role_id == 2 %}
+                                    <div class="subject-status">Преподаватель</div>
+                                {% endif %}
+                                <div class="card-header">
+                                    <div class="subject-icon">
+                                        <i class="fas fa-book"></i>
+                                    </div>
+                                    <h3 class="subject-title">{{ subject.nameSubject }}</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="subject-info">
+                                        <div class="info-item">
+                                            <i class="fas fa-users"></i>
+                                            <span>
+                                                {% for group in groups %}
+                                                    {% if group.idGroup == subject.idGroup %}
+                                                        {{ group.nameGroup }}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </span>
+                                        </div>
+                                        <div class="info-item">
+                                            <i class="fas fa-chalkboard-teacher"></i>
+                                            <span>
+                                                {% for user in users %}
+                                                    {% if user.idUser == subject.userId %}
+                                                        {{ user.firstName }} {{ user.secondName }} {{ user.middleName }}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="subject-actions">
+                                        <span class="view-subject">Перейти к предмету</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-subjects">
+                <i class="fas fa-search"></i>
+                <h2>Нет доступных предметов</h2>
+                <p>В данный момент у вас нет доступных предметов для изучения.</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

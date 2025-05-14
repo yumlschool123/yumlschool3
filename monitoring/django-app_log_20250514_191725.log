@@ -1,0 +1,11 @@
+
+152 static files copied to '/app/static'.
+[2025-05-14 16:14:11 +0000] [8] [INFO] Starting gunicorn 21.2.0
+[2025-05-14 16:14:11 +0000] [8] [INFO] Listening at: http://0.0.0.0:8000 (8)
+[2025-05-14 16:14:11 +0000] [8] [INFO] Using worker: sync
+[2025-05-14 16:14:11 +0000] [9] [INFO] Booting worker with pid: 9
+[2025-05-14 16:15:09 +0000] [8] [CRITICAL] WORKER TIMEOUT (pid:9)
+[2025-05-14 16:15:09 +0000] [9] [INFO] Worker exiting (pid: 9)
+[2025-05-14 16:15:09 +0000] [8] [ERROR] Worker (pid:9) exited with code 1
+[2025-05-14 16:15:09 +0000] [8] [ERROR] Worker (pid:9) exited with code 1.
+[2025-05-14 16:15:09 +0000] [10] [INFO] Booting worker with pid: 10

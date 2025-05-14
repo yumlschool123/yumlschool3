@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <title>Результаты студентов - {{ test.nameTest }}</title>
+    <link rel="stylesheet" href="{% static 'css/TestMaterial.css' %}">
+    <link rel="stylesheet" href="{% static 'css/TestStudentsResults.css' %}">
+</head>
+<body>
+    {% include 'header.html' %}
+
+    <div class="container">
+        <div class="page-header">
+            <h1>{{ test.nameTest }} - Результаты студентов</h1>
+            <p class="description">{{ test.descriptionTest }}</p>
+        </div>
+
+        <div class="statistics-card">
+            <h2>Общая статистика</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <i class="fas fa-users"></i>
+                    <span class="stat-value">{{ total_students }}</span>
+                    <span class="stat-label">Всего студентов</span>
+                </div>
+                <div class="stat-item passed">
+                    <i class="fas fa-check-circle"></i>
+                    <span class="stat-value">{{ passed_students }}</span>
+                    <span class="stat-label">Сдали тест</span>
+                </div>
+                <div class="stat-item failed">
+                    <i class="fas fa-times-circle"></i>
+                    <span class="stat-value">{{ not_passed_students }}</span>
+                    <span class="stat-label">Не сдали тест</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="students-results">
+            <h2>Результаты по студентам</h2>
+            {% if students %}
+                {% for student in students %}
+                    <div class="student-card {% if student.has_passed %}passed{% else %}not-passed{% endif %}">
+                        <div class="student-info">
+                            <h3>{{ student.secondName }} {{ student.firstName }} {{ student.middleName }}</h3>
+                            <div class="attempt-info">
+                                <span class="attempts-count">
+                                    <i class="fas fa-redo"></i> Попыток: {{ student.attempts_count }}
+                                </span>
+                                {% if student.best_attempt %}
+                                    <span class="best-score">
+                                        <i class="fas fa-star"></i> Лучший результат: {{ student.best_attempt.score }} баллов
+                                    </span>
+                                    <span class="grade {% if student.best_attempt.grade >= 3 %}passed{% else %}failed{% endif %}">
+                                        <i class="fas fa-graduation-cap"></i> Оценка: {{ student.best_attempt.grade }}
+                                    </span>
+                                {% else %}
+                                    <span class="no-attempts">Нет попыток</span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        {% if student.all_attempts %}
+                            <div class="attempts-list">
+                                <h4>История попыток:</h4>
+                                <table class="attempts-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Попытка</th>
+                                            <th>Дата</th>
+                                            <th>Время</th>
+                                            <th>Оценка</th>
+                                            <th>Баллы</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for attempt in student.all_attempts %}
+                                            <tr>
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ attempt.dateTestAttempt|default:"Нет данных" }}</td>
+                                                <td>{{ attempt.timeTestAttempt|default:"Нет данных" }}</td>
+                                                <td class="grade-cell {% if attempt.grade >= 3 %}passed{% else %}failed{% endif %}">
+                                                    {{ attempt.grade }}
+                                                </td>
+                                                <td>{{ attempt.score }}</td>
+                                            </tr>
+                                        {% empty %}
+                                            <tr>
+                                                <td colspan="5" class="no-data">Нет попыток</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-user-graduate"></i>
+                    <p>Нет данных о результатах студентов</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="actions">
+            <a href="{% url 'test_material' test.idTest %}" class="button back">
+                <i class="fas fa-arrow-left"></i> Вернуться к тесту
+            </a>
+        </div>
+    </div>
+</body>
+</html> 

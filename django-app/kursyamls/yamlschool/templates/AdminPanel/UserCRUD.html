@@ -1,0 +1,290 @@
+<!-- AdminPanel/UserCRUD.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление Пользователями</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/UserCRUD.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'css/AdminPanel.css' %}">
+    <link rel="stylesheet" href="{% static 'css/PracticalWork.css' %}">
+    <link rel="stylesheet" href="{% static 'css/CreateTest.css' %}">
+    <link rel="stylesheet" href="{% static 'css/TestEditor.css' %}">
+
+    <style>
+        :root {
+            --dark-purple: #1a1225;
+            --medium-purple: #7743DB;
+            --light-purple: #B39DDB;
+            --accent-purple: #9D4EDD;
+        }
+
+        /* body {
+            background-color: var(--dark-purple);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        } */
+
+        .content-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .message-box {
+            background: linear-gradient(135deg, #272134 0%, #3a1d69 100%);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            max-width: 600px;
+            width: 90%;
+            margin: 2rem auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .icon-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .icon-container i {
+            font-size: 4rem;
+            color: var(--accent-purple);
+        }
+
+        h1 {
+            color: var(--text-light);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.4;
+        }
+
+        .user-info {
+            color: var(--text-secondary);
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--medium-purple);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            margin-top: 1.5rem;
+        }
+
+        .back-button:hover {
+            background-color: var(--accent-purple);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .message-box {
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            .icon-container i {
+                font-size: 3rem;
+            }
+        }
+    </style></head>
+<body>
+    {% include 'header.html' %} 
+    {% if request.session.role_id == 1 %}
+
+
+    <div class="container">
+        <div class="header-section">
+            <a href="{% url 'adminPage' %}" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                Назад к панели администратора
+            </a>
+            <h1>Управление Пользователями</h1>
+        </div>
+        
+        <!-- Блок сообщений -->
+        {% if messages %}
+        <div class="message-container">
+            {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}error{% elif message.tags == 'success' %}success{% elif message.tags == 'warning' %}warning{% else %}info{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <div class="search-options">
+            <form method="GET" action="{% url 'user_crud' %}">
+                <input type="text" name="search" placeholder="Поиск по ФИО" value="{{ request.GET.search }}">
+                <button type="submit">Поиск</button>
+            </form>
+        </div>
+
+        <div class="filter-options">
+            <form method="GET" action="{% url 'user_crud' %}">
+                <label for="group_id">Фильтр по группе:</label>
+                <select name="group_id" id="group_id" onchange="this.form.submit()">
+                    <option value="">Все группы</option>
+                    {% for group in groups %}
+                        <option value="{{ group.idGroup }}" {% if group.idGroup|stringformat:"s" == request.GET.group_id %}selected{% endif %}>
+                            {{ group.nameGroup }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </form>
+        </div>
+
+        <div class="filter-options">
+            <form method="GET" action="{% url 'user_crud' %}">
+                <label for="sort_by">Сортировка по пользователям:</label>
+                <select name="sort_by" id="sort_by" onchange="this.form.submit()">
+                    <option value="secondName" {% if request.GET.sort_by == 'secondName' %}selected{% endif %}>Имя</option>
+                    <option value="firstName" {% if request.GET.sort_by == 'firstName' %}selected{% endif %}>Фамилия</option>
+                    <option value="group" {% if request.GET.sort_by == 'group' %}selected{% endif %}>Группа</option>
+                </select>
+                <input type="hidden" name="search" value="{{ request.GET.search }}">
+                <input type="hidden" name="group_id" value="{{ request.GET.group_id }}">
+            </form>
+        </div>
+        
+        <div class="user-list">
+            {% for user in users %}
+            <div class="user-card" id="user-{{ user.idUser }}">
+                <div class="user-info">
+                    <h3>  {{ user.firstName }} {{ user.secondName }} {{ user.middleName }}</h3>
+                </div>
+
+                <div class="crud-actions">
+                    <form action="{% url 'edit_user' user.idUser %}" method="post" class="crud-form">
+                        {% csrf_token %}
+                        <input type="text" name="firstName" value="{{ user.firstName }}" required>
+                        <input type="text" name="secondName" value="{{ user.secondName }}" required>
+                        <input type="text" name="middleName" value="{{ user.middleName }}">
+                        <input type="email" name="email" value="{{ user.email }}" required>
+                        <select name="idRole">
+                            {% for role in roles %}
+                            <option value="{{ role.idRole }}" {% if role.idRole == user.idRole %}selected{% endif %}>
+                                {{ role.roleName }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <select name="idGroup">
+                            {% for group in groups %}
+                            <option value="{{ group.idGroup }}" {% if group.idGroup == user.idGroup %}selected{% endif %}>
+                                {{ group.nameGroup }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit">Сохранить</button>
+                    </form>
+                    <form action="{% url 'delete_user' user.idUser %}" method="post" style="display:inline;" class="delete-user-form" data-user-id="{{ user.idUser }}" data-confirm-handler-set="true" data-confirm="Вы уверены, что хотите удалить этого пользователя?">
+                        {% csrf_token %}
+                        <button type="submit" class="delete-button">Удалить</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script src="{% static 'js/confirmations.js' %}"></script>
+    <script>
+        // Отладочный код для отслеживания отправки форм удаления
+        document.addEventListener('DOMContentLoaded', function() {
+            // Находим все формы удаления
+            const deleteForms = document.querySelectorAll('.delete-user-form');
+            
+            deleteForms.forEach(form => {
+                // Проверяем, что форма уже не имеет обработчика событий
+                if (form.getAttribute('data-custom-handler') === 'true') {
+                    return;
+                }
+                
+                form.setAttribute('data-custom-handler', 'true');
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault(); // Предотвращаем стандартную отправку формы
+                    
+                    const userId = this.dataset.userId;
+                    console.log(`Попытка удаления пользователя с ID: ${userId}`);
+                    
+                    // Спрашиваем подтверждение
+                    if (confirm('Вы уверены, что хотите удалить этого пользователя?')) {
+                        console.log(`Подтверждение получено, отправляем форму`);
+                        
+                        // Отправляем форму вручную
+                        const formData = new FormData(this);
+                        
+                        fetch(this.action, {
+                            method: 'POST',
+                            body: formData,
+                            credentials: 'same-origin'
+                        })
+                        .then(response => {
+                            console.log(`Ответ сервера: ${response.status}`);
+                            if (response.ok) {
+                                // Перезагрузка страницы после успешного удаления
+                                window.location.reload();
+                            } else {
+                                alert(`Ошибка при удалении пользователя: ${response.status}`);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Ошибка:', error);
+                            alert(`Ошибка соединения: ${error.message}`);
+                        });
+                    } else {
+                        console.log('Удаление отменено пользователем');
+                    }
+                });
+            });
+        });
+    </script>
+    {% else %}
+    <div class="content-container"> 
+
+
+        <div class="button-group">
+            <a href="{% url 'AllSubjectPage' %}" class="back-button">
+                <i class="fas fa-arrow-left"></i> Назад к предметам
+            </a>
+        </div>
+
+        <div class="message-box">
+            <div class="icon-container">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <h1>Доступ запрещен</h1>
+            <p class="user-info">У вас нет прав доступа к этой странице.</p>
+        </div>
+    </div>
+    {% endif %}
+</body>
+</html>

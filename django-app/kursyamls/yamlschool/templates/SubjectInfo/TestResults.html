@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    {% load custom_filters %}
+    <title>Результаты теста - {{ test.nameTest }}</title>
+    <link rel="stylesheet" href="{% static 'css/TestResults.css' %}">
+</head>
+<body>
+    {% include 'header.html' %}
+
+    <div class="container">
+        <h1>Результаты теста "{{ test.nameTest }}"</h1>
+
+        <div class="results-card">
+            <h2>Ваш последний результат</h2>
+            {% if latest_attempt %}
+                <div class="score-info">
+                    <p class="score">Набрано баллов: <strong>{{ latest_attempt.score }}</strong></p>
+                    <p class="grade">Оценка: <strong data-grade="{{ latest_attempt.grade }}">{{ latest_attempt.grade }}</strong></p>
+                    <p class="completion-time">Время завершения: 
+                        {% if latest_attempt.endTime %}
+                            {{ latest_attempt.endTime|slice:":10" }} {{ latest_attempt.endTime|slice:"11:19" }}
+                        {% else %}
+                            Нет данных
+                        {% endif %}
+                    </p>
+                    
+                    {% if latest_attempt.grade >= 3 %}
+                        <div class="retake-info success">
+                            <p>Вы успешно сдали тест! Повторное прохождение невозможно.</p>
+                        </div>
+                    {% else %}
+                        <div class="retake-info {% if can_retake %}warning{% else %}danger{% endif %}">
+                            {% if can_retake %}
+                                <p>У вас осталось {{ remaining_attempts }} {% if remaining_attempts == 1 %}попытка{% elif remaining_attempts > 1 and remaining_attempts < 5 %}попытки{% else %}попыток{% endif %} для пересдачи теста.</p>
+                                <a href="{% url 'test_material' test.idTest %}" class="retake-btn">Пересдать тест</a>
+                            {% else %}
+                                <p>Вы исчерпали все попытки для пересдачи теста.</p>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% else %}
+                <p>У вас пока нет попыток прохождения теста.</p>
+            {% endif %}
+        </div>
+
+        <div class="grading-criteria">
+            <h2>Критерии оценивания</h2>
+            {% if grading_criteria %}
+                <div class="criteria-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Оценка</th>
+                                <th>Минимальные баллы</th>
+                                <th>Максимальные баллы</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for criterion in grading_criteria %}
+                                <tr>
+                                    <td><strong data-grade="{{ criterion.grade }}">{{ criterion.grade }}</strong></td>
+                                    <td>{{ criterion.minPoints }}</td>
+                                    <td>{{ criterion.maxPoints }}</td>
+                                </tr>
+                            {% endfor %}
+                            <tr class="grade-2-row">
+                                <td><strong data-grade="2">2</strong></td>
+                                <td colspan="2">
+                                    {% with grade_3=grading_criteria|filter_by_grade:3 %}
+                                        {% if grade_3 %}
+                                            Менее {{ grade_3.minPoints }} баллов
+                                        {% else %}
+                                            Недостаточно баллов
+                                        {% endif %}
+                                    {% endwith %}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p>Критерии оценивания не указаны.</p>
+            {% endif %}
+        </div>
+
+        <div class="previous-attempts">
+            <h2>История попыток</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Дата</th>
+                        <th>Время</th>
+                        <th>Баллы</th>
+                        <th>Оценка</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for attempt in attempts %}
+                        <tr>
+                            <td>{% if attempt.endTime %}{{ attempt.endTime|slice:":10" }}{% else %}Нет данных{% endif %}</td>
+                            <td>{% if attempt.endTime %}{{ attempt.endTime|slice:"11:19" }}{% else %}Нет данных{% endif %}</td>
+                            <td>{{ attempt.score }}</td>
+                            <td><strong data-grade="{{ attempt.grade }}">{{ attempt.grade }}</strong></td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4">Нет предыдущих попыток</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="actions">
+            {% if test.idTest %}
+                <a href="{% url 'test_material' test.idTest %}">Вернуться к материалам теста</a>
+            {% elif test.id %}
+                <a href="{% url 'test_material' test.id %}">Вернуться к материалам теста</a>
+            {% else %}
+                <a href="{% url 'AllSubjectPage' %}">К списку предметов</a>
+            {% endif %}
+            
+            {% if test.subjectId %}
+                <a href="{% url 'SubjectPage' test.subjectId %}" class="button">Вернуться к предмету</a>
+            {% else %}
+                <a href="{% url 'AllSubjectPage' %}" class="button">К списку предметов</a>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html> 

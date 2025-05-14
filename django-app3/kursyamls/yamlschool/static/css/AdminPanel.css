@@ -1,0 +1,253 @@
+:root {
+    --dark-purple: #1a1225;
+    --medium-purple: #7743DB;
+    --light-purple: #B39DDB;
+    --accent-purple: #9D4EDD;
+    --text-light: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.85);
+    --card-bg: #272134;
+    --card-hover: #362b48;
+    --gradient-bg: linear-gradient(135deg, #1a1225 0%, #3a1d69 100%);
+    --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 6px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.5);
+    --border-radius: 12px;
+}
+
+/* Глобальные стили для текста */
+*, *::before, *::after {
+    color: var(--text-light) !important;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--dark-purple) !important;
+    margin: 0;
+    min-height: 100vh;
+    color: var(--text-light) !important;
+}
+
+/* Стили для header */
+.main-header {
+    background-color: var(--dark-purple) !important;
+}
+
+.main-header .container {
+    background: transparent !important;
+    animation: none !important;
+    box-shadow: none !important;
+}
+
+.logo, 
+.logo i, 
+.logo span {
+    color: var(--text-light) !important;
+}
+
+.user-info, 
+.user-name, 
+.user-role {
+    color: var(--text-light) !important;
+}
+
+.logout-form {
+    margin: 0;
+}
+
+.logout-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius);
+    color: var(--text-light) !important;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: auto;
+}
+
+.logout-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.logout-btn i {
+    font-size: 1rem;
+    color: var(--text-light) !important;
+}
+
+/* Основной контейнер */
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: var(--gradient-bg) !important;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+.container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1" d="M0,0 L100,100 M100,0 L0,100"/></svg>');
+    background-size: 20px 20px;
+    opacity: 0.3;
+    z-index: 0;
+}
+
+h1 {
+    text-align: center;
+    color: var(--text-light) !important;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 1;
+}
+
+.menu {
+    position: relative;
+    z-index: 1;
+}
+
+.menu ul {
+    list-style-type: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.menu li {
+    margin: 0;
+}
+
+.menu a {
+    text-decoration: none;
+    padding: 1.5rem;
+    background-color: var(--card-bg) !important;
+    color: var(--text-light) !important;
+    border-radius: var(--border-radius);
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    display: block;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow-sm);
+}
+
+.menu a:hover {
+    background-color: var(--card-hover) !important;
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent-purple);
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    background-color: var(--medium-purple);
+    color: var(--text-light);
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow-sm);
+    margin-top: 2rem;
+}
+
+.back-button:hover {
+    background-color: var(--accent-purple);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Анимация появления */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .container {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    .menu ul {
+        grid-template-columns: 1fr;
+    }
+
+    .menu a {
+        padding: 1.2rem;
+    }
+}
+
+/* Экспорт данных */
+.export-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    flex-wrap: wrap;
+    background-color: var(--card-bg);
+  }
+  
+  .export-button {
+    padding: 1rem 1.5rem;
+    background: var(--gradient-primary);
+    min-width: 220px;
+    font-size: 1.05rem;
+  }
+
+
+
+
+/* Дополнительные стили для обеспечения белого цвета текста */
+h1, h2, h3, h4, h5, h6,
+p, span, a, div {
+    color: var(--text-light) !important;
+}
+
+.menu a {
+    color: var(--text-light) !important;
+}
+
+.menu a:hover {
+    color: var(--text-light) !important;
+}
+
+/* Стили для иконок */
+i, .fas, .far, .fab, .fa {
+    color: var(--text-light) !important;
+}
+
+

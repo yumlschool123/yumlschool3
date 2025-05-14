@@ -1,0 +1,62 @@
+<!-- templates/login.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход в систему | YumlSchool</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/logreg.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                YumlSchool
+            </div>
+            <p class="subtitle">Войдите в свой аккаунт</p>
+        </div>
+
+        {% if error %}
+        <div class="error-message">
+            {{ error }}
+        </div>
+        {% endif %}
+        
+        <form class="login-form" method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="login">Логин</label>
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="login" name="login" placeholder="Введите ваш логин" value="{{ login }}" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" name="password" placeholder="Введите ваш пароль" required>
+                </div>
+            </div>
+            
+            <div class="button-container">
+                <button type="submit" class="login-button">
+                    <i class="fas fa-sign-in-alt"></i> Войти
+                </button>
+            </div>
+        </form>
+        
+        <div class="divider">или</div>
+        
+        <div class="auth-links">
+            <span>Еще нет аккаунта?</span>
+            <a href="{% url 'register' %}" class="register-link">Зарегистрируйтесь</a>
+        </div>
+    </div>
+</body>
+</html>

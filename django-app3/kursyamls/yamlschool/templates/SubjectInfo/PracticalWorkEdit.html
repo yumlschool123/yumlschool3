@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактировать практическую работу</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/SubjectPage.css' %}">
+</head>
+<body>
+    <h1>Редактировать практическую работу</h1>
+
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <div>
+            <label for="namePracticalWork">Название практической работы:</label>
+            <input type="text" id="namePracticalWork" name="namePracticalWork" value="{{ practical_work.namePracticalWork }}" required>
+        </div>
+        <div>
+            <label for="descriptionPracticalWork">Описание:</label>
+            <textarea id="descriptionPracticalWork" name="descriptionPracticalWork" required>{{ practical_work.descriptionPracticalWork }}</textarea>
+        </div>
+        <div>
+            <label for="nameFilePracticalWork">Имя файла:</label>
+            <input type="text" id="nameFilePracticalWork" name="nameFilePracticalWork" value="{{ practical_work.nameFilePracticalWork }}">
+        </div>
+        <div>
+            <label for="urlFilePracticalWork">URL файла:</label>
+            <input type="url" id="urlFilePracticalWork" name="urlFilePracticalWork" value="{{ practical_work.urlFilePracticalWork }}">
+        </div>
+        <button type="submit">Сохранить изменения</button>
+    </form>
+    <a href="{% url 'SubjectPage' practical_work.subjectId %}">Назад к предмету</a>
+</body>
+</html>
+

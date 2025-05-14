@@ -1,0 +1,9 @@
+
+152 static files copied to '/app/static'.
+[2025-05-14 16:50:30 +0000] [8] [INFO] Starting gunicorn 21.2.0
+[2025-05-14 16:50:30 +0000] [8] [INFO] Listening at: http://0.0.0.0:8000 (8)
+[2025-05-14 16:50:30 +0000] [8] [INFO] Using worker: sync
+[2025-05-14 16:50:30 +0000] [9] [INFO] Booting worker with pid: 9
+Отправляемые данные: {'firstName': 'Уткин', 'secondName': 'Дмитрий', 'middleName': 'Иванович', 'email': 'ytkin1@gmail.com', 'login': 'eXRraW4xQGdtYWlsLmNvbQ==', 'password': '$2b$12$XC1GfEuZ1EvS2G.OAeQKjOF6X/S6sf4jMA/lt.FOeEK.dxfGZfs/W', 'idRole': 4, 'idGroup': 6}
+Статус ответа: 201
+Ответ: {"idUser":1,"firstName":"Уткин","secondName":"Дмитрий","middleName":"Иванович","email":"ytkin1@gmail.com","idRole":4,"idGroup":6,"login":"eXRraW4xQGdtYWlsLmNvbQ==","password":"$2b$12$XC1GfEuZ1EvS2G.OAeQKjOF6X/S6sf4jMA/lt.FOeEK.dxfGZfs/W"}

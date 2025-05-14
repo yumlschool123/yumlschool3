@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Административная Панель</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'css/AdminPanel.css' %}">
+    <link rel="stylesheet" href="{% static 'css/PracticalWork.css' %}">
+    <link rel="stylesheet" href="{% static 'css/CreateTest.css' %}">
+    <link rel="stylesheet" href="{% static 'css/TestEditor.css' %}">
+
+    <style>
+        :root {
+            --dark-purple: #1a1225;
+            --medium-purple: #7743DB;
+            --light-purple: #B39DDB;
+            --accent-purple: #9D4EDD;
+        }
+
+        .content-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .message-box {
+            background: linear-gradient(135deg, #272134 0%, #3a1d69 100%);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            max-width: 600px;
+            width: 90%;
+            margin: 2rem auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .icon-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .icon-container i {
+            font-size: 4rem;
+            color: var(--accent-purple);
+        }
+
+        h1 {
+            color: var(--text-light);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.4;
+        }
+
+        .user-info {
+            color: var(--text-secondary);
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--medium-purple);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            margin-top: 1.5rem;
+        }
+
+        .back-button:hover {
+            background-color: var(--accent-purple);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .message-box {
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            .icon-container i {
+                font-size: 3rem;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    {% include 'header.html' %}
+
+    {% if request.session.user_id == 1 or request.session.role_id == 1 %}
+
+    <div class="container">
+        <h1>Административная Панель</h1>
+
+        <nav class="menu">
+            <ul>
+                <li><a href="{% url 'group_crud' %}">Управление Группами</a></li>
+                <li><a href="{% url 'user_crud' %}">Управление Пользователями</a></li>
+                <li><a href="{% url 'subject_crud' %}">Управление Предметами</a></li>
+            </ul>
+        </nav>
+        <h2>Выгрузка данных</h2>
+
+        <div class="export-actions">
+            <a href="{% url 'export_groups_to_json' %}" class="export-button">
+                📥 Выгрузить группы в JSON
+            </a>
+
+            <form action="{% url 'import_groups_from_json' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="json_file" class="custom-file-upload">
+                        Выберите файл из которого надо загрузить группы
+                    </label>
+                    <div class="custom-file-input-wrapper">
+                        <label for="json_file" class="export-button">
+                            <span id="file-name">Ваш файл</span>
+                            <input type="file" name="json_file" id="json_file" accept=".json" required
+                                style="display: none;" onchange="updateFileName()">
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="export-button">
+                    📤 Загрузить группы из JSON
+                </button>
+            </form>
+        </div>
+
+        <script>
+            function updateFileName() {
+                const input = document.getElementById('json_file');
+                const fileName = input.files.length > 0 ? input.files[0].name : 'Выберите файл';
+                document.getElementById('file-name').textContent = fileName;
+            }
+        </script>
+
+    </div>
+
+    {% else %}
+    <div class="content-container"> 
+        <div class="button-group">
+            <a href="{% url 'AllSubjectPage' %}" class="back-button">
+                <i class="fas fa-arrow-left"></i> Назад к предметам
+            </a>
+        </div>
+
+        <div class="message-box">
+            <div class="icon-container">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <h1>Доступ запрещен</h1>
+            <p class="user-info">У вас нет прав доступа к этой странице.</p>
+        </div>
+    </div>
+    {% endif %}
+
+</body>
+
+</html>

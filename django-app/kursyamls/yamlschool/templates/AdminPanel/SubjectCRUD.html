@@ -1,0 +1,216 @@
+<!-- SubjectCRUD.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление Предметами</title>
+    {% load static %}
+
+    <link rel="stylesheet" href="{% static 'css/SubjectCRUD.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'css/AdminPanel.css' %}">
+    <link rel="stylesheet" href="{% static 'css/PracticalWork.css' %}">
+    <link rel="stylesheet" href="{% static 'css/CreateTest.css' %}">
+    <link rel="stylesheet" href="{% static 'css/TestEditor.css' %}">
+
+    <style>
+        :root {
+            --dark-purple: #1a1225;
+            --medium-purple: #7743DB;
+            --light-purple: #B39DDB;
+            --accent-purple: #9D4EDD;
+        }
+
+        /* body {
+            background-color: var(--dark-purple);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        } */
+
+        .content-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .message-box {
+            background: linear-gradient(135deg, #272134 0%, #3a1d69 100%);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            max-width: 600px;
+            width: 90%;
+            margin: 2rem auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .icon-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .icon-container i {
+            font-size: 4rem;
+            color: var(--accent-purple);
+        }
+
+        h1 {
+            color: var(--text-light);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.4;
+        }
+
+        .user-info {
+            color: var(--text-secondary);
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--medium-purple);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            margin-top: 1.5rem;
+        }
+
+        .back-button:hover {
+            background-color: var(--accent-purple);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .message-box {
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            .icon-container i {
+                font-size: 3rem;
+            }
+        }
+    </style></head>
+<body>
+    {% include 'header.html' %} 
+    {% if request.session.role_id == 1 %}
+
+
+    <div class="container">
+        <div class="header-section">
+            <a href="{% url 'adminPage' %}" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                Назад к панели администратора
+            </a>
+            <h1>Управление Предметами</h1>
+        </div>
+
+        <form action="{% url 'subject_crud' %}" method="post" class="crud-form">
+            {% csrf_token %}
+            <label for="nameSubject">Название предмета:</label>
+            <input type="text" id="nameSubject" name="nameSubject" required>
+
+            <label for="idGroup">Группа:</label>
+            <select id="idGroup" name="idGroup" required>
+                {% for group in groups %}
+                    <option value="{{ group.idGroup }}">{{ group.nameGroup }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="userId">Преподаватель:</label>
+            <select id="userId" name="userId" required>
+                {% for user in users %}
+                    {% if user.idRole == 2 %}
+                        <option value="{{ user.idUser }}">
+                            {{ user.firstName }} {{ user.secondName }} {{ user.middleName }}
+                        </option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+
+            <button type="submit">Добавить предмет</button>
+        </form>
+    </div>
+    
+    <div class="container">
+
+        <h2>Список предметов</h2>
+        <div class="subject-list">
+            
+            {% for subject in subjects %}
+            <div class="subject-card">
+                <h3>{{ subject.nameSubject }}</h3>
+                <p><strong>Группа:</strong> 
+                    {% for group in groups %}
+                        {% if group.idGroup == subject.idGroup %}
+                            {{ group.nameGroup }}
+                        {% endif %}
+                    {% endfor %}
+                </p>
+                <p><strong>Преподаватель:</strong> 
+                    {% for user in users %}
+                        {% if user.idUser == subject.userId %}
+                            {{ user.firstName }} {{ user.secondName }} {{ user.middleName }}
+                        {% endif %}
+                    {% endfor %}
+                </p>
+                <div class="crud-actions">
+                    <a href="{% url 'edit_subject' subject.idSubject %}" class="button">Изменить</a>
+                    <form action="{% url 'delete_subject' subject.idSubject %}" method="post" style="display:inline;" class="delete-subject-form" data-confirm-handler-set="true" data-subject-id="{{ subject.idSubject }}">
+                        {% csrf_token %}
+                        <button type="submit" class="delete-button">Удалить</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script src="{% static 'js/confirmations.js' %}"></script>
+    {% else %}
+    <div class="content-container"> 
+
+
+        <div class="button-group">
+            <a href="{% url 'AllSubjectPage' %}" class="back-button">
+                <i class="fas fa-arrow-left"></i> Назад к предметам
+            </a>
+        </div>
+
+        <div class="message-box">
+            <div class="icon-container">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <h1>Доступ запрещен</h1>
+            <p class="user-info">У вас нет прав доступа к этой странице.</p>
+        </div>
+    </div>
+    {% endif %}
+</body>
+</html>
