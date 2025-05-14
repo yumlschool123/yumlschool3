@@ -1,0 +1,167 @@
+
+125 static files copied to '/app/static', 27 unmodified.
+[2025-05-14 19:52:38 +0000] [8] [INFO] Starting gunicorn 21.2.0
+[2025-05-14 19:52:38 +0000] [8] [INFO] Listening at: http://0.0.0.0:8000 (8)
+[2025-05-14 19:52:38 +0000] [8] [INFO] Using worker: sync
+[2025-05-14 19:52:38 +0000] [9] [INFO] Booting worker with pid: 9
+Not Found: /favicon.ico
+Not Found: /favicon.ico
+API Request: GET https://yumlschool.ru/api/Subjects
+API Response: 200
+API Request: GET https://yumlschool.ru/api/Groups
+API Response: 200
+API Request: GET https://yumlschool.ru/api/Users
+API Response: 200
+API Request: GET https://yumlschool.ru/api/PracticalWorks/2
+API Response: 200
+API Request: GET https://yumlschool.ru/api/Subjects/1
+API Response: 200
+API Request: GET https://yumlschool.ru/api/CompletedWorks
+API Response: 200
+API Request: GET https://yumlschool.ru/api/Users
+API Response: 200
+Internal Server Error: /practical-work/2/export-performance/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/reportlab/lib/utils.py", line 523, in open_for_read
+    return open_for_read_by_name(name,mode)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/reportlab/lib/utils.py", line 463, in open_for_read_by_name
+    return open(name,mode)
+           ^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'Arial.ttf'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/reportlab/lib/utils.py", line 530, in open_for_read
+    return BytesIO((datareader if name[:5].lower()=='data:' else rlUrlRead)(name))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/reportlab/lib/utils.py", line 476, in rlUrlRead
+    return urlopen(name).read()
+           ^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/urllib/request.py", line 215, in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/urllib/request.py", line 499, in open
+    req = Request(fullurl, data)
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/urllib/request.py", line 318, in __init__
+    self.full_url = url
+    ^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/urllib/request.py", line 344, in full_url
+    self._parse()
+  File "/usr/local/lib/python3.12/urllib/request.py", line 373, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'Arial.ttf'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/reportlab/pdfbase/ttfonts.py", line 158, in TTFOpenFile
+    f = open_for_read(fn,'rb')
+        ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/reportlab/lib/utils.py", line 534, in open_for_read
+    return open_for_read(name,mode)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/reportlab/lib/utils.py", line 532, in open_for_read
+    raise IOError('Cannot open resource "%s"' % name)
+OSError: Cannot open resource "Arial.ttf"
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/yamlschool/views.py", line 248, in export_students_performance
+    pdfmetrics.registerFont(TTFont('Arial', 'Arial.ttf'))  # Убедитесь, что шрифт доступен
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/reportlab/pdfbase/ttfonts.py", line 1206, in __init__
+    self.face = TTFontFace(filename, validate=validate, subfontIndex=subfontIndex)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/reportlab/pdfbase/ttfonts.py", line 1087, in __init__
+    TTFontFile.__init__(self, filename, validate=validate, subfontIndex=subfontIndex)
+  File "/usr/local/lib/python3.12/site-packages/reportlab/pdfbase/ttfonts.py", line 446, in __init__
+    TTFontParser.__init__(self, file, validate=validate,subfontIndex=subfontIndex)
+  File "/usr/local/lib/python3.12/site-packages/reportlab/pdfbase/ttfonts.py", line 182, in __init__
+    self.readFile(file)
+  File "/usr/local/lib/python3.12/site-packages/reportlab/pdfbase/ttfonts.py", line 258, in readFile
+    self.filename, f = TTFOpenFile(f)
+                       ^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/reportlab/pdfbase/ttfonts.py", line 168, in TTFOpenFile
+    raise TTFError('Can\'t open file "%s"' % fn)
+reportlab.pdfbase.ttfonts.TTFError: Can't open file "Arial.ttf"
+Internal Server Error: /practical-work/2/export-performance/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/reportlab/lib/utils.py", line 523, in open_for_read
+    return open_for_read_by_name(name,mode)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/reportlab/lib/utils.py", line 463, in open_for_read_by_name
+    return open(name,mode)
+           ^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'Arial.ttf'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/reportlab/lib/utils.py", line 530, in open_for_read
+    return BytesIO((datareader if name[:5].lower()=='data:' else rlUrlRead)(name))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/reportlab/lib/utils.py", line 476, in rlUrlRead
+    return urlopen(name).read()
+           ^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/urllib/request.py", line 215, in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/urllib/request.py", line 499, in open
+    req = Request(fullurl, data)
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/urllib/request.py", line 318, in __init__
+    self.full_url = url
+    ^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/urllib/request.py", line 344, in full_url
+    self._parse()
+  File "/usr/local/lib/python3.12/urllib/request.py", line 373, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'Arial.ttf'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/reportlab/pdfbase/ttfonts.py", line 158, in TTFOpenFile
+    f = open_for_read(fn,'rb')
+        ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/reportlab/lib/utils.py", line 532, in open_for_read
+    raise IOError('Cannot open resource "%s"' % name)
+OSError: Cannot open resource "Arial.ttf"
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/yamlschool/views.py", line 248, in export_students_performance
+    pdfmetrics.registerFont(TTFont('Arial', 'Arial.ttf'))  # Убедитесь, что шрифт доступен
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/reportlab/pdfbase/ttfonts.py", line 1206, in __init__
+    self.face = TTFontFace(filename, validate=validate, subfontIndex=subfontIndex)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/reportlab/pdfbase/ttfonts.py", line 1087, in __init__
+    TTFontFile.__init__(self, filename, validate=validate, subfontIndex=subfontIndex)
+  File "/usr/local/lib/python3.12/site-packages/reportlab/pdfbase/ttfonts.py", line 446, in __init__
+    TTFontParser.__init__(self, file, validate=validate,subfontIndex=subfontIndex)
+  File "/usr/local/lib/python3.12/site-packages/reportlab/pdfbase/ttfonts.py", line 182, in __init__
+    self.readFile(file)
+  File "/usr/local/lib/python3.12/site-packages/reportlab/pdfbase/ttfonts.py", line 258, in readFile
+    self.filename, f = TTFOpenFile(f)
+                       ^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/reportlab/pdfbase/ttfonts.py", line 168, in TTFOpenFile
+    raise TTFError('Can\'t open file "%s"' % fn)
+reportlab.pdfbase.ttfonts.TTFError: Can't open file "Arial.ttf"

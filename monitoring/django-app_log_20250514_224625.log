@@ -1,0 +1,200 @@
+Имя студента:  Ляхов Сергеевич
+API Request: GET https://yumlschool.ru/api/CompletedWorks
+API Response: 200
+Найдена работа пользователя: {'idCompletedWork': 2, 'dateUploadCompletedWork': '2025-05-14', 'timeUploadCompletedWork': '19:23:42', 'nameFileCompletedWork': 'ПРИЛОЖЕНИЕ Б. Скрипт базы данных .docx', 'urlFileCompletedWork': '/media/completed_works/1747250622_3.docx', 'grade': '2', 'userId': 3, 'practicalWorkId': 1, 'statusId': 2, 'attemptCount': 2}
+API Request: GET https://yumlschool.ru/api/Status
+API Response: 200
+Доступные статусы: [{'idStatus': 1, 'nameStatus': 'completed'}, {'idStatus': 2, 'nameStatus': 'in_progress'}]
+Статус: 1 - completed
+Статус: 2 - in_progress
+Полученная оценка: 3, комментарий: 
+Преобразованная оценка: 3, тип: <class 'int'>
+Оценка 3 -> устанавливаем статус 1 (Задание сдано)
+Итоговые данные: grade=3, statusId=1
+Отправляем объект для обновления: {'idCompletedWork': 2, 'dateUploadCompletedWork': '2025-05-14', 'timeUploadCompletedWork': '19:23:42', 'nameFileCompletedWork': 'ПРИЛОЖЕНИЕ Б. Скрипт базы данных .docx', 'urlFileCompletedWork': '/media/completed_works/1747250622_3.docx', 'grade': '3', 'userId': 3, 'practicalWorkId': 1, 'statusId': 1, 'attemptCount': 2, 'student_name': ' Ляхов Сергеевич'}
+Обновляем оценку по URL: https://yumlschool.ru/api/CompletedWorks/2
+Статус обновления: 204
+API Request: GET https://yumlschool.ru/api/PracticalWorks/1
+API Response: 200
+API Request: GET https://yumlschool.ru/api/Subjects/1
+API Response: 200
+API Request: GET https://yumlschool.ru/api/CompletedWorks
+API Response: 200
+API Request: GET https://yumlschool.ru/api/Users
+API Response: 200
+Not Found: /favicon.ico
+Not Found: /favicon.ico
+
+=== ДАННЫЕ ФОРМЫ ===
+csrfmiddlewaretoken: VszCGozGgTdy2IvebO6vDqdrDr4gIU3tnN7LcUWITRFKiQlKzB25H6yKmpc5RZFn
+namePracticalWork: d
+descriptionPracticalWork: d
+upload_method: file
+nameFilePracticalWork: 
+urlFilePracticalWork: 
+=== ЗАГРУЖЕННЫЕ ФАЙЛЫ ===
+uploadedFile: ПРИЛОЖЕНИЕ Б. Скрипт базы данных .docx
+====================
+
+Выбранный метод загрузки: file
+Файловый метод: проверяем наличие загруженного файла
+Отправляемые данные в API: {'namePracticalWork': 'd', 'descriptionPracticalWork': 'd', 'dateUploadPracticalWork': '2025-05-14', 'timeUploadPracticalWork': '19:37:23', 'nameFilePracticalWork': 'ПРИЛОЖЕНИЕ Б. Скрипт базы данных .docx', 'urlFilePracticalWork': '/media/practical_works/1747251443_ПРИЛОЖЕНИЕ Б. Скрипт базы данных .docx', 'userId': 2, 'subjectId': 1}
+Ответ API: 201, {"idPracticalWork":2,"namePracticalWork":"d","descriptionPracticalWork":"d","dateUploadPracticalWork":"2025-05-14","timeUploadPracticalWork":"19:37:23","nameFilePracticalWork":"ПРИЛОЖЕНИЕ Б. Скрипт ба
+Not Found: /favicon.ico
+Not Found: /favicon.ico
+API Request: GET https://yumlschool.ru/api/Subjects
+API Response: 200
+API Request: GET https://yumlschool.ru/api/Users/3
+API Response: 200
+API Request: GET https://yumlschool.ru/api/Groups
+API Response: 200
+API Request: GET https://yumlschool.ru/api/Users
+API Response: 200
+API Request: GET https://yumlschool.ru/api/PracticalWorks/1
+API Response: 200
+API Request: GET https://yumlschool.ru/api/Subjects/1
+API Response: 200
+API Request: GET https://yumlschool.ru/api/CompletedWorks
+API Response: 200
+API Request: GET https://yumlschool.ru/api/Users
+API Response: 200
+DEBUG: Работы пользователя: 2
+DEBUG: Использованные попытки: [1, 2]
+DEBUG: Отображаем последнюю работу НА ПРОВЕРКЕ: ID=1, Попытка=1, Оценка=На проверке
+API Request: GET https://yumlschool.ru/api/PracticalWorks/2
+API Response: 200
+API Request: GET https://yumlschool.ru/api/Subjects/1
+API Response: 200
+API Request: GET https://yumlschool.ru/api/CompletedWorks
+API Response: 200
+API Request: GET https://yumlschool.ru/api/Users
+API Response: 200
+DEBUG: Работы пользователя: 0
+DEBUG: Использованные попытки: []
+API Request: GET https://yumlschool.ru/api/PracticalWorks/2
+API Response: 200
+Получение списка всех выполненных работ для определения номера попытки
+API Request: GET https://yumlschool.ru/api/CompletedWorks
+API Response: 200
+Найдено 0 существующих работ пользователя 3 для практической работы 2
+Not Found: /favicon.ico
+Not Found: /favicon.ico
+API Request: GET https://yumlschool.ru/api/PracticalWorks/2
+API Response: 200
+Получение списка всех выполненных работ для определения номера попытки
+API Request: GET https://yumlschool.ru/api/CompletedWorks
+API Response: 200
+Найдено 0 существующих работ пользователя 3 для практической работы 2
+
+--- Отправка данных о выполненной работе ---
+API Request: GET https://yumlschool.ru/api/CompletedWorks
+API Response: 200
+Найдено 0 работ пользователя 3
+Установлен номер попытки: 1
+Статус ответа: 201
+Работа успешно добавлена!
+API Request: GET https://yumlschool.ru/api/PracticalWorks/2
+API Response: 200
+API Request: GET https://yumlschool.ru/api/Subjects/1
+API Response: 200
+API Request: GET https://yumlschool.ru/api/CompletedWorks
+API Response: 200
+API Request: GET https://yumlschool.ru/api/Users
+API Response: 200
+DEBUG: Работы пользователя: 1
+DEBUG: Использованные попытки: [1]
+DEBUG: Отображаем последнюю работу НА ПРОВЕРКЕ: ID=3, Попытка=1, Оценка=На проверке
+API Request: GET https://yumlschool.ru/api/PracticalWorks/2
+API Response: 200
+Получение списка всех выполненных работ для определения номера попытки
+API Request: GET https://yumlschool.ru/api/CompletedWorks
+API Response: 200
+Найдена работа: ID=3, попытка=1
+Найдено 1 существующих работ пользователя 3 для практической работы 2
+Максимальная существующая попытка: 1
+Номер текущей попытки: 2
+
+--- Отправка данных о выполненной работе ---
+API Request: GET https://yumlschool.ru/api/CompletedWorks
+API Response: 200
+Найдена существующая работа: ID=3, попытка=1
+Найдено 1 работ пользователя 3
+Максимальная существующая попытка: 1
+Номер новой попытки: 2
+Установлен номер попытки: 2
+Статус ответа: 201
+Работа успешно добавлена!
+API Request: GET https://yumlschool.ru/api/PracticalWorks/2
+API Response: 200
+API Request: GET https://yumlschool.ru/api/Subjects/1
+API Response: 200
+API Request: GET https://yumlschool.ru/api/CompletedWorks
+API Response: 200
+API Request: GET https://yumlschool.ru/api/Users
+API Response: 200
+DEBUG: Работы пользователя: 2
+DEBUG: Использованные попытки: [1, 2]
+DEBUG: Отображаем последнюю работу НА ПРОВЕРКЕ: ID=4, Попытка=2, Оценка=На проверке
+Not Found: /favicon.ico
+Not Found: /favicon.ico
+API Request: GET https://yumlschool.ru/api/Subjects
+API Response: 200
+API Request: GET https://yumlschool.ru/api/Users/3
+API Response: 200
+API Request: GET https://yumlschool.ru/api/Groups
+API Response: 200
+API Request: GET https://yumlschool.ru/api/Users
+API Response: 200
+API Request: GET https://yumlschool.ru/api/PracticalWorks/2
+API Response: 200
+API Request: GET https://yumlschool.ru/api/Subjects/1
+API Response: 200
+API Request: GET https://yumlschool.ru/api/CompletedWorks
+API Response: 200
+API Request: GET https://yumlschool.ru/api/Users
+API Response: 200
+DEBUG: Работы пользователя: 2
+DEBUG: Использованные попытки: [1, 2]
+DEBUG: Отображаем последнюю работу НА ПРОВЕРКЕ: ID=4, Попытка=2, Оценка=На проверке
+Not Found: /favicon.ico
+Not Found: /favicon.ico
+API Request: GET https://yumlschool.ru/api/Subjects
+API Response: 200
+API Request: GET https://yumlschool.ru/api/Groups
+API Response: 200
+API Request: GET https://yumlschool.ru/api/Users
+API Response: 200
+API Request: GET https://yumlschool.ru/api/PracticalWorks/2
+API Response: 200
+API Request: GET https://yumlschool.ru/api/Subjects/1
+API Response: 200
+API Request: GET https://yumlschool.ru/api/CompletedWorks
+API Response: 200
+API Request: GET https://yumlschool.ru/api/Users
+API Response: 200
+API Request: GET https://yumlschool.ru/api/Users/3
+API Response: 200
+Имя студента:  Ляхов Сергеевич
+API Request: GET https://yumlschool.ru/api/CompletedWorks
+API Response: 200
+Найдена работа пользователя: {'idCompletedWork': 4, 'dateUploadCompletedWork': '2025-05-14', 'timeUploadCompletedWork': '19:37:49', 'nameFileCompletedWork': 'ПРИЛОЖЕНИЕ В. Сценарий и результаты тестовых испытаний.docx', 'urlFileCompletedWork': '/media/completed_works/1747251469_3.docx', 'grade': 'На проверке', 'userId': 3, 'practicalWorkId': 2, 'statusId': 2, 'attemptCount': 2}
+API Request: GET https://yumlschool.ru/api/Status
+API Response: 200
+Доступные статусы: [{'idStatus': 1, 'nameStatus': 'completed'}, {'idStatus': 2, 'nameStatus': 'in_progress'}]
+Статус: 1 - completed
+Статус: 2 - in_progress
+Полученная оценка: 2, комментарий: 
+Преобразованная оценка: 2, тип: <class 'int'>
+Оценка 2 -> устанавливаем статус 2 (Задание не сдано)
+Итоговые данные: grade=2, statusId=2
+Отправляем объект для обновления: {'idCompletedWork': 4, 'dateUploadCompletedWork': '2025-05-14', 'timeUploadCompletedWork': '19:37:49', 'nameFileCompletedWork': 'ПРИЛОЖЕНИЕ В. Сценарий и результаты тестовых испытаний.docx', 'urlFileCompletedWork': '/media/completed_works/1747251469_3.docx', 'grade': '2', 'userId': 3, 'practicalWorkId': 2, 'statusId': 2, 'attemptCount': 2, 'student_name': ' Ляхов Сергеевич'}
+Обновляем оценку по URL: https://yumlschool.ru/api/CompletedWorks/4
+Статус обновления: 204
+API Request: GET https://yumlschool.ru/api/PracticalWorks/2
+API Response: 200
+API Request: GET https://yumlschool.ru/api/Subjects/1
+API Response: 200
+API Request: GET https://yumlschool.ru/api/CompletedWorks
+API Response: 200
+API Request: GET https://yumlschool.ru/api/Users
+API Response: 200

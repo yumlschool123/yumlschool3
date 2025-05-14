@@ -105,8 +105,8 @@ CREATE TABLE [dbo].[QuestionsTests](
   [ID_Question] [int] IDENTITY(1,1) NOT NULL,
   [Question_Text] [nvarchar](1000) NOT NULL,
   [QuestionType] [int] NOT NULL,
-  [AnswerVariants] [nvarchar](max) NOT NULL,
-  [CorrectAnswer] [nvarchar](max) NOT NULL,
+  [AnswerVariants] [nvarchar](1024) NOT NULL,
+  [CorrectAnswer] [nvarchar](1024) NOT NULL,
   [Points] [int] NULL,
   [ID_Test] [int] NULL,
 PRIMARY KEY CLUSTERED 
@@ -114,7 +114,7 @@ PRIMARY KEY CLUSTERED
   [ID_Question] ASC
 
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY]
 GO
 /****** Object:  Table [dbo].[Role]    Script Date: 20.03.2025 19:12:47 ******/
 SET ANSI_NULLS ON
@@ -342,6 +342,14 @@ BEGIN
         (N'Студент'), 
         (N'Пользователь без роли'),
         (N'Заблокированный пользователь');
+END;
+
+IF NOT EXISTS (SELECT 1 FROM [Status])
+BEGIN
+     INSERT INTO [Status] (Name_Status)
+     VALUES
+         (N'completed'),
+         (N'in_progress');
 END;
 
 

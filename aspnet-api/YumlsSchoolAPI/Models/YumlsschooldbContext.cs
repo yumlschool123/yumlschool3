@@ -170,8 +170,14 @@ public partial class YumlsschooldbContext : DbContext
             entity.HasKey(e => e.IdQuestion).HasName("PK__Question__7F5FD85406B00643");
 
             entity.Property(e => e.IdQuestion).HasColumnName("ID_Question");
-            entity.Property(e => e.AnswerVariants).IsUnicode(false);
-            entity.Property(e => e.CorrectAnswer).IsUnicode(false);
+            entity.Property(e => e.AnswerVariants)
+		.HasMaxLength(1024)
+		.IsUnicode(true)
+		.HasColumnName("AnswerVariants");
+            entity.Property(e => e.CorrectAnswer)
+		.HasMaxLength(1024)
+		.IsUnicode(true)
+		.HasColumnName("CorrectAnswer");
             entity.Property(e => e.IdTest).HasColumnName("ID_Test");
             entity.Property(e => e.Points).HasDefaultValue(1);
             entity.Property(e => e.QuestionText)

@@ -72,7 +72,6 @@ from django.contrib import messages
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib import colors
 from reportlab.lib.units import inch
 from django.http import HttpResponse
@@ -85,9 +84,26 @@ from reportlab.lib import colors
 import requests
 import io
 
+from reportlab.pdfbase import pdfmetrics
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+import io
+import requests
+from django.http import HttpResponse
+from datetime import datetime
+
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+import io
+import requests
+from django.http import HttpResponse
+from datetime import datetime
+from reportlab.pdfbase.ttfonts import TTFont
 
 
-API_BASE_URL = 'https://yumlschool.ru/api'  
+API_BASE_URL = 'https://yumlschool.ru/api'
 
 # Вспомогательная функция для выполнения API-запросов
 def make_api_request(endpoint, method='get', data=None, params=None):
@@ -234,22 +250,20 @@ def export_students_performance(request, practical_work_id):
     buffer = io.BytesIO()
     p = canvas.Canvas(buffer, pagesize=letter)
     width, height = letter
-    
-    pdfmetrics.registerFont(TTFont('Arial', 'Arial.ttf'))  # Убедитесь, что шрифт доступен
-
+    pdfmetrics.registerFont(TTFont('DejaVu', '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'))  # Убедитесь, что шрифт доступен
     # Заголовок посередине
-    p.setFont("Helvetica-Bold", 24)
+    p.setFont("DejaVu", 24)
     p.setFillColor(colors.purple)
-    text_width = p.drawCentredString(width / 2, height - 50, 'YumlSchool')
+    p.drawCentredString(width / 2, height - 50, 'YumlSchool')
 
     # Заголовок
-    p.setFont("Arial", 16)
+    p.setFont("DejaVu", 16)
     p.drawString(100, height - 100, f'"{practical_work["namePracticalWork"]}"')
     p.drawString(100, height - 120, f'Предмет: {subject_name}')
     p.drawString(100, height - 140, f'Группа: {group_name}')
 
     # Список студентов и их оценки в виде таблицы
-    p.setFont("Arial", 14)
+    p.setFont("DejaVu", 14)
     p.drawString(100, height - 180, 'Список студентов и их оценки')
 
     # Рисуем таблицу
@@ -258,7 +272,7 @@ def export_students_performance(request, practical_work_id):
     col_widths = [3 * inch, 1 * inch]  # Ширина столбцов
 
     # Заголовки таблицы
-    p.setFont("Arial", 12)
+    p.setFont("DejaVu", 12)
     p.setFillColor(colors.grey)
     p.rect(100, table_start_y, sum(col_widths), row_height, stroke=1, fill=1)
     p.setFillColor(colors.black)
@@ -313,7 +327,7 @@ def export_students_performance(request, practical_work_id):
     month_russian = months_translation.get(month, month)
 
     # Подпись преподавателя на одной стороне
-    p.setFont("Arial", 12)
+    p.setFont("DejaVu", 12)
     p.drawString(100, table_start_y - 20, 'Подпись преподавателя  _____________')
     p.drawString(100, table_start_y - 40, f'«{day}» {month_russian} {year} года')
 
@@ -330,9 +344,6 @@ def export_students_performance(request, practical_work_id):
     buffer.seek(0)
     response.write(buffer.read())
     return response
-
-
-
 
 
 def index(request):
